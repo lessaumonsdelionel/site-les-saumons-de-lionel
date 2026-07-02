@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<!--
+  =====================================================================
+  Widget de précommande groupée — « Les Saumons de Lionel »
+  Agence EOCHE / Baptiste Eoche — Cliente : Margarit « Rita » Agayan-Sourine
+  ---------------------------------------------------------------------
+  • Fichier 100 % autonome (HTML + CSS + JS vanilla), chargé en iframe
+    par commande.html (auto-hauteur gérée côté page parente).
+  • SIMULATION LOCALE : tant que WEBHOOK_LECTURE / WEBHOOK_ECRITURE sont
+    vides, une couche « simulateur » reproduit fidèlement les deux
+    scénarios Make (docs/C-make-scenarios.md) : vérification du token,
+    contrôle statut/dates CÔTÉ SERVEUR, recalcul des montants depuis les
+    prix « Airtable », n° de commande CSE-AAAAMMJJ-#### et idempotence.
+    => Brancher le réel = renseigner les 2 URLs, rien d'autre à changer.
+  • La clé API Airtable n'apparaît JAMAIS côté navigateur (CLAUDE.md §7).
+  • Pas de localStorage / sessionStorage : tout l'état vit en mémoire.
+  • Mode démo : ajouter ?demo=1 à l'URL (de la page ou du widget) pour
+    afficher les codes de test des 4 cas limites.
+  • PRIX FICTIFS / PROVISOIRES — à remplacer par les tarifs réels.
+  =====================================================================
+-->
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Précommande — Les Saumons de Lionel</title>
+
+  <!-- Polices de la marque : Fraunces (titres) + Switzer (corps) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Space+Mono&display=swap"
+    rel="stylesheet"
+  />
+  <link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================ THÈME / VARIABLES ============================
+       Alignées sur le design system du site (css/styles.css) — contrastes AA. */
+    :root {
+      --cuivre: #A04A32;        /* accent — AA (≥4.5) sur fonds clairs        */
+      --cuivre-fonce: #8A3F2B;  /* survol                                     */
+      --nuit: #0E1A1F;          /* fonds sombres, texte fort                  */
+      --encre: #3A464A;         /* texte courant                              */
+      --gris: #5D6863;          /* texte secondaire — AA sur crème            */
+      --brume: #AEB9B7;         /* bordures                                   */
+      --creme: #EFEBE2;         /* fonds de blocs clairs                      */
+      --banquise: #F5F2EC;      /* fond de page                               */
+      --blanc: #ffffff;
+      --vert: #2E6B55;          /* validations — AA sur blanc                 */
+      --ambre: #8A6508;         /* avertissements — AA sur fond clair         */
+      --rayon: 14px;
+      --rayon-sm: 10px;
+      --ombre-douce: 0 2px 10px rgba(14, 26, 31, 0.06);
+      --transition: 0.18s ease;
+      --titre: "Fraunces", Georgia, serif;
+      --corps: "Switzer", "Inter", -apple-system, "Segoe UI", sans-serif;
+      --mono: "Space Mono", monospace;
+    }
+
+    /* ============================ RESET LOCAL (scopé) ============================ */
+    #saumon-widget *,
+    #saumon-widget *::before,
+    #saumon-widget *::after { box-sizing: border-box; }
+
+    body { background: var(--banquise); margin: 0; }
+
+    #saumon-widget {
+      font-family: var(--corps);
+      color: var(--nuit);
+      line-height: 1.55;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 8px 16px 56px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #saumon-widget h2,
+    #saumon-widget h3 { font-family: var(--titre); line-height: 1.15; margin: 0; }
+
+    /* ============================ CARTE GÉNÉRIQUE ============================ */
+    .sw-carte {
+      background: var(--blanc); border: 1px solid rgba(174, 185, 183, 0.6);
+      border-radius: var(--rayon); box-shadow: var(--ombre-douce);
+    }
+
+    /* ============================ ÉTAPE 1 : SAISIE DU CODE ============================ */
+    .sw-code-bloc { max-width: 520px; margin: 24px auto 0; padding: 36px 28px; text-align: center; }
+    .sw-code-bloc h2 { font-size: 24px; font-weight: 600; margin-bottom: 6px; }
+    .sw-code-bloc .sw-sous { color: var(--gris); font-size: 14px; margin: 0 0 22px; }
+
+    .sw-code-form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .sw-code-input {
+      flex: 1 1 240px; min-width: 0; font-family: var(--mono); font-weight: 700;
+      font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase;
+      text-align: center; padding: 15px 16px; border: 1.5px solid var(--brume);
+      border-radius: var(--rayon-sm); transition: border-color var(--transition), box-shadow var(--transition);
+      background: var(--banquise); color: var(--nuit);
+    }
+    .sw-code-input:focus {
+      outline: none; border-color: var(--cuivre); background: var(--blanc);
+      box-shadow: 0 0 0 4px rgba(160, 74, 50, 0.14);
+    }
+    .sw-code-input::placeholder { color: var(--gris); font-weight: 400; letter-spacing: 0.06em; }
+
+    /* ============================ BOUTONS ============================ */
+    .sw-btn {
+      font-family: var(--titre); font-weight: 600; font-size: 15px; cursor: pointer;
+      border: none; border-radius: var(--rayon-sm); padding: 15px 24px;
+      transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
+    }
+    .sw-btn:active { transform: translateY(1px); }
+    .sw-btn:focus-visible { outline: 2px solid var(--nuit); outline-offset: 2px; }
+    .sw-btn-primaire { background: var(--cuivre); color: var(--blanc); }
+    .sw-btn-primaire:hover { background: var(--cuivre-fonce); box-shadow: 0 6px 18px rgba(160, 74, 50, 0.28); }
+    .sw-btn-primaire:disabled { background: var(--brume); color: var(--nuit); opacity: .75; cursor: not-allowed; box-shadow: none; }
+    .sw-btn-secondaire {
+      background: var(--blanc); color: var(--nuit); border: 1.5px solid var(--brume);
+    }
+    .sw-btn-secondaire:hover { border-color: var(--nuit); }
+    .sw-btn-bloc { width: 100%; }
+
+    /* Codes de test — visibles UNIQUEMENT en mode démo (?demo=1) */
+    .sw-aide-codes { margin-top: 26px; padding-top: 20px; border-top: 1px dashed var(--brume); }
+    .sw-aide-codes p { font-family: var(--mono); font-size: 11px; color: var(--gris); margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.12em; }
+    .sw-puces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .sw-puce {
+      font-family: var(--mono); font-weight: 700; font-size: 12px; cursor: pointer;
+      background: var(--creme); color: var(--encre); border: 1px solid var(--brume);
+      padding: 6px 12px; border-radius: 999px; transition: var(--transition);
+    }
+    .sw-puce:hover { background: var(--nuit); color: var(--banquise); border-color: var(--nuit); }
+
+    /* ============================ MESSAGES (cas limites, erreurs réseau) ============================ */
+    .sw-message { display: flex; gap: 12px; align-items: flex-start; text-align: left;
+      padding: 14px 16px; border-radius: var(--rayon-sm); margin-top: 18px; font-size: 14px; }
+    .sw-message .sw-ico { flex: 0 0 auto; font-size: 18px; line-height: 1.4; }
+    .sw-message strong { font-family: var(--titre); display: block; margin-bottom: 2px; }
+    .sw-message-erreur { background: rgba(160, 74, 50, 0.07); border: 1px solid rgba(160, 74, 50, 0.35); color: var(--cuivre-fonce); }
+    .sw-message-info   { background: rgba(138, 101, 8, 0.08); border: 1px solid rgba(138, 101, 8, 0.35); color: var(--ambre); }
+    .sw-message-neutre { background: var(--creme); border: 1px solid var(--brume); color: var(--encre); }
+    .sw-cache { display: none !important; }
+
+    /* ============================ ÉTAPE 2 : PARCOURS COMMANDE ============================ */
+    .sw-bandeau {
+      background: var(--nuit); color: var(--banquise); border-radius: var(--rayon);
+      padding: 22px 24px; margin: 24px 0 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .sw-bandeau h2 { font-size: 20px; font-weight: 600; }
+    .sw-bandeau .sw-meta { font-size: 13px; color: rgba(245, 242, 236, 0.75); margin-top: 4px; }
+    .sw-bandeau .sw-badge {
+      font-family: var(--mono); font-weight: 700; font-size: 12px; letter-spacing: 0.06em;
+      background: var(--saumon, #D98A6E); color: var(--nuit); padding: 6px 12px; border-radius: 999px; white-space: nowrap;
+    }
+    .sw-lien-retour {
+      background: none; border: none; color: rgba(245, 242, 236, 0.8); font-family: var(--corps);
+      font-weight: 600; font-size: 13px; cursor: pointer; padding: 0; text-decoration: underline; margin-top: 8px;
+    }
+    .sw-lien-retour:hover { color: var(--banquise); }
+
+    .sw-consignes {
+      background: rgba(160, 74, 50, 0.06); border-left: 3px solid var(--cuivre);
+      border-radius: var(--rayon-sm); padding: 14px 16px; margin-bottom: 20px; font-size: 14px; color: var(--encre);
+    }
+    .sw-consignes strong { font-family: var(--titre); color: var(--nuit); }
+
+    /* Disposition 2 colonnes (formulaire + récap) */
+    .sw-grille { display: grid; grid-template-columns: 1fr 360px; gap: 22px; align-items: start; }
+    @media (max-width: 860px) { .sw-grille { grid-template-columns: 1fr; } }
+
+    .sw-section { padding: 22px; margin-bottom: 20px; }
+    .sw-section h3 {
+      font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--encre); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+      font-family: var(--mono);
+    }
+    .sw-section h3 .sw-num {
+      display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;
+      background: var(--nuit); color: var(--banquise); border-radius: 50%; font-size: 11px; flex: none;
+    }
+
+    /* Produits */
+    .sw-produit {
+      display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid var(--creme);
+    }
+    .sw-produit:last-child { border-bottom: none; padding-bottom: 4px; }
+    .sw-produit-info .sw-nom { font-family: var(--titre); font-weight: 600; font-size: 15.5px; }
+    .sw-produit-info .sw-detail { font-size: 13px; color: var(--gris); margin-top: 2px; }
+    .sw-produit-info .sw-prix { font-family: var(--titre); font-weight: 600; color: var(--cuivre); font-size: 15px; margin-top: 4px; }
+    /* Mobile : le stepper passe sous le nom, sur toute la largeur */
+    @media (max-width: 560px) {
+      .sw-produit { grid-template-columns: 1fr; gap: 10px; }
+      .sw-qte { justify-self: start; }
+    }
+
+    /* Sélecteur de quantité (stepper) */
+    .sw-qte { display: flex; align-items: center; gap: 0; }
+    .sw-qte button {
+      width: 40px; height: 40px; border: 1.5px solid var(--brume); background: var(--blanc);
+      font-size: 20px; font-family: var(--corps); cursor: pointer; color: var(--nuit);
+      display: flex; align-items: center; justify-content: center; transition: var(--transition);
+    }
+    .sw-qte button:first-child { border-radius: var(--rayon-sm) 0 0 var(--rayon-sm); }
+    .sw-qte button:last-child { border-radius: 0 var(--rayon-sm) var(--rayon-sm) 0; }
+    .sw-qte button:hover { background: var(--nuit); color: var(--banquise); border-color: var(--nuit); }
+    .sw-qte button:focus-visible { outline: 2px solid var(--nuit); outline-offset: 2px; position: relative; z-index: 1; }
+    .sw-qte button:disabled { opacity: 0.4; cursor: not-allowed; background: var(--blanc); color: var(--nuit); border-color: var(--brume); }
+    .sw-qte input {
+      width: 52px; height: 40px; text-align: center; border: 1.5px solid var(--brume);
+      border-left: none; border-right: none; font-family: var(--corps); font-weight: 600; font-size: 15px;
+      color: var(--nuit); background: var(--blanc);
+      -moz-appearance: textfield;
+    }
+    .sw-qte input::-webkit-outer-spin-button,
+    .sw-qte input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .sw-qte input:focus { outline: none; border-color: var(--cuivre); position: relative; z-index: 1; }
+
+    /* Modes de récupération (radios stylées) */
+    .sw-livraison-option { display: block; cursor: pointer; margin-bottom: 10px; position: relative; }
+    .sw-livraison-option:last-child { margin-bottom: 0; }
+    .sw-livraison-option input { position: absolute; opacity: 0; pointer-events: none; }
+    .sw-livraison-carte {
+      display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px;
+      border: 1.5px solid var(--brume); border-radius: var(--rayon-sm); transition: var(--transition);
+    }
+    .sw-livraison-option:hover .sw-livraison-carte { border-color: var(--gris); }
+    .sw-livraison-option input:checked + .sw-livraison-carte {
+      border-color: var(--cuivre); background: rgba(160, 74, 50, 0.04); box-shadow: 0 0 0 3px rgba(160, 74, 50, 0.1);
+    }
+    .sw-livraison-option input:focus-visible + .sw-livraison-carte { outline: 2px solid var(--nuit); outline-offset: 2px; }
+    .sw-radio-faux {
+      flex: 0 0 auto; width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; border: 2px solid var(--brume);
+      position: relative; transition: var(--transition);
+    }
+    .sw-livraison-option input:checked + .sw-livraison-carte .sw-radio-faux { border-color: var(--cuivre); }
+    .sw-livraison-option input:checked + .sw-livraison-carte .sw-radio-faux::after {
+      content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--cuivre);
+    }
+    .sw-livraison-texte { flex: 1; }
+    .sw-livraison-texte .sw-l-titre { display: block; font-family: var(--titre); font-weight: 600; font-size: 15px; }
+    .sw-livraison-texte .sw-l-detail { display: block; font-size: 13px; color: var(--gris); margin-top: 3px; }
+    .sw-livraison-frais { font-family: var(--titre); font-weight: 600; font-size: 14px; white-space: nowrap; color: var(--nuit); }
+    .sw-livraison-frais.sw-gratuit { color: var(--vert); }
+
+    /* Champs salarié */
+    .sw-champ { margin-bottom: 14px; }
+    .sw-champ label { display: block; font-weight: 600; font-size: 13.5px; margin-bottom: 6px; color: var(--nuit); }
+    .sw-champ label .sw-oblig { color: var(--cuivre); }
+    .sw-champ input, .sw-champ textarea {
+      width: 100%; font-family: var(--corps); font-size: 15px; padding: 12px 14px; color: var(--nuit);
+      border: 1.5px solid var(--brume); border-radius: var(--rayon-sm); transition: var(--transition); background: var(--blanc);
+    }
+    .sw-champ input:focus, .sw-champ textarea:focus {
+      outline: none; border-color: var(--cuivre); box-shadow: 0 0 0 3px rgba(160, 74, 50, 0.1);
+    }
+    .sw-champ input[aria-invalid="true"] { border-color: var(--cuivre); }
+    .sw-champ textarea { resize: vertical; min-height: 70px; }
+    .sw-champ-erreur { color: var(--cuivre); font-size: 12.5px; font-weight: 600; margin-top: 4px; display: none; }
+    .sw-champ-erreur.sw-actif { display: block; }
+    .sw-deux-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 520px) { .sw-deux-cols { grid-template-columns: 1fr; } }
+
+    /* Consentement RGPD */
+    .sw-consent { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; margin-top: 4px; }
+    .sw-consent input { flex: 0 0 auto; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--cuivre); cursor: pointer; }
+    .sw-consent span { font-size: 13px; color: var(--encre); }
+    .sw-consent a { color: var(--cuivre); font-weight: 600; }
+
+    /* Honeypot anti-bot : champ invisible pour les humains */
+    .sw-hp { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+
+    /* ============================ RÉCAPITULATIF (sticky) ============================ */
+    .sw-recap { position: sticky; top: 16px; padding: 22px; }
+    .sw-recap h3 { font-family: var(--titre); font-size: 17px; font-weight: 600; color: var(--nuit); text-transform: none; letter-spacing: 0; margin-bottom: 16px; }
+    .sw-recap-lignes { font-size: 14px; margin-bottom: 14px; }
+    .sw-recap-ligne { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; color: var(--encre); }
+    .sw-recap-ligne .sw-rl-nom { flex: 1; }
+    .sw-recap-ligne .sw-rl-montant { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .sw-recap-vide { color: var(--gris); font-size: 14px; font-style: italic; padding: 10px 0; }
+
+    .sw-recap-totaux { border-top: 1px solid var(--brume); padding-top: 14px; }
+    .sw-toto { display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px; color: var(--encre); }
+    .sw-toto .sw-val { font-variant-numeric: tabular-nums; font-weight: 500; }
+    .sw-toto.sw-remise .sw-val { color: var(--vert); font-weight: 600; }
+    .sw-total-final {
+      display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; padding-top: 12px;
+      border-top: 2px solid var(--nuit); font-family: var(--titre); font-weight: 600;
+    }
+    .sw-total-final .sw-tf-label { font-size: 16px; }
+    .sw-total-final .sw-tf-val { font-size: 24px; color: var(--cuivre); font-variant-numeric: tabular-nums; }
+    .sw-poids { font-size: 12px; color: var(--gris); text-align: right; margin-top: 6px; }
+    .sw-recap .sw-btn { margin-top: 18px; }
+    .sw-recap-note { font-size: 11.5px; color: var(--gris); text-align: center; margin: 10px 0 0; }
+
+    /* ============================ ÉTAPE 3 : CONFIRMATION ============================ */
+    .sw-confirm { max-width: 640px; margin: 24px auto 0; padding: 40px 28px; text-align: center; }
+    .sw-confirm-ico {
+      width: 72px; height: 72px; margin: 0 auto 18px; border-radius: 50%;
+      background: rgba(46, 107, 85, 0.12); color: var(--vert);
+      display: flex; align-items: center; justify-content: center; font-size: 36px;
+    }
+    .sw-confirm h2 { font-size: 26px; font-weight: 600; margin-bottom: 8px; }
+    .sw-confirm > p { color: var(--encre); margin: 0 0 22px; }
+    .sw-numero {
+      display: inline-block; font-family: var(--mono); font-weight: 700; font-size: 18px; letter-spacing: 0.04em;
+      background: var(--nuit); color: var(--banquise); padding: 12px 22px; border-radius: var(--rayon-sm); margin-bottom: 24px;
+    }
+    .sw-recap-final { text-align: left; padding: 20px; background: var(--banquise); border-radius: var(--rayon); margin-bottom: 24px; }
+    .sw-recap-final .sw-rf-ligne { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; font-size: 14px; border-bottom: 1px solid var(--creme); }
+    .sw-recap-final .sw-rf-ligne:last-child { border-bottom: none; }
+    .sw-recap-final .sw-rf-ligne .sw-rf-cle { color: var(--gris); flex: 0 0 auto; }
+    .sw-recap-final .sw-rf-ligne .sw-rf-val { font-weight: 600; text-align: right; }
+    .sw-confirm-aide { font-size: 13px; color: var(--encre); margin: 0 0 18px; }
+
+    /* Aperçu de l'e-mail simulé */
+    .sw-email { text-align: left; border: 1px solid var(--brume); border-radius: var(--rayon); overflow: hidden; margin-bottom: 24px; }
+    .sw-email-tag {
+      display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+      background: var(--nuit); color: var(--banquise); padding: 8px 16px;
+    }
+    .sw-email-entete { background: var(--creme); padding: 12px 16px; font-size: 13px; color: var(--encre); }
+    .sw-email-entete div { padding: 2px 0; }
+    .sw-email-entete strong { color: var(--nuit); }
+    .sw-email-corps { padding: 18px 16px; font-size: 14px; color: var(--encre); background: var(--blanc); }
+    .sw-email-corps p { margin: 0 0 12px; }
+    .sw-email-corps table { width: 100%; border-collapse: collapse; margin: 0 0 12px; font-size: 13.5px; }
+    .sw-email-corps th { text-align: left; font-weight: 600; color: var(--nuit); border-bottom: 1px solid var(--brume); padding: 6px 4px; }
+    .sw-email-corps td { border-bottom: 1px solid var(--creme); padding: 6px 4px; }
+    .sw-email-corps td.sw-num-cell { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .sw-email-corps .sw-email-total { font-weight: 700; color: var(--nuit); }
+    .sw-email-corps .sw-email-sign { color: var(--gris); font-size: 13px; margin-bottom: 0; }
+
+    /* Spinner de chargement (appel config / envoi commande) */
+    .sw-spinner {
+      display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255, 255, 255, 0.4);
+      border-top-color: var(--blanc); border-radius: 50%; animation: sw-tourne 0.7s linear infinite; vertical-align: -3px;
+    }
+    @keyframes sw-tourne { to { transform: rotate(360deg); } }
+
+    .sw-sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    /* ============================ ANIMATIONS — desktop uniquement ============================
+       Entrées de sections activées seulement si ≥861px ET pas de préférence
+       « réduire les animations » (classe .sw-anim posée en JS). Mobile = statique. */
+    .sw-anim .sw-entree { animation: sw-apparait 0.35s ease both; }
+    @keyframes sw-apparait { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  </style>
+</head>
+
+<body>
+  <div id="saumon-widget">
+
+    <!-- =============================================================
+         ÉTAPE 1 — Saisie & validation du code partenaire
+         (pas d'en-tête interne : la page commande.html porte déjà le titre)
+         ============================================================= -->
+    <section id="sw-etape-code" class="sw-carte sw-code-bloc">
+      <h2>Code partenaire</h2>
+      <p class="sw-sous">Le code communiqué par votre comité — exemple&nbsp;: <strong>ALLIANZ26</strong></p>
+
+      <form class="sw-code-form" id="sw-form-code" autocomplete="off" novalidate>
+        <input
+          type="text" id="sw-input-code" class="sw-code-input"
+          placeholder="VOTRE CODE" aria-label="Code partenaire"
+          maxlength="24" inputmode="text" autocapitalize="characters"
+        />
+        <button type="submit" class="sw-btn sw-btn-primaire" id="sw-btn-valider">Accéder</button>
+      </form>
+
+      <!-- Zone de message (cas limites, erreurs réseau). aria-live : lecteurs d'écran. -->
+      <div id="sw-zone-message" class="sw-cache" aria-live="polite"></div>
+
+      <!-- Codes de test — cachés par défaut, affichés seulement avec ?demo=1 -->
+      <div class="sw-aide-codes sw-cache" id="sw-aide-codes">
+        <p>Codes de test (mode démo)</p>
+        <div class="sw-puces" id="sw-puces-test"></div>
+      </div>
+    </section>
+
+    <!-- ÉTAPE 2 — Parcours de commande (injecté dynamiquement) -->
+    <section id="sw-etape-commande" class="sw-cache" aria-live="polite"></section>
+
+    <!-- ÉTAPE 3 — Confirmation (injectée dynamiquement) -->
+    <section id="sw-etape-confirmation" class="sw-cache" aria-live="polite"></section>
+
+  </div>
+
+  <script>
+  /* =====================================================================
+     LOGIQUE DU WIDGET — Vanilla JS, état en mémoire (zéro stockage local)
+     ===================================================================== */
+  (function () {
+    "use strict";
+
+    /* -------------------------------------------------------------------
+       0) BRANCHEMENT RÉEL (à renseigner à la mise en production)
+       -------------------------------------------------------------------
+       On N'APPELLE JAMAIS l'API Airtable depuis le navigateur : on passe
+       par deux webhooks Make qui détiennent les secrets (CLAUDE.md §7).
+       Tant que ces URLs sont vides, le SIMULATEUR local (ci-dessous)
+       répond À LEUR PLACE, avec exactement le même contrat d'échange.
+    ------------------------------------------------------------------- */
+    var WEBHOOK_LECTURE = "";   // ex. "https://hook.eu2.make.com/xxxxx" (scénario A : lire config)
+    var WEBHOOK_ECRITURE = "";  // ex. "https://hook.eu2.make.com/yyyyy" (scénario B : créer commande)
+    var WIDGET_TOKEN = "SIMULATION-LOCALE"; // secret partagé anti-spam (docs/C §0.4)
+
+    /* -------------------------------------------------------------------
+       1) SIMULATEUR MAKE + AIRTABLE (local)
+       -------------------------------------------------------------------
+       Reproduit fidèlement les 2 scénarios Make (docs/C-make-scenarios.md) :
+
+       Scénario A « Lire config » :
+         reçoit  { code, token, requestId }
+         renvoie { ok:true, partenaire:{…} }
+                 | { ok:false, raison:"token"|"inexistant"|"inactif"|"pas_ouvert"|"termine", dateOuverture? }
+
+       Scénario B « Créer commande » :
+         reçoit  le payload complet (voir construirePayload)
+         renvoie { numeroCommande:"CSE-AAAAMMJJ-####" }
+
+       Comme le vrai Make, le simulateur :
+       - vérifie le token ;
+       - revérifie statut + fenêtre de dates CÔTÉ « SERVEUR » ;
+       - RECALCULE tous les montants depuis les prix « Airtable »
+         (jamais confiance aux montants du navigateur — CLAUDE.md §15) ;
+       - applique l'idempotence par requestId (anti-doublon) ;
+       - numérote CSE-AAAAMMJJ-#### (séquence du jour) ;
+       - « écrit » la commande + ses lignes dans les tables en mémoire.
+    ------------------------------------------------------------------- */
+    var SIMULATEUR = (function () {
+
+      /* ---- « Base Airtable » en mémoire (mêmes tables que docs/B) ----
+         PRIX FICTIFS / PROVISOIRES — à remplacer par les tarifs réels.   */
+      var TABLE_PRODUITS = {
+        "SAU-FIL-1000": { reference: "SAU-FIL-1000", nom: "Filet de saumon sauvage fumé d'Alaska", detail: "Tranché main — ≈ 1 kg", prix: 69.00, poids: 1000 },
+        "SAU-PLQ-130":  { reference: "SAU-PLQ-130",  nom: "Plaquette de saumon sauvage fumé d'Alaska", detail: "Prêt à servir — 130 g", prix: 12.90, poids: 130 },
+        "TRU-FIL-500":  { reference: "TRU-FIL-500",  nom: "Filet de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique — ≈ 500 g", prix: 24.00, poids: 500 },
+        "TRU-PLQ-130":  { reference: "TRU-PLQ-130",  nom: "Plaquette de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique — 130 g", prix: 9.90, poids: 130 }
+      };
+
+      /* Partenaires : les 2 réels (données de lancement) + 3 cas limites.
+         ⚠️ Fenêtres pensées pour la démo de l'été 2026 — BIENTOT26 reste
+         « pas encore ouvert » jusqu'au 31/07/2026. */
+      var TABLE_PARTENAIRES = {
+        "ALLIANZ26": {
+          nom: "Allianz — CSE", statut: "Actif", remisePct: 0.20,
+          dateOuverture: "2026-06-15", dateCloture: "2026-09-30",
+          consignes: "Retrait gratuit au siège sur présentation du badge salarié. Lieu, date et frais définitifs à préciser.",
+          produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-500", "TRU-PLQ-130"],
+          livraisons: ["alz-retrait", "alz-domicile"]
+        },
+        "TOULOUSE26": {
+          nom: "COSAT Toulouse — CSE", statut: "Actif", remisePct: 0.20,
+          dateOuverture: "2026-06-15", dateCloture: "2026-11-30",
+          consignes: "Retrait gratuit au marché de Noël du COSAT. Lieu exact, date et frais à préciser.",
+          produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-500", "TRU-PLQ-130"],
+          livraisons: ["tls-retrait", "tls-domicile"]
+        },
+        "INACTIF26": {
+          nom: "Partenaire désactivé", statut: "Inactif", remisePct: 0.20,
+          dateOuverture: "2026-06-01", dateCloture: "2026-09-30",
+          consignes: "", produits: ["SAU-FIL-1000"], livraisons: []
+        },
+        "BIENTOT26": {
+          nom: "Partenaire — campagne à venir", statut: "Actif", remisePct: 0.20,
+          dateOuverture: "2026-08-01", dateCloture: "2026-08-31",
+          consignes: "", produits: ["SAU-FIL-1000", "SAU-PLQ-130"], livraisons: []
+        },
+        "TERMINE26": {
+          nom: "Partenaire — campagne clôturée", statut: "Actif", remisePct: 0.20,
+          dateOuverture: "2026-04-01", dateCloture: "2026-05-31",
+          consignes: "", produits: ["SAU-FIL-1000"], livraisons: []
+        }
+      };
+
+      var TABLE_MODES_LIVRAISON = {
+        "alz-retrait":  { id: "alz-retrait",  libelle: "Retrait au siège", type: "Retrait", frais: 0, lieu: "Siège Allianz (à préciser)", date: "2026-10-02" },
+        "alz-domicile": { id: "alz-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 6.90, lieu: "France métropolitaine (supplément à préciser)", date: "2026-10-03" },
+        "tls-retrait":  { id: "tls-retrait",  libelle: "Retrait — Marché de Noël du COSAT", type: "Retrait", frais: 0, lieu: "Marché de Noël du COSAT (à préciser)", date: "2026-12-12" },
+        "tls-domicile": { id: "tls-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 6.90, lieu: "Selon conditions (à préciser)", date: "2026-12-13" }
+      };
+
+      /* Table Commandes simulée : reçoit les enregistrements créés. */
+      var TABLE_COMMANDES = [];
+
+      /* ---- Helpers « serveur » ---- */
+      function aujourdhuiISO() {
+        var d = new Date();
+        return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+      }
+      function arrondi(n) { return Math.round(n * 100) / 100; }
+      function latence(fn, ms) { // simule le temps de réponse d'un webhook Make
+        return new Promise(function (resolve) { setTimeout(function () { resolve(fn()); }, ms); });
+      }
+
+      /* ---- Scénario A : « Lire config » ---- */
+      function lireConfig(requete) {
+        return latence(function () {
+          if (requete.token !== WIDGET_TOKEN) return { ok: false, raison: "token" };
+
+          var code = String(requete.code || "").trim().toUpperCase();
+          var p = TABLE_PARTENAIRES[code];
+          if (!p) return { ok: false, raison: "inexistant" };
+          if (p.statut !== "Actif") return { ok: false, raison: "inactif" };
+
+          var jour = aujourdhuiISO();
+          if (jour < p.dateOuverture) return { ok: false, raison: "pas_ouvert", dateOuverture: p.dateOuverture };
+          if (jour > p.dateCloture) return { ok: false, raison: "termine" };
+
+          return {
+            ok: true,
+            partenaire: {
+              code: code,
+              nom: p.nom,
+              remisePct: p.remisePct,
+              dateCloture: p.dateCloture,
+              consignes: p.consignes,
+              produits: p.produits.map(function (ref) { return TABLE_PRODUITS[ref]; }).filter(Boolean),
+              livraisons: p.livraisons.map(function (id) { return TABLE_MODES_LIVRAISON[id]; }).filter(Boolean)
+            }
+          };
+        }, 400);
+      }
+
+      /* ---- Scénario B : « Créer commande » ---- */
+      function creerCommande(payload) {
+        return latence(function () {
+          if (payload.token !== WIDGET_TOKEN) return { ok: false, raison: "token" };
+
+          /* Honeypot rempli = bot : on répond « succès » sans rien écrire
+             (même effet qu'un filtre Make qui arrête le scénario). */
+          if (payload.siteweb) return { numeroCommande: "CSE-00000000-0000" };
+
+          /* Idempotence : même requestId déjà traité → renvoyer le même n°. */
+          var existante = TABLE_COMMANDES.filter(function (c) { return c.requestId === payload.requestId; })[0];
+          if (existante) return { numeroCommande: existante.numero, simulation: existante.simulation };
+
+          /* Revérification serveur du partenaire (statut + fenêtre). */
+          var code = String(payload.codePartenaire || "").toUpperCase();
+          var p = TABLE_PARTENAIRES[code];
+          var jour = aujourdhuiISO();
+          if (!p) return { ok: false, raison: "inexistant" };
+          if (p.statut !== "Actif") return { ok: false, raison: "inactif" };
+          if (jour < p.dateOuverture || jour > p.dateCloture) return { ok: false, raison: "termine" };
+
+          /* RECALCUL complet depuis les prix « Airtable » (§15) —
+             on ignore les montants envoyés par le navigateur. */
+          var sousTotal = 0, poids = 0;
+          var lignesRecalc = (payload.lignes || []).map(function (l) {
+            var prod = TABLE_PRODUITS[l.reference];
+            if (!prod) return null;
+            var q = Math.max(0, Math.min(99, parseInt(l.quantite, 10) || 0));
+            var montant = arrondi(prod.prix * q);
+            sousTotal += montant; poids += prod.poids * q;
+            return { reference: prod.reference, nom: prod.nom, quantite: q, prixUnitaire: prod.prix, sousTotalLigne: montant };
+          }).filter(function (l) { return l && l.quantite > 0; });
+
+          sousTotal = arrondi(sousTotal);
+          var remise = arrondi(sousTotal * (p.remisePct || 0));
+          var mode = payload.livraison ? TABLE_MODES_LIVRAISON[payload.livraison.id] : null;
+          var frais = mode ? mode.frais : 0;
+          var total = arrondi(sousTotal - remise + frais);
+
+          /* N° de commande : CSE-AAAAMMJJ-#### (séquence du jour). */
+          var ymd = jour.replace(/-/g, "");
+          var duJour = TABLE_COMMANDES.filter(function (c) { return c.numero.indexOf("CSE-" + ymd) === 0; });
+          var numero = "CSE-" + ymd + "-" + ("000" + (duJour.length + 1)).slice(-4);
+
+          var commande = {
+            numero: numero,
+            requestId: payload.requestId,
+            simulation: null
+          };
+
+          /* Détail « écrit en base » + contenu de l'e-mail récap (module 19). */
+          commande.simulation = {
+            commande: {
+              numero: numero, codePartenaire: code, nomPartenaire: p.nom,
+              salarie: payload.salarie, lignes: lignesRecalc,
+              sousTotal: sousTotal, remise: remise, remisePct: p.remisePct,
+              frais: frais, total: total, poidsTotalG: poids,
+              livraison: mode, commentaire: payload.commentaire,
+              statutCommande: "Confirmée", statutPaiement: "Non applicable"
+            }
+          };
+          TABLE_COMMANDES.push(commande);
+
+          return { numeroCommande: numero, simulation: commande.simulation };
+        }, 750);
+      }
+
+      return { lireConfig: lireConfig, creerCommande: creerCommande };
+    })();
+
+    /* -------------------------------------------------------------------
+       2) COUCHE D'APPEL — bascule automatique simulateur / webhooks réels
+    ------------------------------------------------------------------- */
+    function appelerLectureConfig(donnees) {
+      if (WEBHOOK_LECTURE) {
+        return fetch(WEBHOOK_LECTURE, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(donnees)
+        }).then(function (r) { return r.json(); });
+      }
+      return SIMULATEUR.lireConfig(donnees);
+    }
+    function appelerCreationCommande(payload) {
+      if (WEBHOOK_ECRITURE) {
+        return fetch(WEBHOOK_ECRITURE, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }).then(function (r) { return r.json(); });
+      }
+      return SIMULATEUR.creerCommande(payload);
+    }
+
+    /* -------------------------------------------------------------------
+       3) ÉTAT EN MÉMOIRE (jamais persisté — ni localStorage ni session)
+    ------------------------------------------------------------------- */
+    var etat = {
+      code: null,
+      partenaire: null,        // config renvoyée par le scénario A
+      quantites: {},           // { reference: quantite }
+      livraisonId: null,
+      salarie: { nom: "", email: "", telephone: "", commentaire: "" },
+      consentement: false,
+      requestId: null          // identifiant unique de la tentative d'envoi
+    };
+
+    /* -------------------------------------------------------------------
+       4) HELPERS DE FORMATAGE (français)
+    ------------------------------------------------------------------- */
+    function eur(n) {
+      return n.toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
+    }
+    function poidsLisible(grammes) {
+      if (grammes >= 1000) {
+        return (grammes / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 }) + " kg";
+      }
+      return grammes + " g";
+    }
+    function dateCourte(iso) { // JJ/MM
+      var d = new Date(iso + "T00:00:00");
+      return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2);
+    }
+    function dateLongue(iso) { // ex. 2 octobre 2026
+      var d = new Date(iso + "T00:00:00");
+      return d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    }
+    function echapper(s) { // anti-injection basique pour l'affichage
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+    function genererRequestId() {
+      return "req-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+    }
+
+    /* Raccourcis DOM */
+    function $(sel, racine) { return (racine || document).querySelector(sel); }
+    var elEtapeCode = $("#sw-etape-code");
+    var elEtapeCommande = $("#sw-etape-commande");
+    var elEtapeConfirmation = $("#sw-etape-confirmation");
+    var elZoneMessage = $("#sw-zone-message");
+    var elInputCode = $("#sw-input-code");
+
+    /* -------------------------------------------------------------------
+       5) ÉTAPE 1 — Validation du code & gestion des 4 cas limites
+       (les vérifications font AUSSI foi côté serveur/simulateur)
+    ------------------------------------------------------------------- */
+    function afficherMessage(type, titre, texte, htmlSupplement) {
+      var classe = type === "erreur" ? "sw-message-erreur"
+                 : type === "info"   ? "sw-message-info"
+                 : "sw-message-neutre";
+      var ico = type === "erreur" ? "⛔" : type === "info" ? "🕒" : "ℹ️";
+      elZoneMessage.className = "sw-message " + classe;
+      elZoneMessage.innerHTML =
+        '<span class="sw-ico" aria-hidden="true">' + ico + '</span>' +
+        '<span><strong>' + echapper(titre) + '</strong>' + echapper(texte) +
+        (htmlSupplement || "") + '</span>';
+    }
+    function masquerMessage() { elZoneMessage.className = "sw-cache"; elZoneMessage.innerHTML = ""; }
+
+    /* Messages des cas limites — mêmes « raisons » que le webhook Make. */
+    function messagePourRaison(reponse) {
+      switch (reponse.raison) {
+        case "inexistant": return { type: "erreur", titre: "Code introuvable. ", texte: "Ce code n'existe pas. Vérifiez auprès de votre CSE." };
+        case "inactif":    return { type: "erreur", titre: "Partenariat indisponible. ", texte: "Ce partenariat n'est pas / plus actif." };
+        case "pas_ouvert": return { type: "info",   titre: "Bientôt disponible. ", texte: "Les commandes pour ce partenaire ouvriront le " + dateCourte(reponse.dateOuverture) + "." };
+        case "termine":    return { type: "erreur", titre: "Période terminée. ", texte: "La période de commande pour ce partenaire est désormais terminée." };
+        case "token":      return { type: "erreur", titre: "Accès refusé. ", texte: "La vérification de sécurité a échoué. Rechargez la page et réessayez." };
+        default:           return { type: "erreur", titre: "Erreur. ", texte: "Une erreur inattendue s'est produite. Réessayez dans un instant." };
+      }
+    }
+
+    function soumettreCode(e) {
+      if (e) e.preventDefault();
+      masquerMessage();
+
+      var code = (elInputCode.value || "").trim().toUpperCase();
+      if (!code) {
+        afficherMessage("neutre", "Code requis. ", "Veuillez saisir votre code partenaire.");
+        elInputCode.focus();
+        return;
+      }
+
+      var btn = $("#sw-btn-valider");
+      var libelleInitial = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="sw-spinner" aria-hidden="true"></span><span class="sw-sr-only">Chargement…</span>';
+
+      appelerLectureConfig({ code: code, token: WIDGET_TOKEN, requestId: genererRequestId() })
+        .then(function (reponse) {
+          btn.disabled = false;
+          btn.innerHTML = libelleInitial;
+
+          if (!reponse || !reponse.ok) {
+            var m = messagePourRaison(reponse || {});
+            afficherMessage(m.type, m.titre, m.texte);
+            elInputCode.focus();
+            elInputCode.select();
+            return;
+          }
+          // Code valide → on charge le parcours
+          etat.code = reponse.partenaire.code;
+          etat.partenaire = reponse.partenaire;
+          etat.quantites = {};
+          etat.consentement = false;
+          etat.livraisonId = reponse.partenaire.livraisons.length === 1 ? reponse.partenaire.livraisons[0].id : null;
+          afficherEtapeCommande();
+        })
+        .catch(function () { // échec réseau (webhook injoignable) — §15 robustesse
+          btn.disabled = false;
+          btn.innerHTML = libelleInitial;
+          afficherMessage("erreur", "Connexion impossible. ",
+            "Le service ne répond pas. Vérifiez votre connexion puis réessayez.");
+        });
+    }
+
+    /* -------------------------------------------------------------------
+       6) ÉTAPE 2 — Rendu du parcours de commande
+    ------------------------------------------------------------------- */
+    function afficherEtapeCommande() {
+      var p = etat.partenaire;
+
+      // Bandeau partenaire
+      var html = "";
+      html += '<div class="sw-bandeau sw-entree">' +
+        '<div>' +
+          '<h2>' + echapper(p.nom) + '</h2>' +
+          '<div class="sw-meta">Code ' + echapper(etat.code) +
+            ' · Commandes ouvertes jusqu\'au ' + dateLongue(p.dateCloture) + '</div>' +
+          '<button type="button" class="sw-lien-retour" id="sw-retour-code">← Changer de code</button>' +
+        '</div>' +
+        '<span class="sw-badge">−' + Math.round(p.remisePct * 100) + '% CSE</span>' +
+      '</div>';
+
+      // Consignes éventuelles du partenaire
+      if (p.consignes) {
+        html += '<div class="sw-consignes sw-entree"><strong>Consignes&nbsp;:</strong> ' + echapper(p.consignes) + '</div>';
+      }
+
+      // Grille : colonne formulaire + colonne récap
+      html += '<div class="sw-grille sw-entree"><div class="sw-colonne-form">';
+
+      /* --- Section 1 : Produits --- */
+      html += '<div class="sw-carte sw-section"><h3><span class="sw-num" aria-hidden="true">1</span> Choisissez vos produits</h3>';
+      p.produits.forEach(function (prod) {
+        html += '<div class="sw-produit">' +
+          '<div class="sw-produit-info">' +
+            '<div class="sw-nom">' + echapper(prod.nom) + '</div>' +
+            '<div class="sw-detail">' + echapper(prod.detail) + '</div>' +
+            '<div class="sw-prix">' + eur(prod.prix) + '</div>' +
+          '</div>' +
+          '<div class="sw-qte" data-ref="' + echapper(prod.reference) + '">' +
+            '<button type="button" class="sw-qte-moins" aria-label="Retirer un ' + echapper(prod.nom) + '">−</button>' +
+            '<input type="number" class="sw-qte-input" value="0" min="0" max="99" ' +
+                   'aria-label="Quantité ' + echapper(prod.nom) + '" />' +
+            '<button type="button" class="sw-qte-plus" aria-label="Ajouter un ' + echapper(prod.nom) + '">+</button>' +
+          '</div>' +
+        '</div>';
+      });
+      html += '</div>';
+
+      /* --- Section 2 : Mode de récupération --- */
+      html += '<div class="sw-carte sw-section"><h3><span class="sw-num" aria-hidden="true">2</span> Mode de récupération</h3>';
+      if (p.livraisons.length === 0) {
+        html += '<p class="sw-recap-vide">Aucun mode de livraison configuré.</p>';
+      }
+      p.livraisons.forEach(function (liv) {
+        var checked = etat.livraisonId === liv.id ? "checked" : "";
+        var fraisTxt = liv.frais === 0
+          ? '<span class="sw-livraison-frais sw-gratuit">Gratuit</span>'
+          : '<span class="sw-livraison-frais">+ ' + eur(liv.frais) + '</span>';
+        html += '<label class="sw-livraison-option">' +
+          '<input type="radio" name="sw-livraison" value="' + echapper(liv.id) + '" ' + checked + ' />' +
+          '<span class="sw-livraison-carte">' +
+            '<span class="sw-radio-faux" aria-hidden="true"></span>' +
+            '<span class="sw-livraison-texte">' +
+              '<span class="sw-l-titre">' + echapper(liv.libelle) + '</span>' +
+              '<span class="sw-l-detail">' + echapper(liv.lieu) + ' · ' + dateLongue(liv.date) + '</span>' +
+            '</span>' +
+            fraisTxt +
+          '</span>' +
+        '</label>';
+      });
+      html += '<span class="sw-champ-erreur" id="sw-err-livraison">Veuillez choisir un mode de récupération.</span>';
+      html += '</div>';
+
+      /* --- Section 3 : Coordonnées + consentement RGPD --- */
+      html += '<div class="sw-carte sw-section"><h3><span class="sw-num" aria-hidden="true">3</span> Vos coordonnées</h3>' +
+        '<div class="sw-deux-cols">' +
+          champTexte("nom", "Nom et prénom", "text", true) +
+          champTexte("telephone", "Téléphone", "tel", false) +
+        '</div>' +
+        champTexte("email", "Email", "email", true) +
+        '<div class="sw-champ">' +
+          '<label for="sw-f-commentaire">Commentaire (facultatif)</label>' +
+          '<textarea id="sw-f-commentaire" data-champ="commentaire" placeholder="Précision, service, allergie…"></textarea>' +
+        '</div>' +
+        /* Honeypot : champ invisible, un humain ne le remplit jamais. */
+        '<div class="sw-hp" aria-hidden="true">' +
+          '<label for="sw-f-siteweb">Votre site web</label>' +
+          '<input type="text" id="sw-f-siteweb" tabindex="-1" autocomplete="off" />' +
+        '</div>' +
+        /* Consentement RGPD (obligatoire — CLAUDE.md §15). */
+        '<label class="sw-consent">' +
+          '<input type="checkbox" id="sw-f-consent" />' +
+          '<span>J\'accepte que mes coordonnées soient utilisées uniquement pour le traitement de ma précommande, ' +
+          'conformément à la <a href="politique-confidentialite.html" target="_parent">politique de confidentialité</a>. ' +
+          '<span class="sw-oblig" aria-hidden="true">*</span></span>' +
+        '</label>' +
+        '<span class="sw-champ-erreur" id="sw-err-consent">Merci de cocher cette case pour valider votre précommande.</span>' +
+      '</div>';
+
+      html += '</div>'; // fin colonne form
+
+      /* --- Colonne Récapitulatif --- */
+      html += '<aside><div class="sw-carte sw-recap" id="sw-recap"><h3>Récapitulatif</h3>' +
+        '<div class="sw-recap-lignes" id="sw-recap-lignes"></div>' +
+        '<div class="sw-recap-totaux" id="sw-recap-totaux"></div>' +
+        '<button type="button" class="sw-btn sw-btn-primaire sw-btn-bloc" id="sw-btn-commander">Valider ma précommande</button>' +
+        '<div id="sw-zone-erreur-envoi"></div>' +
+        '<p class="sw-recap-note">Sans paiement en ligne — vous réglez au retrait. Un e-mail de confirmation vous sera envoyé.</p>' +
+      '</div></aside>';
+
+      html += '</div>'; // fin grille
+
+      elEtapeCommande.innerHTML = html;
+
+      // Bascule d'étapes
+      elEtapeCode.classList.add("sw-cache");
+      elEtapeCommande.classList.remove("sw-cache");
+      elEtapeConfirmation.classList.add("sw-cache");
+
+      brancherEvenementsCommande();
+      recalculer();
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    function champTexte(champ, label, type, obligatoire) {
+      var etoile = obligatoire ? ' <span class="sw-oblig" aria-hidden="true">*</span>' : '';
+      return '<div class="sw-champ">' +
+        '<label for="sw-f-' + champ + '">' + label + etoile + '</label>' +
+        '<input type="' + type + '" id="sw-f-' + champ + '" data-champ="' + champ + '"' +
+               (obligatoire ? ' required aria-required="true"' : '') +
+               ' autocomplete="' + (champ === "email" ? "email" : champ === "telephone" ? "tel" : "name") + '" />' +
+        '<span class="sw-champ-erreur" id="sw-err-' + champ + '"></span>' +
+      '</div>';
+    }
+
+    /* -------------------------------------------------------------------
+       7) Événements de l'étape commande
+    ------------------------------------------------------------------- */
+    function brancherEvenementsCommande() {
+      $("#sw-retour-code").addEventListener("click", retourSaisieCode);
+
+      // Quantités : boutons + / − et saisie directe
+      Array.prototype.forEach.call(elEtapeCommande.querySelectorAll(".sw-qte"), function (bloc) {
+        var ref = bloc.getAttribute("data-ref");
+        var input = $(".sw-qte-input", bloc);
+        $(".sw-qte-moins", bloc).addEventListener("click", function () { changerQte(ref, input, -1); });
+        $(".sw-qte-plus", bloc).addEventListener("click", function () { changerQte(ref, input, +1); });
+        input.addEventListener("input", function () {
+          var v = parseInt(input.value, 10);
+          if (isNaN(v) || v < 0) v = 0;
+          if (v > 99) v = 99;
+          input.value = v;
+          etat.quantites[ref] = v;
+          majBoutonsQte(bloc, v);
+          recalculer();
+        });
+        majBoutonsQte(bloc, 0);
+      });
+
+      // Modes de récupération
+      Array.prototype.forEach.call(elEtapeCommande.querySelectorAll('input[name="sw-livraison"]'), function (radio) {
+        radio.addEventListener("change", function () {
+          etat.livraisonId = radio.value;
+          $("#sw-err-livraison").classList.remove("sw-actif");
+          recalculer();
+        });
+      });
+
+      // Coordonnées salarié
+      Array.prototype.forEach.call(elEtapeCommande.querySelectorAll("[data-champ]"), function (input) {
+        input.addEventListener("input", function () {
+          etat.salarie[input.getAttribute("data-champ")] = input.value;
+          var err = $("#sw-err-" + input.getAttribute("data-champ"));
+          if (err) { err.classList.remove("sw-actif"); input.removeAttribute("aria-invalid"); }
+        });
+      });
+
+      // Consentement RGPD
+      $("#sw-f-consent").addEventListener("change", function () {
+        etat.consentement = this.checked;
+        if (this.checked) $("#sw-err-consent").classList.remove("sw-actif");
+      });
+
+      $("#sw-btn-commander").addEventListener("click", validerCommande);
+    }
+
+    function changerQte(ref, input, delta) {
+      var v = (parseInt(input.value, 10) || 0) + delta;
+      if (v < 0) v = 0; if (v > 99) v = 99;
+      input.value = v;
+      etat.quantites[ref] = v;
+      majBoutonsQte(input.closest(".sw-qte"), v);
+      recalculer();
+    }
+    function majBoutonsQte(bloc, v) {
+      $(".sw-qte-moins", bloc).disabled = v <= 0;
+    }
+
+    /* -------------------------------------------------------------------
+       8) CALCULS EN TEMPS RÉEL (affichage — cf. CLAUDE.md §5)
+       Le simulateur / Make refait TOUS ces calculs côté serveur avant
+       d'enregistrer : l'affichage n'est qu'indicatif.
+    ------------------------------------------------------------------- */
+    function calculer() {
+      var p = etat.partenaire;
+      var sousTotal = 0, poids = 0, lignes = [];
+
+      p.produits.forEach(function (prod) {
+        var q = etat.quantites[prod.reference] || 0;
+        if (q > 0) {
+          var montant = prod.prix * q;
+          sousTotal += montant;
+          poids += prod.poids * q;
+          lignes.push({ ref: prod.reference, nom: prod.nom, q: q, prix: prod.prix, montant: montant });
+        }
+      });
+
+      var remise = sousTotal * (p.remisePct || 0);
+      var liv = trouverLivraison(etat.livraisonId);
+      var frais = liv ? liv.frais : 0;
+      var total = sousTotal - remise + frais;
+
+      return { lignes: lignes, sousTotal: sousTotal, remise: remise, frais: frais, total: total, poids: poids, livraison: liv };
+    }
+    function trouverLivraison(id) {
+      if (!id || !etat.partenaire) return null;
+      var t = etat.partenaire.livraisons.filter(function (l) { return l.id === id; });
+      return t.length ? t[0] : null;
+    }
+
+    function recalculer() {
+      var c = calculer();
+      var elLignes = $("#sw-recap-lignes");
+      var elTotaux = $("#sw-recap-totaux");
+      var btn = $("#sw-btn-commander");
+      if (!elLignes) return;
+
+      // Lignes produits
+      if (c.lignes.length === 0) {
+        elLignes.innerHTML = '<p class="sw-recap-vide">Aucun produit sélectionné pour le moment.</p>';
+      } else {
+        elLignes.innerHTML = c.lignes.map(function (l) {
+          return '<div class="sw-recap-ligne">' +
+            '<span class="sw-rl-nom">' + l.q + '× ' + echapper(l.nom) + '</span>' +
+            '<span class="sw-rl-montant">' + eur(l.montant) + '</span>' +
+          '</div>';
+        }).join("");
+      }
+
+      // Totaux
+      var html = '';
+      html += '<div class="sw-toto"><span>Sous-total</span><span class="sw-val">' + eur(c.sousTotal) + '</span></div>';
+      if (c.remise > 0) {
+        html += '<div class="sw-toto sw-remise"><span>Remise CSE (−' + Math.round(etat.partenaire.remisePct * 100) + '%)</span>' +
+                '<span class="sw-val">− ' + eur(c.remise) + '</span></div>';
+      }
+      html += '<div class="sw-toto"><span>Frais de récupération</span><span class="sw-val">' +
+              (c.frais === 0 ? "Gratuit" : eur(c.frais)) + '</span></div>';
+      html += '<div class="sw-total-final"><span class="sw-tf-label">Total</span><span class="sw-tf-val">' + eur(c.total) + '</span></div>';
+      html += '<div class="sw-poids">Poids total estimé&nbsp;: ' + poidsLisible(c.poids) + '</div>';
+      elTotaux.innerHTML = html;
+
+      btn.disabled = c.lignes.length === 0;
+    }
+
+    /* -------------------------------------------------------------------
+       9) VALIDATION & ENVOI DE LA COMMANDE
+    ------------------------------------------------------------------- */
+    function validerCommande() {
+      var c = calculer();
+      var ok = true;
+
+      // a) Au moins un produit
+      if (c.lignes.length === 0) return;
+
+      // b) Un mode de récupération choisi
+      if (!etat.livraisonId && etat.partenaire.livraisons.length > 0) {
+        ok = false;
+        $("#sw-err-livraison").classList.add("sw-actif");
+        var sectionLiv = elEtapeCommande.querySelectorAll(".sw-section")[1];
+        if (sectionLiv) sectionLiv.scrollIntoView({ behavior: "auto", block: "center" });
+      }
+
+      // c) Coordonnées obligatoires + téléphone plausible s'il est renseigné
+      ok = verifierChamp("nom", function (v) { return v.trim().length >= 2; }, "Nom requis.") && ok;
+      ok = verifierChamp("email", function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }, "Email invalide.") && ok;
+      ok = verifierChamp("telephone", function (v) {
+        var t = v.replace(/[\s.\-()]/g, "");
+        return t === "" || /^(?:\+33|0)[1-9]\d{8}$/.test(t);
+      }, "Numéro invalide (ex. 06 12 34 56 78).") && ok;
+
+      // d) Consentement RGPD obligatoire
+      if (!etat.consentement) {
+        ok = false;
+        $("#sw-err-consent").classList.add("sw-actif");
+      }
+
+      if (!ok) return;
+
+      envoyerCommande(c);
+    }
+
+    /* Valide un champ : affiche/efface son message d'erreur, renvoie true/false. */
+    function verifierChamp(champ, test, message) {
+      var input = $("#sw-f-" + champ);
+      var err = $("#sw-err-" + champ);
+      var valide = test(input.value || "");
+      if (!valide) {
+        input.setAttribute("aria-invalid", "true");
+        err.textContent = message;
+        err.classList.add("sw-actif");
+      } else {
+        input.removeAttribute("aria-invalid");
+        err.classList.remove("sw-actif");
+      }
+      return valide;
+    }
+
+    function envoyerCommande(c) {
+      var btn = $("#sw-btn-commander");
+      var zoneErreur = $("#sw-zone-erreur-envoi");
+      zoneErreur.innerHTML = "";
+      btn.disabled = true;
+      btn.innerHTML = '<span class="sw-spinner" aria-hidden="true"></span> Envoi en cours…';
+
+      /* requestId conservé entre deux tentatives (idempotence) :
+         si l'envoi a échoué en réseau mais a abouti côté serveur,
+         « Réessayer » renverra le MÊME identifiant → pas de doublon. */
+      if (!etat.requestId) etat.requestId = genererRequestId();
+
+      var payload = construirePayload(c);
+
+      appelerCreationCommande(payload)
+        .then(function (reponse) {
+          if (!reponse || !reponse.numeroCommande) {
+            afficherErreurEnvoi(c, "La commande n'a pas pu être enregistrée. Réessayez.");
+            return;
+          }
+          etat.requestId = null; // tentative aboutie → prochain envoi = nouvel id
+          afficherConfirmation(c, reponse);
+        })
+        .catch(function () {
+          afficherErreurEnvoi(c, "Le service ne répond pas. Vérifiez votre connexion puis réessayez.");
+        });
+    }
+
+    function afficherErreurEnvoi(c, texte) {
+      var btn = $("#sw-btn-commander");
+      btn.disabled = false;
+      btn.innerHTML = "Valider ma précommande";
+      $("#sw-zone-erreur-envoi").innerHTML =
+        '<div class="sw-message sw-message-erreur" role="alert">' +
+          '<span class="sw-ico" aria-hidden="true">⛔</span>' +
+          '<span><strong>Échec de l\'envoi. </strong>' + echapper(texte) +
+          ' <button type="button" class="sw-lien-retour" id="sw-btn-reessayer" style="color:inherit">Réessayer</button></span>' +
+        '</div>';
+      $("#sw-btn-reessayer").addEventListener("click", function () { envoyerCommande(c); });
+    }
+
+    function construirePayload(c) {
+      var p = etat.partenaire;
+      return {
+        token: WIDGET_TOKEN,
+        requestId: etat.requestId,
+        codePartenaire: etat.code,
+        nomPartenaire: p.nom,
+        salarie: {
+          nom: etat.salarie.nom.trim(),
+          email: etat.salarie.email.trim(),
+          telephone: etat.salarie.telephone.trim()
+        },
+        lignes: c.lignes.map(function (l) {
+          return { reference: l.ref, nom: l.nom, quantite: l.q, prixUnitaire: l.prix, sousTotalLigne: arrondi(l.montant) };
+        }),
+        /* Montants indicatifs : le serveur (Make/simulateur) RECALCULE tout. */
+        sousTotal: arrondi(c.sousTotal),
+        remise: arrondi(c.remise),
+        frais: arrondi(c.frais),
+        total: arrondi(c.total),
+        poidsTotalG: c.poids,
+        livraison: c.livraison ? {
+          id: c.livraison.id, libelle: c.livraison.libelle, type: c.livraison.type,
+          lieu: c.livraison.lieu, date: c.livraison.date, frais: c.livraison.frais
+        } : null,
+        commentaire: etat.salarie.commentaire.trim(),
+        consentementRGPD: etat.consentement,
+        siteweb: ($("#sw-f-siteweb") ? $("#sw-f-siteweb").value : ""), // honeypot
+        statutCommande: "Confirmée",
+        statutPaiement: "Non applicable"
+      };
+    }
+    function arrondi(n) { return Math.round(n * 100) / 100; }
+
+    /* -------------------------------------------------------------------
+       10) ÉTAPE 3 — Confirmation + aperçu de l'e-mail récapitulatif
+    ------------------------------------------------------------------- */
+    function afficherConfirmation(c, reponse) {
+      var numero = reponse.numeroCommande;
+      /* En simulation, on affiche les données RECALCULÉES par le
+         « serveur » (source de vérité) ; sinon le calcul local. */
+      var sim = reponse.simulation ? reponse.simulation.commande : null;
+      var liv = sim ? sim.livraison : c.livraison;
+      var total = sim ? sim.total : c.total;
+      var poids = sim ? sim.poidsTotalG : c.poids;
+      var lignes = sim
+        ? sim.lignes.map(function (l) { return { q: l.quantite, nom: l.nom, montant: l.sousTotalLigne }; })
+        : c.lignes;
+
+      var html = '<div class="sw-carte sw-confirm sw-entree">' +
+        '<div class="sw-confirm-ico" aria-hidden="true">✓</div>' +
+        '<h2>Précommande enregistrée&nbsp;!</h2>' +
+        '<p>Merci ' + echapper(etat.salarie.nom.trim()) + '. Un e-mail de confirmation a été envoyé à <strong>' +
+            echapper(etat.salarie.email.trim()) + '</strong>.</p>' +
+        '<div class="sw-numero">N° ' + echapper(numero) + '</div>' +
+        '<div class="sw-recap-final">' +
+          ligneRF("Partenaire", etat.partenaire.nom) +
+          ligneRF("Produits", lignes.map(function (l) { return l.q + "× " + l.nom; }).join(" · ")) +
+          ligneRF("Récupération", liv ? (liv.libelle + " — " + dateLongue(liv.date)) : "—") +
+          ligneRF("Lieu", liv ? liv.lieu : "—") +
+          ligneRF("Poids total estimé", poidsLisible(poids)) +
+          ligneRF("Total à régler sur place", eur(total)) +
+        '</div>' +
+        '<p class="sw-confirm-aide">Pour modifier ou annuler, contactez-nous en indiquant votre n° de commande&nbsp;: ' +
+          '<a href="mailto:bonjour@lessaumonsdelionel.fr" style="color:var(--cuivre);font-weight:600">bonjour@lessaumonsdelionel.fr</a></p>' +
+        (sim ? construireApercuEmail(numero, sim) : "") +
+        '<button type="button" class="sw-btn sw-btn-secondaire" id="sw-nouvelle">Passer une autre commande</button>' +
+      '</div>';
+
+      elEtapeConfirmation.innerHTML = html;
+      elEtapeCommande.classList.add("sw-cache");
+      elEtapeConfirmation.classList.remove("sw-cache");
+      $("#sw-nouvelle").addEventListener("click", retourSaisieCode);
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    function ligneRF(cle, val) {
+      return '<div class="sw-rf-ligne"><span class="sw-rf-cle">' + echapper(cle) +
+             '</span><span class="sw-rf-val">' + echapper(val) + '</span></div>';
+    }
+
+    /* Aperçu fidèle de l'e-mail récap que Make enverra (scénario B, module 19).
+       Affiché uniquement en simulation locale — en production, le vrai
+       e-mail part depuis l'adresse du domaine. */
+    function construireApercuEmail(numero, cmd) {
+      var lignesHtml = cmd.lignes.map(function (l) {
+        return '<tr><td>' + echapper(l.nom) + '</td>' +
+               '<td class="sw-num-cell">' + l.quantite + '</td>' +
+               '<td class="sw-num-cell">' + eur(l.sousTotalLigne) + '</td></tr>';
+      }).join("");
+
+      var prenom = (cmd.salarie.nom || "").trim().split(/\s+/)[0] || "";
+
+      return '<div class="sw-email">' +
+        '<span class="sw-email-tag">Aperçu de l\'e-mail envoyé (simulation)</span>' +
+        '<div class="sw-email-entete">' +
+          '<div><strong>De&nbsp;:</strong> Les Saumons de Lionel &lt;bonjour@lessaumonsdelionel.fr&gt;</div>' +
+          '<div><strong>À&nbsp;:</strong> ' + echapper(cmd.salarie.email) + '</div>' +
+          '<div><strong>Objet&nbsp;:</strong> Votre précommande ' + echapper(numero) + ' — Les Saumons de Lionel</div>' +
+        '</div>' +
+        '<div class="sw-email-corps">' +
+          '<p>Bonjour ' + echapper(prenom) + ',</p>' +
+          '<p>Votre précommande <strong>' + echapper(numero) + '</strong> auprès de <strong>' +
+            echapper(cmd.nomPartenaire) + '</strong> est bien enregistrée.</p>' +
+          '<table>' +
+            '<tr><th>Produit</th><th style="text-align:right">Qté</th><th style="text-align:right">Montant</th></tr>' +
+            lignesHtml +
+            '<tr><td>Remise CSE (−' + Math.round(cmd.remisePct * 100) + '%)</td><td></td>' +
+              '<td class="sw-num-cell">− ' + eur(cmd.remise) + '</td></tr>' +
+            '<tr><td>Frais de récupération</td><td></td>' +
+              '<td class="sw-num-cell">' + (cmd.frais === 0 ? "Gratuit" : eur(cmd.frais)) + '</td></tr>' +
+            '<tr class="sw-email-total"><td>Total à régler sur place</td><td></td>' +
+              '<td class="sw-num-cell">' + eur(cmd.total) + '</td></tr>' +
+          '</table>' +
+          '<p><strong>Récupération&nbsp;:</strong> ' +
+            (cmd.livraison ? echapper(cmd.livraison.libelle) + ' — ' + echapper(cmd.livraison.lieu) +
+              ', le ' + dateLongue(cmd.livraison.date) : "—") + '.<br>' +
+            'Nos produits voyagent entre 0 et +4&nbsp;°C&nbsp;: pensez à votre sac isotherme.</p>' +
+          '<p>Pour modifier ou annuler, répondez à cet e-mail en indiquant votre n° de commande.</p>' +
+          '<p class="sw-email-sign">Les Saumons de Lionel — saumon sauvage d\'Alaska, fumé et tranché à la main.</p>' +
+        '</div>' +
+      '</div>';
+    }
+
+    /* -------------------------------------------------------------------
+       11) Navigation : retour à la saisie du code (réinitialise l'état)
+    ------------------------------------------------------------------- */
+    function retourSaisieCode() {
+      etat = { code: null, partenaire: null, quantites: {}, livraisonId: null,
+               salarie: { nom: "", email: "", telephone: "", commentaire: "" },
+               consentement: false, requestId: null };
+      elEtapeCommande.classList.add("sw-cache");
+      elEtapeConfirmation.classList.add("sw-cache");
+      elEtapeCode.classList.remove("sw-cache");
+      masquerMessage();
+      elInputCode.value = "";
+      elInputCode.focus();
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    /* -------------------------------------------------------------------
+       12) Mode démo (?demo=1 sur le widget OU sur la page parente)
+    ------------------------------------------------------------------- */
+    function modeDemoActif() {
+      function contient(s) { return /[?&]demo=1(&|$)/.test(s || ""); }
+      try { if (contient(window.location.search)) return true; } catch (e) { /* sans objet */ }
+      try { // même origine : on peut lire l'URL de la page qui embarque l'iframe
+        if (window.parent !== window && contient(window.parent.location.search)) return true;
+      } catch (e) { /* iframe d'une autre origine : on ignore */ }
+      return false;
+    }
+
+    /* -------------------------------------------------------------------
+       13) Initialisation
+    ------------------------------------------------------------------- */
+    function init() {
+      /* Animations d'entrée : desktop uniquement + respect de
+         prefers-reduced-motion (même règle que le site). Mobile = statique. */
+      var motionOK =
+        window.matchMedia("(min-width: 861px)").matches &&
+        window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+      if (motionOK) document.getElementById("saumon-widget").classList.add("sw-anim");
+
+      $("#sw-form-code").addEventListener("submit", soumettreCode);
+
+      // Force les majuscules pendant la saisie (confort)
+      elInputCode.addEventListener("input", function () {
+        var pos = elInputCode.selectionStart;
+        elInputCode.value = elInputCode.value.toUpperCase();
+        elInputCode.setSelectionRange(pos, pos);
+        masquerMessage();
+      });
+
+      // Puces de test — seulement en mode démo (?demo=1)
+      if (modeDemoActif()) {
+        var codesDemo = [
+          { code: "ALLIANZ26", note: "actif" },
+          { code: "TOULOUSE26", note: "actif" },
+          { code: "INACTIF26", note: "inactif" },
+          { code: "BIENTOT26", note: "pas encore ouvert" },
+          { code: "TERMINE26", note: "terminé" },
+          { code: "ZZZ999", note: "inexistant" }
+        ];
+        $("#sw-puces-test").innerHTML = codesDemo.map(function (c) {
+          return '<button type="button" class="sw-puce" data-code="' + c.code + '" title="Cas : ' + c.note + '">' + c.code + '</button>';
+        }).join("");
+        Array.prototype.forEach.call($("#sw-puces-test").querySelectorAll(".sw-puce"), function (btn) {
+          btn.addEventListener("click", function () {
+            elInputCode.value = btn.getAttribute("data-code");
+            soumettreCode();
+          });
+        });
+        $("#sw-aide-codes").classList.remove("sw-cache");
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else { init(); }
+  })();
+  </script>
+</body>
+</html>

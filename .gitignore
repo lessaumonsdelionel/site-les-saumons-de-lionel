@@ -1,0 +1,3 @@
+# Dépendances et sortie de build — ne jamais committer
+node_modules/
+_site/

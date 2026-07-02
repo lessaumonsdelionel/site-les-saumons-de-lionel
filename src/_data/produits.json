@@ -1,0 +1,64 @@
+{
+  "liste": [
+  {
+    "id": "filet-saumon",
+    "eyebrow": "Alaska · Pêche sauvage",
+    "nom": "Filet de saumon sauvage fumé",
+    "infos": "Réf. SAU-FIL-1000 · ≈ 1 kg · Tranché main",
+    "description": "La pièce maîtresse de la maison. Un filet entier de saumon sauvage d'Alaska, fumé lentement puis tranché au couteau, remis en forme sur sa peau. Pour les grandes tables et les fêtes qui comptent.",
+    "image": "assets/img/filet-saumon.webp",
+    "alt": "Filet de saumon sauvage fumé d'Alaska, tranché main",
+    "specs": {
+      "origine": "Golfe d'Alaska — pêche sauvage, jamais d'élevage",
+      "poids": "≈ 1 kg (pièce entière tranchée)",
+      "allergenes": "Poisson (saumon)",
+      "conservation": "0 à +4 °C — DLC sur l'étiquette"
+    }
+  },
+  {
+    "id": "plaquette-saumon",
+    "eyebrow": "Alaska · Pêche sauvage",
+    "nom": "Plaquette de saumon sauvage",
+    "infos": "Réf. SAU-PLQ-130 · 130 g · Prêt à servir",
+    "description": "Les mêmes filets, en format généreux pour deux. Des tranches fines et régulières, prêtes à poser sur un blini, une crème citronnée ou simplement un pain grillé.",
+    "image": "assets/img/plaquette-saumon.webp",
+    "alt": "Plaquette de saumon sauvage fumé d'Alaska, 130 g",
+    "specs": {
+      "origine": "Golfe d'Alaska — pêche sauvage",
+      "poids": "130 g",
+      "allergenes": "Poisson (saumon)",
+      "conservation": "0 à +4 °C — DLC sur l'étiquette"
+    }
+  },
+  {
+    "id": "filet-truite",
+    "eyebrow": "Pyrénées · Agriculture biologique",
+    "nom": "Filet de truite fumée",
+    "infos": "Réf. TRU-FIL-500 · ≈ 500 g · Issue AB",
+    "description": "L'eau vive des Pyrénées, une chair délicate et nacrée, une fumaison tout en retenue. Élevée en agriculture biologique, préparée avec la même exigence que nos saumons.",
+    "image": "assets/img/truite.webp",
+    "alt": "Filet de truite fumée des Pyrénées, agriculture biologique",
+    "specs": {
+      "origine": "Pyrénées — issue de l'agriculture biologique",
+      "poids": "≈ 500 g",
+      "allergenes": "Poisson (truite)",
+      "conservation": "0 à +4 °C — DLC sur l'étiquette"
+    }
+  },
+  {
+    "id": "plaquette-truite",
+    "eyebrow": "Pyrénées · Agriculture biologique",
+    "nom": "Plaquette de truite fumée",
+    "infos": "Réf. TRU-PLQ-130 · 130 g · Issue AB",
+    "description": "La truite des Pyrénées en format dégustation. Des tranches fines au goût subtil, entre noisette et fumée douce — l'alternative élégante au saumon.",
+    "image": "assets/img/macro.webp",
+    "alt": "Plaquette de truite fumée des Pyrénées, 130 g",
+    "specs": {
+      "origine": "Pyrénées — issue de l'agriculture biologique",
+      "poids": "130 g",
+      "allergenes": "Poisson (truite)",
+      "conservation": "0 à +4 °C — DLC sur l'étiquette"
+    }
+  }
+  ]
+}

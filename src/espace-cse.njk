@@ -1,0 +1,104 @@
+---
+layout: "base.njk"
+permalink: "espace-cse.html"
+pageId: "cse"
+eleventyComputed:
+  titre: "{{ cse.seo.titre | safe }}"
+  description: "{{ cse.seo.description | safe }}"
+---
+<!-- ============================== EN-TÊTE DE PAGE ============================== -->
+<section class="page-hero on-dark">
+  <img class="watermark" src="assets/img/logo-blanc.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <span class="eyebrow">{{ cse.hero.eyebrow | safe }}</span>
+    <h1>{{ cse.hero.titre | safe }}</h1>
+    <p class="lead">{{ cse.hero.accroche | safe }}</p>
+    <div class="cta-row" style="margin-top:34px;display:flex;gap:16px;flex-wrap:wrap">
+      <a class="btn btn-primary" href="#devenir-partenaire">{{ cse.hero.boutonPrincipal | safe }} <span class="arr">→</span></a>
+      <a class="btn btn-ghost light" href="commande.html">{{ cse.hero.boutonSecondaire | safe }}</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== COMMENT ÇA MARCHE (CSE) ============================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow reveal">{{ cse.partenariat.eyebrow | safe }}</span>
+        <h2 class="reveal">{{ cse.partenariat.titre | safe }}</h2>
+      </div>
+      <p class="side reveal">{{ cse.partenariat.texteCote | safe }}</p>
+    </div>
+    <div class="how">
+      <div class="row">{% for g in cse.partenariat.gestes %}
+        <div class="how-item reveal"{% if not loop.first %} data-d="{{ loop.index0 }}"{% endif %}>
+          <h3>{{ g.titre | safe }}</h3>
+          <p>{{ g.texte | safe }}</p>
+        </div>{% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CÔTÉ SALARIÉ ============================== -->
+<section class="alt">
+  <div class="wrap split">
+    <div>
+      <span class="eyebrow reveal">{{ cse.salarie.eyebrow | safe }}</span>
+      <h2 class="reveal">{{ cse.salarie.titre | safe }}</h2>{% for p in cse.salarie.paragraphes %}
+      <p class="reveal">{{ p | safe }}</p>{% endfor %}
+      <div class="reveal" style="margin-top:8px">
+        <div class="code-pill" style="border-color:rgba(14,26,31,.25);color:var(--nuit)"><span class="dot"></span> {{ cse.salarie.codeExemple | safe }}</div>
+      </div>
+      <a class="link-more reveal" href="commande.html">{{ cse.salarie.lien | safe }} <span class="arr">→</span></a>
+    </div>
+    <div class="ph reveal">
+      <img src="{{ cse.salarie.image | safe }}" alt="{{ cse.salarie.imageAlt | safe }}" loading="lazy" style="height:clamp(340px,40vw,520px);width:100%;object-fit:cover">
+      <span class="coords-badge">{{ cse.salarie.badge | safe }}</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== ENGAGEMENTS ============================== -->
+<section class="process on-dark">
+  <div class="wrap">
+    <span class="eyebrow reveal">{{ cse.engagements.eyebrow | safe }}</span>
+    <h2 class="reveal" style="font-size:clamp(30px,3.8vw,50px);margin-top:16px">{{ cse.engagements.titre | safe }}</h2>
+    <div class="steps">{% for p in cse.engagements.points %}
+      <div class="step reveal"{% if not loop.first %} data-d="{{ loop.index0 }}"{% endif %}><span class="n">0{{ loop.index }}</span><h3>{{ p.titre | safe }}</h3><p>{{ p.texte | safe }}</p></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CONTACT / DEVENIR PARTENAIRE ============================== -->
+<section id="devenir-partenaire">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow reveal">{{ cse.contact.eyebrow | safe }}</span>
+        <h2 class="reveal">{{ cse.contact.titre | safe }}</h2>
+      </div>
+      <p class="side reveal">{{ cse.contact.texteCote | safe }}</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card reveal">
+        <span class="lat"><span class="bar"><i></i></span> Écrire</span>
+        <h3>Par e-mail</h3>
+        <a href="mailto:{{ site.contact.email | safe }}">{{ site.contact.email | safe }}</a>
+        <p class="muted" style="font-size:13.5px;margin-top:10px">{{ cse.contact.noteEmail | safe }}</p>
+      </div>
+      <div class="contact-card reveal" data-d="1">
+        <span class="lat"><span class="bar"><i></i></span> Appeler</span>
+        <h3>Par téléphone</h3>
+        <a href="tel:{{ site.contact.tel1.lien | safe }}">{{ site.contact.tel1.numero | safe }} — {{ site.contact.tel1.prenom | safe }}</a>
+        <a href="tel:{{ site.contact.tel2.lien | safe }}">{{ site.contact.tel2.numero | safe }} — {{ site.contact.tel2.prenom | safe }}</a>
+      </div>
+      <div class="contact-card reveal" data-d="2">
+        <span class="lat"><span class="bar"><i></i></span> Décider</span>
+        <h3>Ce qu'il nous faut</h3>
+        <p class="muted" style="font-size:14px">{{ cse.contact.besoin | safe }}</p>
+      </div>
+    </div>
+  </div>
+</section>

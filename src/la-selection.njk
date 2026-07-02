@@ -1,0 +1,50 @@
+---
+layout: "base.njk"
+permalink: "la-selection.html"
+pageId: "selection"
+eleventyComputed:
+  titre: "{{ selection.seo.titre | safe }}"
+  description: "{{ selection.seo.description | safe }}"
+---
+<!-- ============================== EN-TÊTE DE PAGE ============================== -->
+<section class="page-hero on-dark">
+  <img class="watermark" src="assets/img/logo-blanc.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <span class="eyebrow">{{ selection.hero.eyebrow | safe }}</span>
+    <h1>{{ selection.hero.titre | safe }}</h1>
+    <p class="lead">{{ selection.hero.accroche | safe }}</p>
+  </div>
+</section>
+
+<!-- ============================== FICHES ============================== -->
+<section>
+  <div class="wrap fiches">{% for p in produits.liste %}
+
+    <article class="fiche" id="{{ p.id | safe }}">
+      <div class="ph reveal"><img src="{{ p.image | safe }}" alt="{{ p.alt | safe }}"></div>
+      <div>
+        <span class="eyebrow reveal">{{ p.eyebrow | safe }}</span>
+        <h3 class="reveal">{{ p.nom | safe }}</h3>
+        <span class="wt reveal">{{ p.infos | safe }}</span>
+        <p class="reveal">{{ p.description | safe }}</p>
+        <dl class="specs reveal">
+          <div><dt>Origine</dt><dd>{{ p.specs.origine | safe }}</dd></div>
+          <div><dt>Poids</dt><dd>{{ p.specs.poids | safe }}</dd></div>
+          <div><dt>Allergènes</dt><dd>{{ p.specs.allergenes | safe }}</dd></div>
+          <div><dt>Conservation</dt><dd>{{ p.specs.conservation | safe }}</dd></div>
+        </dl>
+        <p class="reveal" style="margin-top:24px"><a class="btn btn-primary" href="commande.html">Commander avec mon code <span class="arr">→</span></a></p>
+      </div>
+    </article>{% endfor %}
+
+  </div>
+</section>
+
+<!-- ============================== NOTE FROID ============================== -->
+<section class="process on-dark" style="padding:clamp(56px,7vw,88px) 0">
+  <div class="wrap" style="max-width:880px;text-align:center">
+    <span class="eyebrow reveal">{{ selection.noteFroid.eyebrow | safe }}</span>
+    <h2 class="reveal" style="font-size:clamp(26px,3.2vw,40px);margin-top:16px">{{ selection.noteFroid.titre | safe }}</h2>
+    <p class="reveal" style="color:rgba(245,242,236,.7);margin-top:18px">{{ selection.noteFroid.texte | safe }}</p>
+  </div>
+</section>

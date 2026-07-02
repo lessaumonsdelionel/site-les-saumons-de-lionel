@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "titre": "Les Saumons de Lionel — Saumon sauvage d'Alaska fumé, tranché main",
+    "description": "Saumon sauvage d'Alaska et truite des Pyrénées (AB), fumés et tranchés à la main. Précommandes groupées pour CSE, entreprises, collectivités et associations.",
+    "ogTitre": "Les Saumons de Lionel — Saumon sauvage d'Alaska",
+    "ogDescription": "Une sélection rare, fumée et tranchée à la main. Offres dédiées CSE & entreprises."
+  },
+  "hero": {
+    "eyebrow": "61°46′ N — Golfe d'Alaska",
+    "titre": "Le saumon sauvage, <em>à l'état pur.</em>",
+    "accroche": "Pêché en eaux froides d'Alaska, fumé lentement, tranché à la main et livré au froid. Une sélection rare, réservée aux comités d'entreprise et aux tables qui savent attendre.",
+    "boutonPrincipal": "Accéder à mon offre CSE",
+    "boutonSecondaire": "Découvrir la sélection",
+    "noteBas": "Pêche sauvage · Jamais d'élevage · Chaîne du froid garantie",
+    "imageFond": "assets/img/hero-alaska.webp"
+  },
+  "manifesto": {
+    "eyebrow": "La maison",
+    "titre": "Nous ne vendons pas du poisson.<br>Nous rapportons <em>un territoire.</em>",
+    "piliers": [
+      { "label": "Rareté", "titre": "Pêche sauvage", "texte": "Une ressource limitée, jamais issue d'élevage. Ce que la mer donne, quand elle le donne — rien de plus." },
+      { "label": "Pureté", "titre": "Eaux froides", "texte": "Des eaux limpides et glacées, une chair ferme, un goût net. Aucun artifice, rien à masquer." },
+      { "label": "Traçabilité", "titre": "De la zone à la table", "texte": "Origine, fumaison et chaîne du froid documentées, du bateau jusqu'à votre comité d'entreprise." }
+    ]
+  },
+  "selection": {
+    "eyebrow": "La sélection",
+    "titre": "Filets &amp; plaquettes",
+    "texteCote": "Quatre références au lancement — saumon sauvage d'Alaska et truite des Pyrénées issue de l'agriculture biologique.",
+    "cartes": [
+      { "tag": "Alaska · Sauvage", "image": "assets/img/filet-saumon.webp", "alt": "Filet de saumon sauvage fumé d'Alaska", "titre": "Filet de saumon sauvage", "sousTitre": "Fumé d'Alaska · ≈ 1 kg", "description": "La pièce maîtresse, fumée lentement et tranchée à la main.", "note": "Tarif CSE dédié" },
+      { "tag": "Alaska · Sauvage", "image": "assets/img/plaquette-saumon.webp", "alt": "Plaquette de saumon sauvage fumé d'Alaska", "titre": "Plaquette de saumon", "sousTitre": "Prêt à servir · 130 g", "description": "Tranches fines et régulières, prêtes à poser sur la table.", "note": "Tarif CSE dédié" },
+      { "tag": "Pyrénées · AB", "image": "assets/img/truite.webp", "alt": "Truite fumée des Pyrénées issue de l'agriculture biologique", "titre": "Truite fumée des Pyrénées", "sousTitre": "Agriculture biologique · dès 130 g", "description": "L'eau vive des Pyrénées, en filet ou en plaquette.", "note": "Tarif CSE dédié" }
+    ]
+  },
+  "process": {
+    "eyebrow": "Le geste",
+    "titre": "Quatre étapes, aucune concession.",
+    "etapes": [
+      { "numero": "01 — Océan", "titre": "Pêche sauvage", "texte": "En eaux froides d'Alaska, pendant la saison, dans le respect de la ressource." },
+      { "numero": "02 — Feu doux", "titre": "Fumaison lente", "texte": "Une fumée fine et patiente, qui révèle la chair sans jamais la couvrir." },
+      { "numero": "03 — Main", "titre": "Tranché main", "texte": "Chaque filet est tranché au couteau, à l'ancienne, pour une texture parfaite." },
+      { "numero": "04 — Froid", "titre": "Chaîne du froid", "texte": "Entre 0 et +4 °C de l'atelier jusqu'au retrait. Fraîcheur intacte, DLC affichée." }
+    ]
+  },
+  "cse": {
+    "eyebrow": "Espace CSE &amp; entreprises",
+    "titre": "Une offre dédiée, <em>un simple code.</em>",
+    "texte": "Votre comité vous a communiqué un code partenaire ? Saisissez-le pour accéder à votre catalogue, vos tarifs et vos modalités de retrait ou de livraison. Précommande groupée, sans paiement en ligne.",
+    "codeExemple": "ALLIANZ26",
+    "bouton": "Accéder à mon offre",
+    "lien": "Vous êtes un CSE ? Proposez-nous à vos salariés",
+    "imageFond": "assets/img/texture-glace.webp"
+  }
+}

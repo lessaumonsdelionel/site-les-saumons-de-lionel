@@ -1,0 +1,131 @@
+---
+layout: "base.njk"
+permalink: "index.html"
+pageId: "accueil"
+eleventyComputed:
+  titre: "{{ accueil.seo.titre | safe }}"
+  description: "{{ accueil.seo.description | safe }}"
+  ogTitre: "{{ accueil.seo.ogTitre | safe }}"
+  ogDescription: "{{ accueil.seo.ogDescription | safe }}"
+  ogImage: "{{ site.ogImage | safe }}"
+---
+<!-- ============================== HERO ============================== -->
+<section class="hero">
+  <div class="bg" style="background-image:url('{{ accueil.hero.imageFond | safe }}')"></div>
+  <div class="wrap">
+    <span class="eyebrow">{{ accueil.hero.eyebrow | safe }}</span>
+    <h1>{{ accueil.hero.titre | safe }}</h1>
+    <p class="lead">{{ accueil.hero.accroche | safe }}</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="commande.html">{{ accueil.hero.boutonPrincipal | safe }} <span class="arr">→</span></a>
+      <a class="btn btn-ghost light" href="la-selection.html">{{ accueil.hero.boutonSecondaire | safe }}</a>
+    </div>
+    <div class="hero-foot">
+      <div class="scroll-hint"><span class="line"></span> Descendre</div>
+      <span class="coords">{{ accueil.hero.noteBas | safe }}</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== MARQUEE ============================== -->
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>Saumon sauvage d'Alaska <b>·</b> Fumé &amp; tranché main <b>·</b> Pêche sauvage <b>·</b> 61° Nord <b>·</b> Truite des Pyrénées — AB <b>·</b> Précommande groupée <b>·</b></span>
+    <span>Saumon sauvage d'Alaska <b>·</b> Fumé &amp; tranché main <b>·</b> Pêche sauvage <b>·</b> 61° Nord <b>·</b> Truite des Pyrénées — AB <b>·</b> Précommande groupée <b>·</b></span>
+  </div>
+</div>
+
+<!-- ============================== MANIFESTO ============================== -->
+<section class="manifesto">
+  <div class="wrap">
+    <span class="eyebrow reveal">{{ accueil.manifesto.eyebrow | safe }}</span>
+    <h2 class="reveal">{{ accueil.manifesto.titre | safe }}</h2>
+    <div class="props">{% for p in accueil.manifesto.piliers %}
+      <div class="prop reveal"{% if not loop.first %} data-d="{{ loop.index0 }}"{% endif %}>
+        <span class="lat"><span class="bar"><i></i></span> {{ p.label | safe }}</span>
+        <h3>{{ p.titre | safe }}</h3>
+        <p>{{ p.texte | safe }}</p>
+      </div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== SÉLECTION ============================== -->
+<section class="alt" id="selection">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow reveal">{{ accueil.selection.eyebrow | safe }}</span>
+        <h2 class="reveal">{{ accueil.selection.titre | safe }}</h2>
+      </div>
+      <p class="side reveal">{{ accueil.selection.texteCote | safe }}</p>
+    </div>
+    <div class="grid3">{% for c in accueil.selection.cartes %}
+      <article class="card reveal"{% if not loop.first %} data-d="{{ loop.index0 }}"{% endif %}>
+        <a href="la-selection.html">
+          <div class="ph"><span class="tag">{{ c.tag | safe }}</span><img src="{{ c.image | safe }}" alt="{{ c.alt | safe }}" loading="lazy"></div>
+          <div class="body">
+            <h3>{{ c.titre | safe }}</h3>
+            <span class="wt">{{ c.sousTitre | safe }}</span>
+            <p class="desc">{{ c.description | safe }}</p>
+            <div class="foot"><span>{{ c.note | safe }}</span><span class="arr">→</span></div>
+          </div>
+        </a>
+      </article>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== HISTOIRE ============================== -->
+<section>
+  <div class="wrap split">
+    <div class="ph reveal">
+      <img src="assets/img/peche.webp" alt="Pêche sauvage en eaux froides d'Alaska" loading="lazy">
+      <span class="coords-badge">59°33′ N · 151°12′ O</span>
+    </div>
+    <div>
+      <span class="eyebrow reveal">Notre histoire</span>
+      <h2 class="reveal">L'exigence de Lionel, du bateau à votre table.</h2>
+      <p class="reveal">Tout commence loin, en eaux froides, là où le saumon reste sauvage. Lionel a fait un choix simple et rare : ne travailler que des poissons pêchés en milieu naturel, fumés lentement, tranchés à la main.</p>
+      <p class="reveal">De la zone de pêche au comité d'entreprise, chaque étape est maîtrisée et racontée. Pas de raccourci, pas d'esbroufe — la qualité pour seule signature.</p>
+      <p class="sig reveal">— La qualité pour seule signature.</p>
+      <a class="link-more reveal" href="notre-histoire.html">Lire notre histoire <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== PROCESS ============================== -->
+<section class="process on-dark">
+  <div class="wrap">
+    <span class="eyebrow reveal">{{ accueil.process.eyebrow | safe }}</span>
+    <h2 class="reveal" style="font-size:clamp(30px,3.8vw,50px);margin-top:16px">{{ accueil.process.titre | safe }}</h2>
+    <div class="steps">{% for e in accueil.process.etapes %}
+      <div class="step reveal"{% if not loop.first %} data-d="{{ loop.index0 }}"{% endif %}><span class="n">{{ e.numero | safe }}</span><h3>{{ e.titre | safe }}</h3><p>{{ e.texte | safe }}</p></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CSE ============================== -->
+<section class="cse-band on-dark" id="cse">
+  <div class="bgimg" style="background-image:url('{{ accueil.cse.imageFond | safe }}')"></div>
+  <div class="wrap">
+    <span class="eyebrow reveal">{{ accueil.cse.eyebrow | safe }}</span>
+    <h2 class="reveal">{{ accueil.cse.titre | safe }}</h2>
+    <p class="reveal">{{ accueil.cse.texte | safe }}</p>
+    <div class="code-pill reveal" data-d="1"><span class="dot"></span> {{ accueil.cse.codeExemple | safe }}</div>
+    <div class="reveal" data-d="2"><a class="btn btn-primary" href="commande.html">{{ accueil.cse.bouton | safe }} <span class="arr">→</span></a></div>
+    <p class="reveal" data-d="3" style="margin-top:26px"><a class="link-more" href="espace-cse.html" style="color:var(--saumon)">{{ accueil.cse.lien | safe }} <span class="arr">→</span></a></p>
+  </div>
+</section>
+
+<!-- ============================== RÉASSURANCE ============================== -->
+<section class="alt">
+  <div class="wrap">
+    <span class="eyebrow reveal">Nos engagements</span>
+    <div class="stats" style="margin-top:38px">
+      <div class="stat reveal"><span class="n"><span data-count="100">100</span><small>%</small></span><h3>Pêche sauvage</h3><p>Saumon d'Alaska pêché en milieu naturel — jamais d'élevage, jamais de compromis.</p></div>
+      <div class="stat reveal" data-d="1"><span class="n">0–4<small>°C</small></span><h3>Chaîne du froid</h3><p>Maintenue de la fumaison jusqu'au retrait ou à la livraison, DLC sur chaque pièce.</p></div>
+      <div class="stat reveal" data-d="2"><span class="n">AB</span><h3>Truite biologique</h3><p>Notre truite des Pyrénées est issue de l'agriculture biologique, certifiée.</p></div>
+    </div>
+  </div>
+</section>

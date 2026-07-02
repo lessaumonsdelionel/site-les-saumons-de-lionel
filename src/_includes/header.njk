@@ -1,0 +1,25 @@
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/img/logo.png" alt="{{ site.nom | safe }}">
+      <span class="name">Les Saumons de <em>Lionel</em></span>
+    </a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="la-selection.html"{% if pageId == "selection" %} aria-current="page"{% endif %}>La sélection</a>
+      <a href="notre-histoire.html"{% if pageId == "histoire" %} aria-current="page"{% endif %}>Notre histoire</a>
+      <a href="espace-cse.html"{% if pageId == "cse" %} aria-current="page"{% endif %}>Espace CSE</a>
+    </nav>
+    <div class="header-cta">
+      <a class="btn btn-primary" href="commande.html"{% if pageId == "commande" %} aria-current="page"{% endif %}>Commander <span class="arr">→</span></a>
+      <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<nav class="mobile-menu" aria-label="Menu mobile">
+  <a href="index.html"{% if pageId == "accueil" %} aria-current="page"{% endif %}>Accueil</a>
+  <a href="la-selection.html"{% if pageId == "selection" %} aria-current="page"{% endif %}>La sélection</a>
+  <a href="notre-histoire.html"{% if pageId == "histoire" %} aria-current="page"{% endif %}>Notre histoire</a>
+  <a href="espace-cse.html"{% if pageId == "cse" %} aria-current="page"{% endif %}>Espace CSE</a>
+  <a href="commande.html"{% if pageId == "commande" %} aria-current="page"{% endif %}>Commander</a>
+  <span class="lat"><span class="bar"><i></i></span> 61° Nord · Alaska</span>
+</nav>

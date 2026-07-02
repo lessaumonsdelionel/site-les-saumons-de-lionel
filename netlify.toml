@@ -1,0 +1,15 @@
+# Déploiement Netlify — Les Saumons de Lionel
+# Build : Eleventy génère le site dans _site/ ; Netlify le publie tel quel.
+# Chaque commit sur la branche principale (y compris depuis le CMS) relance un build.
+
+[build]
+  # L'injection lit WEBHOOK_LECTURE / WEBHOOK_ECRITURE / WIDGET_TOKEN dans les
+  # variables d'environnement Netlify — jamais committées dans le dépôt.
+  command = "npm install && npx @11ty/eleventy && node injecter-webhooks.js"
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Le back-office est servi sur /admin (copié tel quel par Eleventy).
+# Aucune redirection nécessaire : les URLs .html existantes sont conservées.

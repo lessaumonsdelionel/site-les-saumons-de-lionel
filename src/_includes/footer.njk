@@ -1,0 +1,33 @@
+<footer>
+  <img class="watermark" src="assets/img/logo-blanc.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img class="logo" src="assets/img/logo-blanc.png" alt="{{ site.nom | safe }}">
+        <p class="baseline">Le saumon sauvage d'Alaska, fumé et tranché à la main. Une sélection rare pour vos comités et vos tables.</p>
+      </div>
+      <div>
+        <h4>Explorer</h4>
+        <a href="la-selection.html">La sélection</a>
+        <a href="notre-histoire.html">Notre histoire</a>
+        <a href="espace-cse.html">Espace CSE</a>
+        <a href="commande.html">Commander</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:{{ site.contact.email | safe }}">{{ site.contact.email | safe }}</a>
+        <a href="tel:{{ site.contact.tel1.lien | safe }}">{{ site.contact.tel1.numero | safe }}</a>
+        <a href="tel:{{ site.contact.tel2.lien | safe }}">{{ site.contact.tel2.numero | safe }}</a>
+      </div>
+      <div>
+        <h4>Légal</h4>
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="politique-confidentialite.html">Politique de confidentialité</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> {{ site.nom | safe }} — Margarit Agayan-Sourine · TVA non applicable (art. 293 B du CGI)</span>
+      <span class="coords">61°46′ N — 149°54′ O · Alaska</span>
+    </div>
+  </div>
+</footer>

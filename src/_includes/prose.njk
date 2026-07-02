@@ -1,0 +1,15 @@
+---
+layout: "base.njk"
+---
+<section class="page-hero on-dark" style="padding-bottom:clamp(28px,4vw,48px)">
+  <div class="wrap">
+    <span class="eyebrow">{{ hero.eyebrow | safe }}</span>
+    <h1>{{ hero.titre | safe }}</h1>
+  </div>
+</section>
+
+<section>
+  <div class="wrap prose">
+{{ content | safe }}
+  </div>
+</section>

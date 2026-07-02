@@ -1,0 +1,58 @@
+---
+layout: "base.njk"
+permalink: "notre-histoire.html"
+pageId: "histoire"
+eleventyComputed:
+  titre: "{{ histoire.seo.titre | safe }}"
+  description: "{{ histoire.seo.description | safe }}"
+---
+<!-- ============================== EN-TÊTE DE PAGE ============================== -->
+<section class="page-hero on-dark">
+  <img class="watermark" src="assets/img/logo-blanc.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <span class="eyebrow">{{ histoire.hero.eyebrow | safe }}</span>
+    <h1>{{ histoire.hero.titre | safe }}</h1>
+    <p class="lead">{{ histoire.hero.accroche | safe }}</p>
+  </div>
+</section>
+
+<!-- ============================== RÉCIT ============================== -->
+<section>
+  <div class="wrap split">
+    <div class="ph reveal">
+      <img src="{{ histoire.recit.image | safe }}" alt="{{ histoire.recit.imageAlt | safe }}" loading="lazy">
+      <span class="coords-badge">{{ histoire.recit.badge | safe }}</span>
+    </div>
+    <div>
+      <span class="eyebrow reveal">{{ histoire.recit.eyebrow | safe }}</span>
+      <h2 class="reveal">{{ histoire.recit.titre | safe }}</h2>{% for p in histoire.recit.paragraphes %}
+      <p class="reveal">{{ p | safe }}</p>{% endfor %}
+      <p class="sig reveal">{{ histoire.recit.signature | safe }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== TIMELINE ============================== -->
+<section class="alt">
+  <div class="wrap">
+    <span class="eyebrow reveal">{{ histoire.timeline.eyebrow | safe }}</span>
+    <h2 class="reveal" style="font-size:clamp(30px,3.8vw,50px);margin-top:16px;max-width:20ch">{{ histoire.timeline.titre | safe }}</h2>
+    <div class="timeline">{% for e in histoire.timeline.etapes %}
+      <div class="tl-item reveal">
+        <span class="when">{{ e.periode | safe }}</span>
+        <h3>{{ e.titre | safe }}</h3>
+        <p>{{ e.texte | safe }}</p>
+      </div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CITATION / IMAGE ============================== -->
+<section class="cse-band on-dark">
+  <div class="bgimg" style="background-image:url('{{ histoire.promesse.imageFond | safe }}');opacity:.22"></div>
+  <div class="wrap">
+    <span class="eyebrow reveal">{{ histoire.promesse.eyebrow | safe }}</span>
+    <h2 class="reveal">{{ histoire.promesse.citation | safe }}</h2>
+    <div class="reveal" data-d="1" style="margin-top:34px"><a class="btn btn-primary" href="la-selection.html">{{ histoire.promesse.bouton | safe }} <span class="arr">→</span></a></div>
+  </div>
+</section>
