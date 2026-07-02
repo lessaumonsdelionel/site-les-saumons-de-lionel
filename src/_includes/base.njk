@@ -32,7 +32,7 @@
   function fit() {
     try {
       var d = f.contentDocument;
-      if (d && d.body) f.style.height = Math.max(560, d.body.scrollHeight + 24) + "px";
+      if (d && d.body) f.style.height = Math.max(300, d.body.scrollHeight + 24) + "px";
     } catch (e) { /* origine différente : on garde la hauteur CSS */ }
   }
   f.addEventListener("load", function () { fit(); setInterval(fit, 400); });

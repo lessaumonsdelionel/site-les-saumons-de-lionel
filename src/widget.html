@@ -41,6 +41,7 @@
       --cuivre: #A04A32;        /* accent — AA (≥4.5) sur fonds clairs        */
       --cuivre-fonce: #8A3F2B;  /* survol                                     */
       --nuit: #0E1A1F;          /* fonds sombres, texte fort                  */
+      --saumon: #D98A6E;        /* accent sur fond nuit — AA (≥4.5) sur nuit  */
       --encre: #3A464A;         /* texte courant                              */
       --gris: #5D6863;          /* texte secondaire — AA sur crème            */
       --brume: #AEB9B7;         /* bordures                                   */
@@ -69,9 +70,9 @@
       font-family: var(--corps);
       color: var(--nuit);
       line-height: 1.55;
-      max-width: 1080px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 8px 16px 56px;
+      padding: 4px 16px 56px;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -84,24 +85,74 @@
       border-radius: var(--rayon); box-shadow: var(--ombre-douce);
     }
 
-    /* ============================ ÉTAPE 1 : SAISIE DU CODE ============================ */
-    .sw-code-bloc { max-width: 520px; margin: 24px auto 0; padding: 36px 28px; text-align: center; }
-    .sw-code-bloc h2 { font-size: 24px; font-weight: 600; margin-bottom: 6px; }
-    .sw-code-bloc .sw-sous { color: var(--gris); font-size: 14px; margin: 0 0 22px; }
+    /* ============================ ÉTAPE 1 : SAISIE DU CODE ============================
+       Panneau pleine largeur sur fond « nuit » — le moment fort de la page :
+       intro à gauche, champ XXL + bouton à droite (une colonne sur mobile). */
+    .sw-code-bloc {
+      position: relative; overflow: hidden;
+      background: var(--nuit); color: var(--banquise);
+      border-radius: var(--rayon); margin-top: 8px;
+      padding: clamp(28px, 4vw, 52px) clamp(20px, 4.5vw, 60px) clamp(36px, 4.5vw, 60px);
+    }
+    /* Trait gradué signature (règle de latitude) en pied de panneau */
+    .sw-code-bloc::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 16px;
+      pointer-events: none; opacity: 0.3; color: var(--banquise);
+      background-image:
+        repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 26px),
+        repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 130px);
+      background-size: 100% 9px, 100% 16px;
+      background-position: left bottom, left bottom;
+      background-repeat: no-repeat;
+    }
+    .sw-code-inner {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: clamp(24px, 4vw, 56px); align-items: center;
+    }
+    .sw-code-kicker {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--saumon);
+      display: flex; align-items: center; gap: 12px; margin: 0 0 14px;
+    }
+    .sw-code-kicker .sw-regle { /* mini-règle graduée, même voix que le site */
+      width: 38px; height: 7px; flex: none;
+      background-image:
+        repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 9px),
+        linear-gradient(0deg, currentColor 0 1px, transparent 1px);
+    }
+    .sw-code-bloc h2 { font-size: clamp(26px, 2.8vw, 38px); font-weight: 440; margin-bottom: 10px; }
+    .sw-code-bloc .sw-sous { color: rgba(245, 242, 236, 0.78); font-size: 15px; margin: 0; max-width: 40ch; }
+    .sw-code-bloc .sw-sous strong { color: var(--saumon); }
 
-    .sw-code-form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .sw-code-form { display: flex; gap: 12px; flex-wrap: wrap; }
     .sw-code-input {
-      flex: 1 1 240px; min-width: 0; font-family: var(--mono); font-weight: 700;
-      font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase;
-      text-align: center; padding: 15px 16px; border: 1.5px solid var(--brume);
+      flex: 1 1 280px; min-width: 0; font-family: var(--mono); font-weight: 700;
+      font-size: clamp(19px, 1.9vw, 25px); letter-spacing: 0.14em; text-transform: uppercase;
+      text-align: center; padding: 19px 20px; border: 1.5px solid transparent;
       border-radius: var(--rayon-sm); transition: border-color var(--transition), box-shadow var(--transition);
       background: var(--banquise); color: var(--nuit);
     }
     .sw-code-input:focus {
-      outline: none; border-color: var(--cuivre); background: var(--blanc);
-      box-shadow: 0 0 0 4px rgba(160, 74, 50, 0.14);
+      outline: none; border-color: var(--saumon); background: var(--blanc);
+      box-shadow: 0 0 0 4px rgba(217, 138, 110, 0.28);
     }
-    .sw-code-input::placeholder { color: var(--gris); font-weight: 400; letter-spacing: 0.06em; }
+    .sw-code-input::placeholder { color: var(--gris); font-weight: 400; letter-spacing: 0.08em; }
+    .sw-code-form .sw-btn { font-size: 17px; padding: 19px 34px; }
+
+    /* Sur panneau sombre : messages posés sur carte claire (contrastes AA conservés) */
+    .sw-code-bloc .sw-message { background: var(--banquise); }
+    .sw-code-bloc .sw-message-erreur { border-color: rgba(217, 138, 110, 0.55); }
+    .sw-code-bloc .sw-message-neutre { background: var(--creme); }
+
+    @media (max-width: 860px) {
+      .sw-code-bloc { padding: 26px 18px 34px; border-radius: var(--rayon); }
+      .sw-code-inner { grid-template-columns: 1fr; gap: 18px; }
+      .sw-code-bloc h2 { font-size: 24px; }
+      .sw-code-bloc .sw-sous { font-size: 14px; }
+      .sw-code-input { font-size: 18px; padding: 15px 16px; letter-spacing: 0.1em; }
+      .sw-code-form .sw-btn { font-size: 15px; padding: 15px 24px; flex: 1 1 auto; }
+    }
 
     /* ============================ BOUTONS ============================ */
     .sw-btn {
@@ -120,16 +171,17 @@
     .sw-btn-secondaire:hover { border-color: var(--nuit); }
     .sw-btn-bloc { width: 100%; }
 
-    /* Codes de test — visibles UNIQUEMENT en mode démo (?demo=1) */
-    .sw-aide-codes { margin-top: 26px; padding-top: 20px; border-top: 1px dashed var(--brume); }
-    .sw-aide-codes p { font-family: var(--mono); font-size: 11px; color: var(--gris); margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.12em; }
-    .sw-puces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    /* Codes de test — visibles UNIQUEMENT en mode démo (?demo=1).
+       Posés sur le panneau sombre : libellé et puces en version claire. */
+    .sw-aide-codes { margin-top: 22px; padding-top: 18px; border-top: 1px dashed rgba(245, 242, 236, 0.28); }
+    .sw-aide-codes p { font-family: var(--mono); font-size: 11px; color: rgba(245, 242, 236, 0.65); margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.12em; }
+    .sw-puces { display: flex; flex-wrap: wrap; gap: 8px; }
     .sw-puce {
       font-family: var(--mono); font-weight: 700; font-size: 12px; cursor: pointer;
       background: var(--creme); color: var(--encre); border: 1px solid var(--brume);
       padding: 6px 12px; border-radius: 999px; transition: var(--transition);
     }
-    .sw-puce:hover { background: var(--nuit); color: var(--banquise); border-color: var(--nuit); }
+    .sw-puce:hover { background: var(--saumon); color: var(--nuit); border-color: var(--saumon); }
 
     /* ============================ MESSAGES (cas limites, erreurs réseau) ============================ */
     .sw-message { display: flex; gap: 12px; align-items: flex-start; text-align: left;
@@ -359,26 +411,33 @@
          ÉTAPE 1 — Saisie & validation du code partenaire
          (pas d'en-tête interne : la page commande.html porte déjà le titre)
          ============================================================= -->
-    <section id="sw-etape-code" class="sw-carte sw-code-bloc">
-      <h2>Code partenaire</h2>
-      <p class="sw-sous">Le code communiqué par votre comité — exemple&nbsp;: <strong>ALLIANZ26</strong></p>
+    <section id="sw-etape-code" class="sw-code-bloc">
+      <div class="sw-code-inner">
+        <div class="sw-code-intro">
+          <p class="sw-code-kicker"><span class="sw-regle" aria-hidden="true"></span>Accès partenaire</p>
+          <h2>Code partenaire</h2>
+          <p class="sw-sous">Le code communiqué par votre comité — exemple&nbsp;: <strong>ALLIANZ26</strong></p>
+        </div>
 
-      <form class="sw-code-form" id="sw-form-code" autocomplete="off" novalidate>
-        <input
-          type="text" id="sw-input-code" class="sw-code-input"
-          placeholder="VOTRE CODE" aria-label="Code partenaire"
-          maxlength="24" inputmode="text" autocapitalize="characters"
-        />
-        <button type="submit" class="sw-btn sw-btn-primaire" id="sw-btn-valider">Accéder</button>
-      </form>
+        <div class="sw-code-saisie">
+          <form class="sw-code-form" id="sw-form-code" autocomplete="off" novalidate>
+            <input
+              type="text" id="sw-input-code" class="sw-code-input"
+              placeholder="VOTRE CODE" aria-label="Code partenaire"
+              maxlength="24" inputmode="text" autocapitalize="characters"
+            />
+            <button type="submit" class="sw-btn sw-btn-primaire" id="sw-btn-valider">Accéder</button>
+          </form>
 
-      <!-- Zone de message (cas limites, erreurs réseau). aria-live : lecteurs d'écran. -->
-      <div id="sw-zone-message" class="sw-cache" aria-live="polite"></div>
+          <!-- Zone de message (cas limites, erreurs réseau). aria-live : lecteurs d'écran. -->
+          <div id="sw-zone-message" class="sw-cache" aria-live="polite"></div>
 
-      <!-- Codes de test — cachés par défaut, affichés seulement avec ?demo=1 -->
-      <div class="sw-aide-codes sw-cache" id="sw-aide-codes">
-        <p>Codes de test (mode démo)</p>
-        <div class="sw-puces" id="sw-puces-test"></div>
+          <!-- Codes de test — cachés par défaut, affichés seulement avec ?demo=1 -->
+          <div class="sw-aide-codes sw-cache" id="sw-aide-codes">
+            <p>Codes de test (mode démo)</p>
+            <div class="sw-puces" id="sw-puces-test"></div>
+          </div>
+        </div>
       </div>
     </section>
 
