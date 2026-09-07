@@ -1,0 +1,30 @@
+{
+  "seo": {
+    "titre": "Nos produits : saumon sauvage d'Alaska et truite des Pyrénées fumés",
+    "description": "Quatre références : filet et plaquette de saumon sockeye sauvage d'Alaska fumé, filet et plaquette de truite fumée des Pyrénées issue de l'agriculture biologique. Surgelés, livrés froids."
+  },
+  "hero": {
+    "eyebrow": "Nos produits",
+    "titre": "Quatre références <em>au lancement.</em>",
+    "accroche": "Le saumon sockeye sauvage d'Alaska en filet et en plaquette, la truite fumée des Pyrénées issue de l'agriculture biologique en filet et en plaquette. Surgelés, livrés froids. Tarifs CSE avec votre code partenaire, particuliers sur demande."
+  },
+  "pourquoi": {
+    "eyebrow": "Sauvage ou élevage",
+    "titre": "Pourquoi choisir un saumon <em>sauvage d'Alaska ?</em>",
+    "intro": "Pas un cours de nutrition. Simplement ce qui distingue notre saumon, en cinq points vérifiables.",
+    "points": [
+      { "titre": "Il a vécu libre", "texte": "Le sockeye se nourrit seul, de krill et de petits crustacés. C'est cette alimentation qui donne à sa chair sa couleur rouge profonde, sans colorant ajouté." },
+      { "titre": "Rien d'ajouté", "texte": "Aucun antibiotique, aucun aliment composé. Ce qui n'est pas dans l'océan n'est pas dans le poisson." },
+      { "titre": "Une chair différente", "texte": "Plus ferme et plus maigre que celle d'un saumon d'élevage, un goût plus marqué, une autre tenue à la tranche." },
+      { "titre": "Une pêche encadrée", "texte": "En Alaska, les quotas sont fixés chaque saison par l'État pour préserver la ressource. La pêche est saisonnière, les quantités sont limitées." },
+      { "titre": "Le froid, tout du long", "texte": "Surgelé rapidement après la fumaison, transporté et stocké à -18 °C, ce qui préserve la texture jusqu'à votre table." }
+    ]
+  },
+  "prix": {
+    "eyebrow": "Tarifs",
+    "titre": "Avec votre code CSE, <em>ou sur demande.</em>",
+    "texte": "Les tarifs CSE s'affichent avec votre code partenaire sur la page de commande. Particuliers : écrivez-nous pour connaître les disponibilités et les tarifs, nous vous répondons rapidement.",
+    "boutonCode": "J'ai un code CSE",
+    "boutonContact": "Commander hors CSE ? Contactez-nous"
+  }
+}

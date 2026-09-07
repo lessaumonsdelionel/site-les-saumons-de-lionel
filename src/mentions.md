@@ -1,7 +1,7 @@
 ---
 layout: "prose.njk"
 permalink: "mentions-legales.html"
-titre: "Mentions légales — Les Saumons de Lionel"
+titre: "Mentions légales : Les Saumons de Lionel"
 noindex: true
 footerSimple: true
 hero:
@@ -10,11 +10,12 @@ hero:
 ---
 ## Éditrice du site
 
-**Margarit Agayan-Sourine** — Entrepreneuse individuelle, exerçant sous l'enseigne « Les Saumons de Lionel ».<br>
-499 route d'Orist, 40180 Siest — France.<br>
-Contact : <a href="mailto:bonjour@lessaumonsdelionel.fr" style="color:var(--cuivre)">bonjour@lessaumonsdelionel.fr</a> · 07 81 71 51 27.
+**Margarit Agayan-Sourine**, entrepreneuse individuelle, exerçant sous l'enseigne « Les Saumons de Lionel ».<br>
+499 route d'Orist, 40180 Siest, France.<br>
+SIREN : 106 558 927.<br>
+Contact : <a href="mailto:bonjour@lessaumonsdelionel.fr" style="color:var(--cuivre)">bonjour@lessaumonsdelionel.fr</a> · 07 59 60 12 33.
 
-<p class="todo">À compléter avant mise en ligne : n° SIREN/SIRET de l'entreprise de Margarit Agayan-Sourine, et le cas échéant n° d'immatriculation au registre pertinent.</p>
+<p class="todo">À confirmer avant mise en ligne : la forme juridique exacte, le numéro SIREN ou SIRET qui figure sur les factures, et le régime de TVA.</p>
 
 ## Directrice de la publication
 
@@ -22,11 +23,11 @@ Margarit Agayan-Sourine.
 
 ## Hébergement
 
-<p class="todo">À compléter selon l'hébergeur retenu à la mise en ligne (Webflow Inc., 398 11th Street, San Francisco, CA — ou Netlify, Inc., 512 2nd Street, San Francisco, CA).</p>
+Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis. Site : netlify.com.
 
-## Conception & réalisation
+## Conception et réalisation
 
-Agence EOCHE — Baptiste Eoche, Vitré (35). <a href="mailto:baptiste.eoche@gmail.com" style="color:var(--cuivre)">baptiste.eoche@gmail.com</a>
+Agence EOCHE, Baptiste Eoche, Vitré (35). <a href="https://agence-eoche.fr" style="color:var(--cuivre)">agence-eoche.fr</a> · <a href="mailto:contact@agence-eoche.fr" style="color:var(--cuivre)">contact@agence-eoche.fr</a>
 
 ## Propriété intellectuelle
 
@@ -34,7 +35,7 @@ L'ensemble des contenus de ce site (textes, photographies, identité visuelle, l
 
 ## Denrées alimentaires
 
-Les produits proposés sont des denrées alimentaires périssables. Les informations relatives aux allergènes et à la conservation (0 à +4 °C, DLC) figurent sur chaque fiche produit et sur l'étiquetage. Les photographies sont non contractuelles.
+Les produits proposés sont des denrées alimentaires surgelées. Ils sont remis surgelés et doivent être conservés à -18 °C. Les informations relatives aux allergènes et à la conservation figurent sur chaque fiche produit et sur l'étiquetage. Les montants affichés lors d'une précommande sont estimés sur un poids de référence et ajustés au poids réel lors de la remise. Les photographies sont non contractuelles.
 
 ## Données personnelles
 

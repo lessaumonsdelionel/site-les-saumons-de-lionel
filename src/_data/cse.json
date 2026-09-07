@@ -1,22 +1,22 @@
 {
   "seo": {
-    "titre": "Espace CSE &amp; entreprises — Les Saumons de Lionel",
-    "description": "Proposez le saumon sauvage d'Alaska à vos salariés : précommande groupée par code partenaire, tarifs négociés, retrait sur site ou livraison. Zéro gestion pour le CSE."
+    "titre": "Offres CSE et entreprises : saumon sauvage d'Alaska pour vos salariés",
+    "description": "Proposez le saumon sauvage d'Alaska à vos salariés : précommande groupée par code partenaire, tarifs dédiés, retrait sur site ou livraison à domicile. Zéro gestion pour le CSE."
   },
   "hero": {
-    "eyebrow": "Espace CSE &amp; entreprises",
-    "titre": "Offrez le grand Nord <em>à vos salariés.</em>",
-    "accroche": "CSE, entreprises, collectivités, associations : proposez une vente groupée de saumon sauvage d'Alaska à vos équipes — tarifs négociés, retrait sur site ou livraison, et <strong>zéro gestion</strong> de votre côté.",
+    "eyebrow": "Offres CSE &amp; entreprises",
+    "titre": "Le saumon sauvage d'Alaska, <em>pour vos salariés.</em>",
+    "accroche": "CSE, entreprises, collectivités, associations : proposez une vente groupée de saumon sauvage d'Alaska à vos équipes. Tarifs dédiés, retrait sur votre site ou livraison à domicile, et <strong>zéro gestion</strong> de votre côté.",
     "boutonPrincipal": "Devenir partenaire",
     "boutonSecondaire": "J'ai déjà un code"
   },
   "partenariat": {
     "eyebrow": "Côté comité",
     "titre": "Un partenariat en trois gestes",
-    "texteCote": "Vous définissez l'offre avec nous une fois. Ensuite, tout est automatique — vous n'avez plus rien à gérer.",
+    "texteCote": "Vous définissez l'offre avec nous une fois. Ensuite, tout est automatique : vous n'avez plus rien à gérer.",
     "gestes": [
-      { "titre": "On définit votre offre", "texte": "Produits proposés, remise négociée, dates d'ouverture et de clôture, retrait sur votre site ou livraison : tout est établi ensemble, selon vos envies." },
-      { "titre": "Vous partagez un code", "texte": "Nous créons votre code partenaire (ex. <strong>ALLIANZ26</strong>). Vous le diffusez à vos salariés par e-mail ou affichage — c'est votre seule mission." },
+      { "titre": "On définit votre offre", "texte": "Produits proposés, tarifs dédiés, dates d'ouverture et de clôture, retrait sur votre site ou livraison : tout est établi ensemble, selon vos envies." },
+      { "titre": "Vous partagez un code", "texte": "Nous créons votre code partenaire (par exemple <strong>ALLIANZ26</strong>). Vous le diffusez à vos salariés par e-mail ou affichage : c'est votre seule mission." },
       { "titre": "Nous gérons tout le reste", "texte": "Commandes, confirmations, récapitulatifs, préparation et remise au froid : nous nous occupons de tout, et vous recevez le bilan de la campagne." }
     ]
   },
@@ -24,30 +24,39 @@
     "eyebrow": "Côté salarié",
     "titre": "Simple comme un code.",
     "paragraphes": [
-      "Le salarié saisit le code du comité sur notre page de commande. Son offre s'affiche — produits, tarifs remisés, dates et lieu de retrait. Il choisit ses quantités, valide, et reçoit aussitôt un e-mail récapitulatif.",
+      "Le salarié saisit le code du comité sur notre page de commande. Son offre s'affiche : produits, tarifs, dates et lieu de retrait. Il choisit ses quantités, valide, et reçoit aussitôt un e-mail récapitulatif.",
       "<strong>Sans paiement en ligne :</strong> la précommande est réglée au moment du retrait, selon les modalités convenues avec votre comité."
     ],
     "codeExemple": "ALLIANZ26",
-    "lien": "Essayer la page de commande",
+    "lien": "Voir la page de commande",
     "image": "assets/img/hero-produit.webp",
     "imageAlt": "Filet de saumon fumé sur ardoise",
-    "badge": "Précommande groupée · 0–4 °C"
+    "badge": "Précommande groupée · Remis surgelé"
+  },
+  "references": {
+    "eyebrow": "Ils nous font confiance",
+    "titre": "Des comités qui nous ont <em>déjà fait confiance.</em>",
+    "texte": "Des références réelles, citées avec leur accord.",
+    "liste": [
+      { "nom": "COSAT Toulouse", "detail": "Toulouse" },
+      { "nom": "Allianz", "detail": "CSE" }
+    ]
   },
   "engagements": {
     "eyebrow": "Pourquoi nous choisir",
     "titre": "Ce que votre comité y gagne.",
     "points": [
-      { "titre": "Un produit d'exception", "texte": "Saumon sauvage d'Alaska et truite AB — un cadeau de fin d'année qui a du sens et du goût." },
-      { "titre": "Des tarifs négociés", "texte": "Une remise dédiée à vos salariés, réservée à votre code partenaire." },
+      { "titre": "Un produit d'exception", "texte": "Saumon sockeye sauvage d'Alaska et truite AB des Pyrénées : un cadeau de fin d'année qui a du sens et du goût." },
+      { "titre": "Des tarifs dédiés", "texte": "Une grille réservée à vos salariés, accessible avec votre code partenaire." },
       { "titre": "Zéro logistique", "texte": "Pas de tableur, pas de relances : les commandes se font en ligne, vous recevez la synthèse." },
-      { "titre": "Retrait sur votre site", "texte": "Remise en main propre au froid, sur votre site ou en livraison, à la date convenue." }
+      { "titre": "Retrait sur votre site", "texte": "Remise en main propre, surgelé, sur votre site ou en livraison à domicile, à la date convenue." }
     ]
   },
   "contact": {
     "eyebrow": "Devenir partenaire",
     "titre": "Parlons de votre campagne.",
     "texteCote": "Un échange de quinze minutes suffit pour définir votre offre. Nous vous répondons sous 48 h ouvrées.",
-    "noteEmail": "Précisez votre structure, vos effectifs et la période souhaitée.",
-    "besoin": "Vos dates idéales, le lieu de retrait envisagé et une estimation du nombre de salariés. Nous faisons le reste."
+    "besoin": "Vos dates idéales, le lieu de retrait envisagé et une estimation du nombre de salariés. Nous faisons le reste.",
+    "bouton": "Nous écrire"
   }
 }

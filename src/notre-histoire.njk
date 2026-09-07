@@ -6,6 +6,7 @@ eleventyComputed:
   titre: "{{ histoire.seo.titre | safe }}"
   description: "{{ histoire.seo.description | safe }}"
 ---
+{% import "macros.njk" as m %}
 <!-- ============================== EN-TÊTE DE PAGE ============================== -->
 <section class="page-hero on-dark">
   <img class="watermark" src="assets/img/logo-blanc.png" alt="" aria-hidden="true">
@@ -16,28 +17,38 @@ eleventyComputed:
   </div>
 </section>
 
-<!-- ============================== RÉCIT ============================== -->
-<section>
+<!-- ============================== 1. LIONEL ET L'ALASKA ============================== -->
+<section id="lionel">
   <div class="wrap split">
-    <div class="ph reveal">
-      <img src="{{ histoire.recit.image | safe }}" alt="{{ histoire.recit.imageAlt | safe }}" loading="lazy">
-      <span class="coords-badge">{{ histoire.recit.badge | safe }}</span>
-    </div>
+    <div class="reveal">{{ m.figure(histoire.lionel.image, histoire.lionel.imageAlt, histoire.lionel.legende) }}</div>
     <div>
-      <span class="eyebrow reveal">{{ histoire.recit.eyebrow | safe }}</span>
-      <h2 class="reveal">{{ histoire.recit.titre | safe }}</h2>{% for p in histoire.recit.paragraphes %}
+      <span class="eyebrow reveal">{{ histoire.lionel.eyebrow | safe }}</span>
+      <h2 class="reveal">{{ histoire.lionel.titre | safe }}</h2>{% for p in histoire.lionel.paragraphes %}
       <p class="reveal">{{ p | safe }}</p>{% endfor %}
-      <p class="sig reveal">{{ histoire.recit.signature | safe }}</p>
+      {% if histoire.lionel.provisoire %}<span class="provisoire reveal">{{ histoire.lionel.provisoire | safe }}</span>{% endif %}
     </div>
   </div>
 </section>
 
-<!-- ============================== TIMELINE ============================== -->
-<section class="alt">
+<!-- ============================== 2. UNE ENTREPRISE FAMILIALE DEPUIS 1994 ============================== -->
+<section class="alt" id="famille">
+  <div class="wrap split rev">
+    <div class="reveal">{{ m.figure(histoire.famille.image, histoire.famille.imageAlt, histoire.famille.legende) }}</div>
+    <div>
+      <span class="eyebrow reveal">{{ histoire.famille.eyebrow | safe }}</span>
+      <h2 class="reveal">{{ histoire.famille.titre | safe }}</h2>{% for p in histoire.famille.paragraphes %}
+      <p class="reveal">{{ p | safe }}</p>{% endfor %}
+      {% if histoire.famille.provisoire %}<span class="provisoire reveal">{{ histoire.famille.provisoire | safe }}</span>{% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 3. DE LA PÊCHE À LA TABLE ============================== -->
+<section id="parcours">
   <div class="wrap">
-    <span class="eyebrow reveal">{{ histoire.timeline.eyebrow | safe }}</span>
-    <h2 class="reveal" style="font-size:clamp(30px,3.8vw,50px);margin-top:16px;max-width:20ch">{{ histoire.timeline.titre | safe }}</h2>
-    <div class="timeline">{% for e in histoire.timeline.etapes %}
+    <span class="eyebrow reveal">{{ histoire.parcours.eyebrow | safe }}</span>
+    <h2 class="reveal" style="font-size:clamp(30px,3.8vw,50px);margin-top:16px;max-width:20ch">{{ histoire.parcours.titre | safe }}</h2>
+    <div class="timeline">{% for e in histoire.parcours.etapes %}
       <div class="tl-item reveal">
         <span class="when">{{ e.periode | safe }}</span>
         <h3>{{ e.titre | safe }}</h3>
@@ -47,12 +58,13 @@ eleventyComputed:
   </div>
 </section>
 
-<!-- ============================== CITATION / IMAGE ============================== -->
-<section class="cse-band on-dark">
-  <div class="bgimg" style="background-image:url('{{ histoire.promesse.imageFond | safe }}');opacity:.22"></div>
+<!-- ============================== EXERGUE ============================== -->
+<section class="cse-band on-dark exergue">
+  <div class="bgimg" style="background-image:url('{{ histoire.exergue.imageFond | safe }}');opacity:.18"></div>
   <div class="wrap">
-    <span class="eyebrow reveal">{{ histoire.promesse.eyebrow | safe }}</span>
-    <h2 class="reveal">{{ histoire.promesse.citation | safe }}</h2>
-    <div class="reveal" data-d="1" style="margin-top:34px"><a class="btn btn-primary" href="la-selection.html">{{ histoire.promesse.bouton | safe }} <span class="arr">→</span></a></div>
+    <div class="reveal">{{ m.sceau(site, "exergue", "assets/img/logo-blanc.png") }}</div>
+    <span class="eyebrow reveal">{{ histoire.exergue.eyebrow | safe }}</span>
+    <h2 class="reveal" style="font-size:clamp(28px,3.6vw,46px)">{{ histoire.exergue.titre | safe }}</h2>
+    <div class="reveal" data-d="1" style="margin-top:34px"><a class="btn btn-primary" href="nos-produits.html">{{ histoire.exergue.bouton | safe }} <span class="arr">→</span></a></div>
   </div>
 </section>

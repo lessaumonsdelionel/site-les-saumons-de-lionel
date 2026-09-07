@@ -1,6 +1,6 @@
 ---
 layout: "base.njk"
-permalink: "espace-cse.html"
+permalink: "offres-cse.html"
 pageId: "cse"
 eleventyComputed:
   titre: "{{ cse.seo.titre | safe }}"
@@ -60,6 +60,24 @@ eleventyComputed:
   </div>
 </section>
 
+<!-- ============================== ILS NOUS FONT CONFIANCE ============================== -->
+{% if cse.references.liste and cse.references.liste.length %}
+<section id="references">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:0">
+      <div>
+        <span class="eyebrow reveal">{{ cse.references.eyebrow | safe }}</span>
+        <h2 class="reveal">{{ cse.references.titre | safe }}</h2>
+      </div>
+      <p class="side reveal">{{ cse.references.texte | safe }}</p>
+    </div>
+    <div class="refs reveal">{% for r in cse.references.liste %}
+      <div class="ref"><b>{{ r.nom | safe }}</b>{% if r.detail %}<span>{{ r.detail | safe }}</span>{% endif %}</div>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <!-- ============================== ENGAGEMENTS ============================== -->
 <section class="process on-dark">
   <div class="wrap">
@@ -86,13 +104,13 @@ eleventyComputed:
         <span class="lat"><span class="bar"><i></i></span> Écrire</span>
         <h3>Par e-mail</h3>
         <a href="mailto:{{ site.contact.email | safe }}">{{ site.contact.email | safe }}</a>
-        <p class="muted" style="font-size:13.5px;margin-top:10px">{{ cse.contact.noteEmail | safe }}</p>
+        <a class="btn btn-primary" href="contact.html?profil=cse" style="display:inline-flex;margin-top:12px">{{ cse.contact.bouton | safe }} <span class="arr">→</span></a>
       </div>
       <div class="contact-card reveal" data-d="1">
         <span class="lat"><span class="bar"><i></i></span> Appeler</span>
         <h3>Par téléphone</h3>
-        <a href="tel:{{ site.contact.tel1.lien | safe }}">{{ site.contact.tel1.numero | safe }} — {{ site.contact.tel1.prenom | safe }}</a>
-        <a href="tel:{{ site.contact.tel2.lien | safe }}">{{ site.contact.tel2.numero | safe }} — {{ site.contact.tel2.prenom | safe }}</a>
+        <a href="tel:{{ site.contact.tel.lien | safe }}">{{ site.contact.tel.numero | safe }}</a>
+        <p class="muted" style="font-size:13.5px;margin-top:6px">{{ site.contact.responsable | safe }}</p>
       </div>
       <div class="contact-card reveal" data-d="2">
         <span class="lat"><span class="bar"><i></i></span> Décider</span>

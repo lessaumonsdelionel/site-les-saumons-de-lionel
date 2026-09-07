@@ -1,15 +1,27 @@
-# Déploiement Netlify — Les Saumons de Lionel
-# Build : Eleventy génère le site dans _site/ ; Netlify le publie tel quel.
+# Déploiement Netlify : Les Saumons de Lionel
+# Build : Eleventy génère le site dans _site/ et Netlify le publie tel quel.
 # Chaque commit sur la branche principale (y compris depuis le CMS) relance un build.
 
 [build]
   # L'injection lit WEBHOOK_LECTURE / WEBHOOK_ECRITURE / WIDGET_TOKEN dans les
-  # variables d'environnement Netlify — jamais committées dans le dépôt.
+  # variables d'environnement Netlify, jamais committées dans le dépôt.
   command = "npm install && npx @11ty/eleventy && node injecter-webhooks.js"
   publish = "_site"
 
 [build.environment]
   NODE_VERSION = "22"
 
+# Anciennes adresses (arborescence de juillet) : redirigées vers les nouvelles pages.
+[[redirects]]
+  from = "/la-selection.html"
+  to = "/nos-produits.html"
+  status = 301
+
+[[redirects]]
+  from = "/espace-cse.html"
+  to = "/offres-cse.html"
+  status = 301
+
 # Le back-office est servi sur /admin (copié tel quel par Eleventy).
-# Aucune redirection nécessaire : les URLs .html existantes sont conservées.
+# Le formulaire de contact utilise Netlify Forms : activer la détection des
+# formulaires dans Netlify (Site configuration, Forms) et une notification e-mail.

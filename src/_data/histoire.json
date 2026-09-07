@@ -1,40 +1,50 @@
 {
   "seo": {
-    "titre": "Notre histoire — Les Saumons de Lionel",
-    "description": "L'histoire de Lionel et d'une exigence simple : ne travailler que le saumon sauvage d'Alaska, fumé lentement et tranché à la main."
+    "titre": "Notre histoire : Lionel, l'Alaska et une famille depuis 1994",
+    "description": "L'histoire des Saumons de Lionel : l'Alaska dès les années 80, une entreprise familiale depuis 1994, et le parcours du saumon sauvage de la pêche à la table."
   },
   "hero": {
     "eyebrow": "Notre histoire",
-    "titre": "Un homme, un couteau, <em>et le grand Nord.</em>",
-    "accroche": "Derrière chaque tranche, il y a un choix : celui de ne jamais transiger sur l'origine, le geste, ni le froid. Voici d'où nous venons — et pourquoi nous faisons les choses ainsi."
+    "titre": "Lionel, l'Alaska, <em>et une famille depuis 1994.</em>",
+    "accroche": "Une histoire qui commence dans les années 80 sur les côtes d'Alaska, et qui se poursuit aujourd'hui en famille. Voici d'où viennent nos saumons, et pourquoi nous faisons les choses ainsi."
   },
-  "recit": {
-    "image": "assets/img/geste.webp",
-    "imageAlt": "Le tranchage à la main, au couteau",
-    "badge": "Atelier · Tranché main",
-    "eyebrow": "Le choix de l'exigence",
-    "titre": "Le sauvage, ou rien.",
+  "lionel": {
+    "eyebrow": "Années 80",
+    "titre": "Lionel et l'Alaska, <em>une grande histoire.</em>",
     "paragraphes": [
-      "Lionel a goûté un jour un saumon qui ne ressemblait à aucun autre : pêché en eaux froides d'Alaska, à la chair ferme et au goût net. Depuis, la règle de la maison tient en une phrase — <strong>ne travailler que le sauvage</strong>, jamais l'élevage.",
-      "Ce choix a un prix : la ressource est limitée, la saison est courte, chaque pièce compte. C'est précisément ce qui rend le produit rare — et c'est pour cela que nous fonctionnons en <strong>précommande groupée</strong>, sans stock superflu ni gaspillage."
+      "Dans les années 80, Lionel découvre l'Alaska et son saumon sauvage : le sockeye du Pacifique Nord, pêché en saison dans des eaux froides. C'est le début d'une longue histoire entre un homme et un territoire."
     ],
-    "signature": "— Le sauvage, ou rien."
+    "provisoire": "Texte provisoire. Le récit de ces années, écrit par la famille, prendra cette place.",
+    "image": "assets/img/peche.webp",
+    "imageAlt": "Pêche en eaux froides, Alaska",
+    "legende": "Alaska · image provisoire"
   },
-  "timeline": {
-    "eyebrow": "Le chemin d'une pièce",
-    "titre": "De l'océan à votre comité, sans rien perdre en route.",
+  "famille": {
+    "eyebrow": "Depuis 1994",
+    "titre": "Une entreprise <em>familiale.</em>",
+    "paragraphes": [
+      "En 1994, l'activité devient une affaire de famille, et elle l'est restée. Le produit n'a pas changé : du saumon sockeye sauvage d'Alaska, fumé, tranché et livré froid. Aujourd'hui, c'est Rita qui porte la maison."
+    ],
+    "provisoire": "Texte provisoire. L'histoire de la transmission, écrite par la famille, prendra cette place.",
+    "image": "assets/img/partage.webp",
+    "imageAlt": "Autour de la table",
+    "legende": "Image provisoire"
+  },
+  "parcours": {
+    "eyebrow": "De la pêche à la table",
+    "titre": "Le chemin d'une pièce, <em>étape par étape.</em>",
     "etapes": [
-      { "periode": "Saison de pêche · Alaska", "titre": "La capture, en milieu naturel", "texte": "Le saumon est pêché en pleine saison, dans les eaux froides du golfe d'Alaska. Pas de cage, pas de nourrissage : ce que la mer donne, quand elle le donne." },
-      { "periode": "Atelier · Feu doux", "titre": "La fumaison, lentement", "texte": "Une fumée fine, patiente, qui parfume sans masquer. La chair garde sa texture, son gras délicat et sa couleur cuivrée naturelle." },
-      { "periode": "Atelier · Au couteau", "titre": "Le tranchage, à la main", "texte": "Chaque filet est tranché au couteau, à l'ancienne. C'est plus long, c'est plus exigeant — et cela change tout à la tenue de la tranche." },
-      { "periode": "Livraison · 0–4 °C", "titre": "Le froid, jusqu'au bout", "texte": "La chaîne du froid est maintenue de l'atelier jusqu'au retrait sur votre site ou à la livraison. Chaque pièce porte sa DLC." },
-      { "periode": "Chez vous", "titre": "La table, enfin", "texte": "Il ne reste qu'à ouvrir, dresser, servir. Un produit rare se suffit à lui-même : un pain grillé, un trait de citron, et le silence autour de la table." }
+      { "periode": "Alaska · Saison de pêche", "titre": "La pêche, en milieu naturel", "texte": "Le sockeye est pêché en saison dans le Pacifique Nord, au large de l'Alaska. Pas de cage, pas de nourrissage." },
+      { "periode": "Fumoir", "titre": "La fumaison", "texte": "Les filets sont fumés, puis tranchés et mis sous vide." },
+      { "periode": "-18 °C", "titre": "La surgélation", "texte": "Surgelés après la fumaison. C'est le froid qui fixe la texture et le goût." },
+      { "periode": "-18 °C · Transport", "titre": "Le voyage vers la France", "texte": "Transportés et stockés à -18 °C, sans rupture de la chaîne du froid." },
+      { "periode": "Chez vous", "titre": "La remise, ou la livraison", "texte": "Remis surgelés au point de retrait convenu avec votre CSE, ou livrés à domicile. À conserver au congélateur, à décongeler au réfrigérateur." }
     ]
   },
-  "promesse": {
-    "imageFond": "assets/img/hero-produit.webp",
-    "eyebrow": "La promesse",
-    "citation": "« Un produit rare n'a pas besoin d'artifice.<br>Il a besoin <em>de respect.</em> »",
-    "bouton": "Découvrir la sélection"
+  "exergue": {
+    "eyebrow": "Depuis 1994",
+    "titre": "Saumon sockeye sauvage d'Alaska. Fumé, tranché, surgelé. <em>Depuis 1994.</em>",
+    "bouton": "Nos produits",
+    "imageFond": "assets/img/hero-produit.webp"
   }
 }

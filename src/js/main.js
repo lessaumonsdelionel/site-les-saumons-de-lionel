@@ -1,6 +1,7 @@
-/* Les Saumons de Lionel — interactions.
-   Animations activées UNIQUEMENT sur desktop (≥861px) et si l'utilisateur
-   n'a pas demandé de réduire les animations. Mobile = statique, instantané. */
+/* Les Saumons de Lionel : interactions.
+   Animations activées UNIQUEMENT sur desktop (861px et plus) et si l'utilisateur
+   n'a pas demandé de réduire les animations. Mobile = statique, instantané.
+   Volontairement sobre : fondu et montée discrète, rien d'autre. */
 (function () {
   "use strict";
 
@@ -37,7 +38,33 @@
     el.textContent = new Date().getFullYear();
   });
 
-  if (!motionOK) return; /* ↓ tout ce qui suit est desktop uniquement */
+  /* ---------- Formulaire de contact ---------- */
+  var form = document.getElementById("formulaire");
+  if (form) {
+    var params = new URLSearchParams(window.location.search);
+    var merci = document.querySelector(".form-merci");
+
+    function cocherProfil(valeur) {
+      var r = form.querySelector('input[name="profil"][value="' + valeur + '"]');
+      if (r) r.checked = true;
+    }
+    /* Pré-sélection du profil depuis l'adresse : ?profil=cse | particulier | code */
+    var profil = params.get("profil");
+    if (profil === "cse") cocherProfil("Responsable CSE ou entreprise");
+    if (profil === "particulier") cocherProfil("Particulier");
+    if (profil === "code") cocherProfil("Salarié avec un code CSE");
+    /* Liens internes qui pré-remplissent le profil (bouton « Commander hors CSE ») */
+    document.querySelectorAll("[data-profil]").forEach(function (a) {
+      a.addEventListener("click", function () { cocherProfil(a.getAttribute("data-profil")); });
+    });
+    /* Retour après envoi (Netlify redirige vers ?envoye=1) */
+    if (params.get("envoye") === "1" && merci) {
+      merci.hidden = false;
+      merci.focus();
+    }
+  }
+
+  if (!motionOK) return; /* tout ce qui suit est desktop uniquement */
 
   /* ---------- Révélations au scroll ---------- */
   var io = new IntersectionObserver(
@@ -52,48 +79,4 @@
     { rootMargin: "0px 0px -12% 0px", threshold: 0.08 }
   );
   document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
-
-  /* ---------- Parallaxe douce du hero ---------- */
-  var bg = document.querySelector(".hero .bg");
-  if (bg) {
-    var ticking = false;
-    window.addEventListener("scroll", function () {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(function () {
-        var y = window.scrollY;
-        if (y < window.innerHeight * 1.2) {
-          bg.style.transform = "translateY(" + y * 0.18 + "px)";
-        }
-        ticking = false;
-      });
-    }, { passive: true });
-  }
-
-  /* ---------- Compteurs (réassurance) ---------- */
-  var ioN = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        ioN.unobserve(e.target);
-        var el = e.target,
-          target = parseFloat(el.getAttribute("data-count")),
-          suffix = el.getAttribute("data-suffix") || "",
-          dur = 1400,
-          t0 = null;
-        function tick(t) {
-          if (!t0) t0 = t;
-          var p = Math.min((t - t0) / dur, 1);
-          p = 1 - Math.pow(1 - p, 3); /* easeOutCubic */
-          el.firstChild.nodeValue = Math.round(target * p);
-          if (p < 1) requestAnimationFrame(tick);
-          else el.firstChild.nodeValue = target;
-          void suffix;
-        }
-        requestAnimationFrame(tick);
-      });
-    },
-    { threshold: 0.5 }
-  );
-  document.querySelectorAll("[data-count]").forEach(function (el) { ioN.observe(el); });
 })();

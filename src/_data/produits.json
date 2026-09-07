@@ -3,61 +3,81 @@
   {
     "id": "filet-saumon",
     "eyebrow": "Alaska · Pêche sauvage",
-    "nom": "Filet de saumon sauvage fumé",
-    "infos": "Réf. SAU-FIL-1000 · ≈ 1 kg · Tranché main",
-    "description": "La pièce maîtresse de la maison. Un filet entier de saumon sauvage d'Alaska, fumé lentement puis tranché au couteau, remis en forme sur sa peau. Pour les grandes tables et les fêtes qui comptent.",
+    "nom": "Filet de saumon sauvage fumé d'Alaska",
+    "court": "Filet de saumon sauvage",
+    "infos": "Réf. SAU-FIL-1000 · ≈ 1 kg · Tranché, sous vide",
+    "sousTitre": "Sockeye fumé · ≈ 1 kg",
+    "description": "Un filet entier de saumon sockeye sauvage, fumé puis tranché et remis sous vide. La pièce des grandes tablées. Se décongèle au réfrigérateur, se sert nature, avec un pain grillé et un trait de citron.",
     "image": "assets/img/filet-saumon.webp",
-    "alt": "Filet de saumon sauvage fumé d'Alaska, tranché main",
+    "alt": "Filet de saumon sauvage fumé d'Alaska, tranché",
+    "legende": "Image provisoire",
+    "label": "",
     "specs": {
-      "origine": "Golfe d'Alaska — pêche sauvage, jamais d'élevage",
-      "poids": "≈ 1 kg (pièce entière tranchée)",
-      "allergenes": "Poisson (saumon)",
-      "conservation": "0 à +4 °C — DLC sur l'étiquette"
+      "espece": "Saumon sockeye, Oncorhynchus nerka",
+      "origine": "Pêche sauvage, Pacifique Nord, au large de l'Alaska",
+      "preparation": "Fumé, tranché, mis sous vide",
+      "conservation": "Surgelé. À conserver à -18 °C, DLC sur l'étiquette.",
+      "allergenes": "Poisson (saumon)"
     }
   },
   {
     "id": "plaquette-saumon",
     "eyebrow": "Alaska · Pêche sauvage",
-    "nom": "Plaquette de saumon sauvage",
-    "infos": "Réf. SAU-PLQ-130 · 130 g · Prêt à servir",
-    "description": "Les mêmes filets, en format généreux pour deux. Des tranches fines et régulières, prêtes à poser sur un blini, une crème citronnée ou simplement un pain grillé.",
+    "nom": "Plaquette de saumon sauvage fumé d'Alaska",
+    "court": "Plaquette de saumon sauvage",
+    "infos": "Réf. SAU-PLQ-130 · 130 g · 3 à 4 tranches",
+    "sousTitre": "Sockeye fumé · 130 g",
+    "description": "Le même saumon sockeye sauvage, en plaquette de 130 g, trois à quatre tranches. Le format pour deux, à décongeler au réfrigérateur et à poser sur un blini ou un pain grillé.",
     "image": "assets/img/plaquette-saumon.webp",
     "alt": "Plaquette de saumon sauvage fumé d'Alaska, 130 g",
+    "legende": "Image provisoire",
+    "label": "",
     "specs": {
-      "origine": "Golfe d'Alaska — pêche sauvage",
-      "poids": "130 g",
-      "allergenes": "Poisson (saumon)",
-      "conservation": "0 à +4 °C — DLC sur l'étiquette"
+      "espece": "Saumon sockeye, Oncorhynchus nerka",
+      "origine": "Pêche sauvage, Pacifique Nord, au large de l'Alaska",
+      "preparation": "Fumé, tranché, mis sous vide",
+      "conservation": "Surgelé. À conserver à -18 °C, DLC sur l'étiquette.",
+      "allergenes": "Poisson (saumon)"
     }
   },
   {
     "id": "filet-truite",
     "eyebrow": "Pyrénées · Agriculture biologique",
-    "nom": "Filet de truite fumée",
-    "infos": "Réf. TRU-FIL-500 · ≈ 500 g · Issue AB",
-    "description": "L'eau vive des Pyrénées, une chair délicate et nacrée, une fumaison tout en retenue. Élevée en agriculture biologique, préparée avec la même exigence que nos saumons.",
+    "nom": "Filet de truite fumée des Pyrénées",
+    "court": "Filet de truite fumée",
+    "infos": "Réf. TRU-FIL-600 · ≈ 600 g · Agriculture biologique",
+    "sousTitre": "Pyrénées, AB · ≈ 600 g",
+    "description": "Une truite élevée en agriculture biologique dans le lac de Montbel, en Ariège, fumée et mise sous vide. Une chair délicate, une fumée douce : l'alternative au saumon.",
     "image": "assets/img/truite.webp",
     "alt": "Filet de truite fumée des Pyrénées, agriculture biologique",
+    "legende": "Image provisoire",
+    "label": "AB",
     "specs": {
-      "origine": "Pyrénées — issue de l'agriculture biologique",
-      "poids": "≈ 500 g",
-      "allergenes": "Poisson (truite)",
-      "conservation": "0 à +4 °C — DLC sur l'étiquette"
+      "espece": "Truite arc-en-ciel, Oncorhynchus mykiss",
+      "origine": "Lac de Montbel, Ariège, Pyrénées. Agriculture biologique.",
+      "preparation": "Fumée, mise sous vide",
+      "conservation": "Surgelée. À conserver à -18 °C, jusqu'à 2 ans au congélateur.",
+      "allergenes": "Poisson (truite)"
     }
   },
   {
     "id": "plaquette-truite",
     "eyebrow": "Pyrénées · Agriculture biologique",
-    "nom": "Plaquette de truite fumée",
-    "infos": "Réf. TRU-PLQ-130 · 130 g · Issue AB",
-    "description": "La truite des Pyrénées en format dégustation. Des tranches fines au goût subtil, entre noisette et fumée douce — l'alternative élégante au saumon.",
+    "nom": "Plaquette de truite fumée des Pyrénées",
+    "court": "Plaquette de truite fumée",
+    "infos": "Réf. TRU-PLQ-130 · 130 g · Agriculture biologique",
+    "sousTitre": "Pyrénées, AB · 130 g",
+    "description": "La truite fumée des Pyrénées en plaquette de 130 g. Le format dégustation : des tranches fines, un goût subtil entre noisette et fumée douce.",
     "image": "assets/img/macro.webp",
     "alt": "Plaquette de truite fumée des Pyrénées, 130 g",
+    "legende": "Image provisoire",
+    "label": "AB",
     "specs": {
-      "origine": "Pyrénées — issue de l'agriculture biologique",
-      "poids": "130 g",
-      "allergenes": "Poisson (truite)",
-      "conservation": "0 à +4 °C — DLC sur l'étiquette"
+      "espece": "Truite arc-en-ciel, Oncorhynchus mykiss",
+      "origine": "Lac de Montbel, Ariège, Pyrénées. Agriculture biologique.",
+      "preparation": "Fumée, tranchée, mise sous vide",
+      "conservation": "Surgelée. À conserver à -18 °C, jusqu'à 2 ans au congélateur.",
+      "allergenes": "Poisson (truite)"
     }
   }
   ]

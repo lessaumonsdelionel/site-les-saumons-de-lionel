@@ -1,0 +1,31 @@
+{#- ---------------------------------------------------------------------
+    Macros partagées.
+    sceau  : le sceau « Wild Sockeye Salmon from Alaska · Since 1994 »,
+             anneau typographique fin (Space Mono) autour de l'emblème.
+             La couleur est héritée du parent (currentColor).
+             id doit être unique par page (identifiants des chemins SVG).
+    figure : photo légendée façon reportage (lieu, saison, crédit).
+    --------------------------------------------------------------------- -#}
+{% macro sceau(site, id, logo) %}<div class="sceau" aria-hidden="true">
+  <svg viewBox="0 0 160 160" focusable="false">
+    <defs>
+      <path id="sc-h-{{ id }}" d="M22 80 A58 58 0 0 1 138 80"/>
+      <path id="sc-b-{{ id }}" d="M14 80 A66 66 0 0 0 146 80"/>
+    </defs>
+    <circle cx="80" cy="80" r="77.5" fill="none" stroke="currentColor" stroke-width="1"/>
+    <circle cx="80" cy="80" r="72" fill="none" stroke="currentColor" stroke-width=".5" opacity=".5"/>
+    <circle cx="80" cy="80" r="49" fill="none" stroke="currentColor" stroke-width=".5" opacity=".5"/>
+    <text class="sc-txt"><textPath href="#sc-h-{{ id }}" startOffset="50%" text-anchor="middle">{{ site.sceau.haut | upper }}</textPath></text>
+    <text class="sc-txt"><textPath href="#sc-b-{{ id }}" startOffset="50%" text-anchor="middle">{{ site.sceau.bas | upper }}</textPath></text>
+    <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".85">
+      <path d="M11 74l7-2M9 80h9M11 86l7 2"/>
+      <path d="M149 74l-7-2M151 80h-9M149 86l-7 2"/>
+    </g>
+    <image href="{{ logo }}" x="53" y="52" width="54" height="56" preserveAspectRatio="xMidYMid meet"/>
+  </svg>
+</div>{% endmacro %}
+
+{% macro figure(src, alt, legende) %}<figure class="figure">
+  <img src="{{ src }}" alt="{{ alt }}" loading="lazy">
+  {% if legende %}<figcaption>{{ legende | safe }}</figcaption>{% endif %}
+</figure>{% endmacro %}

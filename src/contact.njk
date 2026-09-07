@@ -1,0 +1,93 @@
+---
+layout: "base.njk"
+permalink: "contact.html"
+pageId: "contact"
+eleventyComputed:
+  titre: "{{ contact.seo.titre | safe }}"
+  description: "{{ contact.seo.description | safe }}"
+---
+<!-- ============================== EN-TÊTE DE PAGE ============================== -->
+<section class="page-hero on-dark">
+  <img class="watermark" src="assets/img/logo-blanc.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <span class="eyebrow">{{ contact.hero.eyebrow | safe }}</span>
+    <h1>{{ contact.hero.titre | safe }}</h1>
+    <p class="lead">{{ contact.hero.accroche | safe }}</p>
+  </div>
+</section>
+
+<!-- ============================== COMMANDER HORS CSE ============================== -->
+<section class="alt" style="padding:clamp(48px,6vw,80px) 0">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:0">
+      <div>
+        <span class="eyebrow reveal">{{ contact.horsCse.eyebrow | safe }}</span>
+        <h2 class="reveal">{{ contact.horsCse.titre | safe }}</h2>
+      </div>
+      <p class="side reveal" style="max-width:48ch">{{ contact.horsCse.texte | safe }} <a href="#formulaire" data-profil="Particulier" class="link-more" style="display:inline">Écrire ma demande <span class="arr">→</span></a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FORMULAIRE + COORDONNÉES ============================== -->
+<section>
+  <div class="wrap contact-layout">
+    <div>
+      <span class="eyebrow reveal">{{ contact.formulaire.titre | safe }}</span>
+      <p class="form-merci" hidden tabindex="-1">{{ contact.formulaire.merci | safe }}</p>
+      <!-- Formulaire Netlify Forms : détecté au déploiement, les messages arrivent
+           dans Netlify (onglet Forms) et par notification e-mail. -->
+      <form class="form reveal" id="formulaire" name="contact" method="POST" action="contact.html?envoye=1#formulaire" data-netlify="true" netlify-honeypot="piege">
+        <input type="hidden" name="form-name" value="contact">
+        <p class="hidden-field" aria-hidden="true"><label>Ne pas remplir ce champ <input name="piege" tabindex="-1" autocomplete="off"></label></p>
+        <div class="form-row">
+          <label for="c-nom">Nom</label>
+          <input type="text" id="c-nom" name="nom" required autocomplete="name">
+        </div>
+        <div class="form-grid">
+          <div>
+            <label for="c-email">E-mail</label>
+            <input type="email" id="c-email" name="email" required autocomplete="email">
+          </div>
+          <div>
+            <label for="c-tel">Téléphone <span class="muted" style="text-transform:none;letter-spacing:0">(facultatif)</span></label>
+            <input type="tel" id="c-tel" name="telephone" autocomplete="tel">
+          </div>
+        </div>
+        <fieldset class="form-row">
+          <legend>Je suis</legend>
+          <div class="radios">{% for p in contact.formulaire.profils %}
+            <label><input type="radio" name="profil" value="{{ p | safe }}"{% if loop.first %} checked{% endif %}> {{ p | safe }}</label>{% endfor %}
+          </div>
+        </fieldset>
+        <div class="form-row">
+          <label for="c-message">Message</label>
+          <textarea id="c-message" name="message" rows="6" required></textarea>
+        </div>
+        <label class="check"><input type="checkbox" name="rgpd" value="oui" required> {{ contact.formulaire.rgpd | safe }}</label>
+        <div><button class="btn btn-primary" type="submit">{{ contact.formulaire.bouton | safe }} <span class="arr">→</span></button></div>
+      </form>
+    </div>
+    <div class="contact-cards">
+      <div class="contact-card reveal">
+        <span class="lat"><span class="bar"><i></i></span> Appeler</span>
+        <h3>{{ contact.cartes.telephoneTitre | safe }}</h3>
+        <a href="tel:{{ site.contact.tel.lien | safe }}">{{ site.contact.tel.numero | safe }}</a>
+        <span class="muted" style="display:block;font-size:13.5px;margin:2px 0 14px">{{ site.contact.responsable | safe }}</span>
+        {% if site.contact.whatsapp %}<a class="btn btn-ghost" href="{{ site.contact.whatsapp | safe }}" rel="noopener" target="_blank" style="display:inline-flex">{{ contact.cartes.whatsapp | safe }} <span class="arr">→</span></a>{% endif %}
+      </div>
+      <div class="contact-card reveal" data-d="1">
+        <span class="lat"><span class="bar"><i></i></span> Écrire</span>
+        <h3>{{ contact.cartes.emailTitre | safe }}</h3>
+        <a href="mailto:{{ site.contact.email | safe }}">{{ site.contact.email | safe }}</a>
+        <p class="muted" style="font-size:13.5px;margin-top:10px">{{ contact.cartes.delai | safe }}</p>
+      </div>
+      {% if site.contact.facebook %}<div class="contact-card reveal" data-d="2">
+        <span class="lat"><span class="bar"><i></i></span> Suivre</span>
+        <h3>{{ contact.cartes.facebookTitre | safe }}</h3>
+        <a href="{{ site.contact.facebook | safe }}" rel="noopener" target="_blank">Notre page Facebook</a>
+        <p class="muted" style="font-size:13.5px;margin-top:10px">{{ contact.cartes.facebookTexte | safe }}</p>
+      </div>{% endif %}
+    </div>
+  </div>
+</section>

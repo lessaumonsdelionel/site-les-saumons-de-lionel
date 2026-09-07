@@ -5,21 +5,23 @@
       <span class="name">Les Saumons de <em>Lionel</em></span>
     </a>
     <nav class="nav-links" aria-label="Navigation principale">
-      <a href="la-selection.html"{% if pageId == "selection" %} aria-current="page"{% endif %}>La sélection</a>
+      <a href="nos-produits.html"{% if pageId == "produits" %} aria-current="page"{% endif %}>Nos produits</a>
       <a href="notre-histoire.html"{% if pageId == "histoire" %} aria-current="page"{% endif %}>Notre histoire</a>
-      <a href="espace-cse.html"{% if pageId == "cse" %} aria-current="page"{% endif %}>Espace CSE</a>
+      <a href="offres-cse.html"{% if pageId == "cse" %} aria-current="page"{% endif %}>Offres CSE</a>
+      <a href="contact.html"{% if pageId == "contact" %} aria-current="page"{% endif %}>Contact</a>
     </nav>
     <div class="header-cta">
-      <a class="btn btn-primary" href="commande.html"{% if pageId == "commande" %} aria-current="page"{% endif %}>Commander <span class="arr">→</span></a>
+      <a class="btn btn-primary" href="commande.html"{% if pageId == "commande" %} aria-current="page"{% endif %}>J'ai un code CSE <span class="arr">→</span></a>
       <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
 <nav class="mobile-menu" aria-label="Menu mobile">
   <a href="index.html"{% if pageId == "accueil" %} aria-current="page"{% endif %}>Accueil</a>
-  <a href="la-selection.html"{% if pageId == "selection" %} aria-current="page"{% endif %}>La sélection</a>
+  <a href="nos-produits.html"{% if pageId == "produits" %} aria-current="page"{% endif %}>Nos produits</a>
   <a href="notre-histoire.html"{% if pageId == "histoire" %} aria-current="page"{% endif %}>Notre histoire</a>
-  <a href="espace-cse.html"{% if pageId == "cse" %} aria-current="page"{% endif %}>Espace CSE</a>
-  <a href="commande.html"{% if pageId == "commande" %} aria-current="page"{% endif %}>Commander</a>
-  <span class="lat"><span class="bar"><i></i></span> 61° Nord · Alaska</span>
+  <a href="offres-cse.html"{% if pageId == "cse" %} aria-current="page"{% endif %}>Offres CSE</a>
+  <a href="contact.html"{% if pageId == "contact" %} aria-current="page"{% endif %}>Contact</a>
+  <a href="commande.html"{% if pageId == "commande" %} aria-current="page"{% endif %}>J'ai un code CSE</a>
+  <span class="lat"><span class="bar"><i></i></span> 61° Nord · Alaska · Depuis 1994</span>
 </nav>

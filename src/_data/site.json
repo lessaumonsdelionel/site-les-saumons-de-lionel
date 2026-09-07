@@ -1,10 +1,19 @@
 {
   "nom": "Les Saumons de Lionel",
+  "baseline": "Saumon sockeye sauvage d'Alaska, fumé, tranché et surgelé. Une entreprise familiale depuis 1994.",
   "contact": {
+    "responsable": "Margarit Agayan-Sourine",
     "email": "bonjour@lessaumonsdelionel.fr",
-    "tel1": { "prenom": "Rita", "numero": "07 81 71 51 27", "lien": "+33781715127" },
-    "tel2": { "prenom": "Aurélien", "numero": "06 30 31 26 62", "lien": "+33630312662" },
+    "tel": { "numero": "07 59 60 12 33", "lien": "+33759601233" },
+    "whatsapp": "https://wa.me/33759601233",
+    "facebook": "",
+    "instagram": "",
     "adresse": "499 route d'Orist, 40180 Siest"
+  },
+  "sceau": {
+    "haut": "Wild Sockeye Salmon",
+    "bas": "From Alaska · Since 1994",
+    "annee": "1994"
   },
   "ogImage": "assets/img/og.jpg",
   "favicon": "assets/img/favicon.png"

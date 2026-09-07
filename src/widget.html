@@ -336,6 +336,7 @@
     .sw-toto { display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px; color: var(--encre); }
     .sw-toto .sw-val { font-variant-numeric: tabular-nums; font-weight: 500; }
     .sw-toto.sw-remise .sw-val { color: var(--vert); font-weight: 600; }
+    .sw-estimatif { margin: 8px 0 0; font-size: 12.5px; font-style: italic; color: #5D6863; }
     .sw-total-final {
       display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; padding-top: 12px;
       border-top: 2px solid var(--nuit); font-family: var(--titre); font-weight: 600;
@@ -496,10 +497,10 @@
       /* ---- « Base Airtable » en mémoire (mêmes tables que docs/B) ----
          PRIX FICTIFS / PROVISOIRES — à remplacer par les tarifs réels.   */
       var TABLE_PRODUITS = {
-        "SAU-FIL-1000": { reference: "SAU-FIL-1000", nom: "Filet de saumon sauvage fumé d'Alaska", detail: "Tranché main — ≈ 1 kg", prix: 69.00, poids: 1000 },
-        "SAU-PLQ-130":  { reference: "SAU-PLQ-130",  nom: "Plaquette de saumon sauvage fumé d'Alaska", detail: "Prêt à servir — 130 g", prix: 12.90, poids: 130 },
-        "TRU-FIL-500":  { reference: "TRU-FIL-500",  nom: "Filet de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique — ≈ 500 g", prix: 24.00, poids: 500 },
-        "TRU-PLQ-130":  { reference: "TRU-PLQ-130",  nom: "Plaquette de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique — 130 g", prix: 9.90, poids: 130 }
+        "SAU-FIL-1000": { reference: "SAU-FIL-1000", nom: "Filet de saumon sauvage fumé d'Alaska", detail: "Tranché, sous vide, ≈ 1 kg", prix: 77.00, poids: 1000 },
+        "SAU-PLQ-130":  { reference: "SAU-PLQ-130",  nom: "Plaquette de saumon sauvage fumé d'Alaska", detail: "3 à 4 tranches, 130 g", prix: 16.50, poids: 130 },
+        "TRU-FIL-600":  { reference: "TRU-FIL-600",  nom: "Filet de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, ≈ 600 g", prix: 46.20, poids: 600 },
+        "TRU-PLQ-130":  { reference: "TRU-PLQ-130",  nom: "Plaquette de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, 130 g", prix: 15.50, poids: 130 }
       };
 
       /* Partenaires : les 2 réels (données de lancement) + 3 cas limites.
@@ -507,17 +508,17 @@
          « pas encore ouvert » jusqu'au 31/07/2026. */
       var TABLE_PARTENAIRES = {
         "ALLIANZ26": {
-          nom: "Allianz — CSE", statut: "Actif", remisePct: 0.20,
+          nom: "Allianz, CSE", statut: "Actif", remisePct: 0,
           dateOuverture: "2026-06-15", dateCloture: "2026-09-30",
           consignes: "Retrait gratuit au siège sur présentation du badge salarié. Lieu, date et frais définitifs à préciser.",
-          produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-500", "TRU-PLQ-130"],
+          produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-600", "TRU-PLQ-130"],
           livraisons: ["alz-retrait", "alz-domicile"]
         },
-        "TOULOUSE26": {
-          nom: "COSAT Toulouse — CSE", statut: "Actif", remisePct: 0.20,
+        "COSAT26": {
+          nom: "COSAT Toulouse, CSE", statut: "Actif", remisePct: 0,
           dateOuverture: "2026-06-15", dateCloture: "2026-11-30",
           consignes: "Retrait gratuit au marché de Noël du COSAT. Lieu exact, date et frais à préciser.",
-          produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-500", "TRU-PLQ-130"],
+          produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-600", "TRU-PLQ-130"],
           livraisons: ["tls-retrait", "tls-domicile"]
         },
         "INACTIF26": {
@@ -527,7 +528,7 @@
         },
         "BIENTOT26": {
           nom: "Partenaire — campagne à venir", statut: "Actif", remisePct: 0.20,
-          dateOuverture: "2026-08-01", dateCloture: "2026-08-31",
+          dateOuverture: "2026-12-01", dateCloture: "2026-12-31",
           consignes: "", produits: ["SAU-FIL-1000", "SAU-PLQ-130"], livraisons: []
         },
         "TERMINE26": {
@@ -539,9 +540,9 @@
 
       var TABLE_MODES_LIVRAISON = {
         "alz-retrait":  { id: "alz-retrait",  libelle: "Retrait au siège", type: "Retrait", frais: 0, lieu: "Siège Allianz (à préciser)", date: "2026-10-02" },
-        "alz-domicile": { id: "alz-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 6.90, lieu: "France métropolitaine (supplément à préciser)", date: "2026-10-03" },
+        "alz-domicile": { id: "alz-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "France métropolitaine (supplément à préciser)", date: "2026-10-03" },
         "tls-retrait":  { id: "tls-retrait",  libelle: "Retrait — Marché de Noël du COSAT", type: "Retrait", frais: 0, lieu: "Marché de Noël du COSAT (à préciser)", date: "2026-12-12" },
-        "tls-domicile": { id: "tls-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 6.90, lieu: "Selon conditions (à préciser)", date: "2026-12-13" }
+        "tls-domicile": { id: "tls-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "Selon conditions (à préciser)", date: "2026-12-13" }
       };
 
       /* Table Commandes simulée : reçoit les enregistrements créés. */
@@ -1057,6 +1058,7 @@
       html += '<div class="sw-toto"><span>Frais de récupération</span><span class="sw-val">' +
               (c.frais === 0 ? "Gratuit" : eur(c.frais)) + '</span></div>';
       html += '<div class="sw-total-final"><span class="sw-tf-label">Total</span><span class="sw-tf-val">' + eur(c.total) + '</span></div>';
+      html += '<p class="sw-estimatif">Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.</p>';
       html += '<div class="sw-poids">Poids total estimé&nbsp;: ' + poidsLisible(c.poids) + '</div>';
       elTotaux.innerHTML = html;
 
@@ -1274,9 +1276,9 @@
           '<p><strong>Récupération&nbsp;:</strong> ' +
             (cmd.livraison ? echapper(cmd.livraison.libelle) + ' — ' + echapper(cmd.livraison.lieu) +
               ', le ' + dateLongue(cmd.livraison.date) : "—") + '.<br>' +
-            'Nos produits voyagent entre 0 et +4&nbsp;°C&nbsp;: pensez à votre sac isotherme.</p>' +
+            'Nos produits sont remis surgelés, à -18&nbsp;°C&nbsp;: pensez à votre sac isotherme. Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.</p>' +
           '<p>Pour modifier ou annuler, répondez à cet e-mail en indiquant votre n° de commande.</p>' +
-          '<p class="sw-email-sign">Les Saumons de Lionel — saumon sauvage d\'Alaska, fumé et tranché à la main.</p>' +
+          '<p class="sw-email-sign">Les Saumons de Lionel : saumon sauvage d\'Alaska, fumé, tranché et surgelé.</p>' +
         '</div>' +
       '</div>';
     }
@@ -1334,7 +1336,7 @@
       if (modeDemoActif()) {
         var codesDemo = [
           { code: "ALLIANZ26", note: "actif" },
-          { code: "TOULOUSE26", note: "actif" },
+          { code: "COSAT26", note: "actif" },
           { code: "INACTIF26", note: "inactif" },
           { code: "BIENTOT26", note: "pas encore ouvert" },
           { code: "TERMINE26", note: "terminé" },

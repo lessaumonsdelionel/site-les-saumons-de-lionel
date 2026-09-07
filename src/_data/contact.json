@@ -1,0 +1,31 @@
+{
+  "seo": {
+    "titre": "Contact : Les Saumons de Lionel",
+    "description": "Une question, une commande hors CSE, un projet pour votre comité : écrivez-nous ou appelez-nous. Réponse rapide."
+  },
+  "hero": {
+    "eyebrow": "Contact",
+    "titre": "Écrivez-nous, <em>ou appelez-nous.</em>",
+    "accroche": "Une question sur nos produits, une commande hors CSE, un projet pour votre comité d'entreprise : nous vous répondons rapidement."
+  },
+  "horsCse": {
+    "eyebrow": "Particuliers",
+    "titre": "Commander hors CSE ?",
+    "texte": "Le parcours de commande en ligne est réservé aux salariés disposant d'un code CSE. Pour une commande hors opération CSE, écrivez-nous avec les produits et les quantités souhaités : nous vous confirmons les disponibilités, les tarifs et les modalités de livraison."
+  },
+  "formulaire": {
+    "titre": "Nous écrire",
+    "profils": ["Particulier", "Salarié avec un code CSE", "Responsable CSE ou entreprise"],
+    "rgpd": "J'accepte que ces informations servent uniquement à répondre à ma demande.",
+    "bouton": "Envoyer",
+    "merci": "Merci, votre message est bien envoyé. Nous vous répondons rapidement."
+  },
+  "cartes": {
+    "telephoneTitre": "Par téléphone",
+    "whatsapp": "Écrire sur WhatsApp",
+    "emailTitre": "Par e-mail",
+    "facebookTitre": "Sur Facebook",
+    "facebookTexte": "Nos actualités et nos dates de salon.",
+    "delai": "Réponse sous 48 h ouvrées."
+  }
+}

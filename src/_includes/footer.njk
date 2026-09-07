@@ -1,23 +1,28 @@
-<footer>
+{% import "macros.njk" as m %}<footer>
   <img class="watermark" src="assets/img/logo-blanc.png" alt="" aria-hidden="true">
   <div class="wrap">
     <div class="foot-grid">
       <div>
         <img class="logo" src="assets/img/logo-blanc.png" alt="{{ site.nom | safe }}">
-        <p class="baseline">Le saumon sauvage d'Alaska, fumé et tranché à la main. Une sélection rare pour vos comités et vos tables.</p>
+        <p class="baseline">{{ site.baseline | safe }}</p>
+        <div class="foot-sceau">{{ m.sceau(site, "pied", "assets/img/logo-blanc.png") }}</div>
       </div>
       <div>
         <h4>Explorer</h4>
-        <a href="la-selection.html">La sélection</a>
+        <a href="nos-produits.html">Nos produits</a>
         <a href="notre-histoire.html">Notre histoire</a>
-        <a href="espace-cse.html">Espace CSE</a>
-        <a href="commande.html">Commander</a>
+        <a href="offres-cse.html">Offres CSE</a>
+        <a href="contact.html">Contact</a>
+        <a href="commande.html">J'ai un code CSE</a>
       </div>
       <div>
         <h4>Contact</h4>
+        <span class="foot-who">{{ site.contact.responsable | safe }}</span>
+        <a href="tel:{{ site.contact.tel.lien | safe }}">{{ site.contact.tel.numero | safe }}</a>
         <a href="mailto:{{ site.contact.email | safe }}">{{ site.contact.email | safe }}</a>
-        <a href="tel:{{ site.contact.tel1.lien | safe }}">{{ site.contact.tel1.numero | safe }}</a>
-        <a href="tel:{{ site.contact.tel2.lien | safe }}">{{ site.contact.tel2.numero | safe }}</a>
+        {% if site.contact.whatsapp %}<a href="{{ site.contact.whatsapp | safe }}" rel="noopener" target="_blank">WhatsApp</a>{% endif %}
+        {% if site.contact.facebook %}<a href="{{ site.contact.facebook | safe }}" rel="noopener" target="_blank">Facebook</a>{% endif %}
+        {% if site.contact.instagram %}<a href="{{ site.contact.instagram | safe }}" rel="noopener" target="_blank">Instagram</a>{% endif %}
       </div>
       <div>
         <h4>Légal</h4>
@@ -26,8 +31,8 @@
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© <span data-year>2026</span> {{ site.nom | safe }} — Margarit Agayan-Sourine · TVA non applicable (art. 293 B du CGI)</span>
-      <span class="coords">61°46′ N — 149°54′ O · Alaska</span>
+      <span>© <span data-year>2026</span> {{ site.nom | safe }} · {{ site.contact.responsable | safe }} · TVA non applicable, art. 293 B du CGI</span>
+      <span class="coords">61°46′ N · 149°54′ O · Alaska</span>
     </div>
   </div>
 </footer>

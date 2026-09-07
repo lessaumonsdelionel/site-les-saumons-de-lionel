@@ -1,0 +1,80 @@
+---
+layout: "base.njk"
+permalink: "nos-produits.html"
+pageId: "produits"
+eleventyComputed:
+  titre: "{{ nosproduits.seo.titre | safe }}"
+  description: "{{ nosproduits.seo.description | safe }}"
+---
+{% import "macros.njk" as m %}
+<!-- ============================== EN-TÊTE DE PAGE ============================== -->
+<section class="page-hero on-dark">
+  <img class="watermark" src="assets/img/logo-blanc.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <span class="eyebrow">{{ nosproduits.hero.eyebrow | safe }}</span>
+    <h1>{{ nosproduits.hero.titre | safe }}</h1>
+    <p class="lead">{{ nosproduits.hero.accroche | safe }}</p>
+  </div>
+</section>
+
+<!-- ============================== LES QUATRE FICHES ============================== -->
+<section>
+  <div class="wrap fiches">{% for p in produits.liste %}
+
+    <article class="fiche" id="{{ p.id | safe }}">
+      <div class="reveal">{{ m.figure(p.image, p.alt, p.legende) }}</div>
+      <div>
+        <span class="eyebrow reveal">{{ p.eyebrow | safe }}</span>
+        <h3 class="reveal">{{ p.nom | safe }}{% if p.label %} <span class="label-ab">{{ p.label | safe }}</span>{% endif %}</h3>
+        <span class="wt reveal">{{ p.infos | safe }}</span>
+        <p class="reveal">{{ p.description | safe }}</p>
+        <dl class="specs reveal">
+          <div><dt>Espèce</dt><dd>{{ p.specs.espece | safe }}</dd></div>
+          <div><dt>Origine</dt><dd>{{ p.specs.origine | safe }}</dd></div>
+          <div><dt>Préparation</dt><dd>{{ p.specs.preparation | safe }}</dd></div>
+          <div><dt>Conservation</dt><dd>{{ p.specs.conservation | safe }}</dd></div>
+          <div><dt>Allergènes</dt><dd>{{ p.specs.allergenes | safe }}</dd></div>
+        </dl>
+        <div class="reveal" style="margin-top:24px;display:flex;gap:14px 24px;flex-wrap:wrap;align-items:center">
+          <a class="btn btn-primary" href="commande.html">J'ai un code CSE <span class="arr">→</span></a>
+          <a class="link-more" href="contact.html?profil=particulier">Commander hors CSE ? Contactez-nous <span class="arr">→</span></a>
+        </div>
+      </div>
+    </article>{% endfor %}
+
+  </div>
+</section>
+
+<!-- ============================== POURQUOI UN SAUMON SAUVAGE D'ALASKA ============================== -->
+<section class="alt" id="pourquoi">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow reveal">{{ nosproduits.pourquoi.eyebrow | safe }}</span>
+        <h2 class="reveal">{{ nosproduits.pourquoi.titre | safe }}</h2>
+      </div>
+      <p class="side reveal">{{ nosproduits.pourquoi.intro | safe }}</p>
+    </div>
+    <div class="points">{% for pt in nosproduits.pourquoi.points %}
+      <div class="point reveal"{% if not loop.first %} data-d="{{ loop.index0 % 2 }}"{% endif %}>
+        <span class="n">0{{ loop.index }}</span>
+        <h3>{{ pt.titre | safe }}</h3>
+        <p>{{ pt.texte | safe }}</p>
+      </div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== TARIFS ============================== -->
+<section class="cse-band on-dark">
+  <div class="bgimg" style="background-image:url('assets/img/texture-glace.webp')"></div>
+  <div class="wrap">
+    <span class="eyebrow reveal">{{ nosproduits.prix.eyebrow | safe }}</span>
+    <h2 class="reveal">{{ nosproduits.prix.titre | safe }}</h2>
+    <p class="reveal">{{ nosproduits.prix.texte | safe }}</p>
+    <div class="reveal" data-d="1" style="margin-top:32px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn-primary" href="commande.html">{{ nosproduits.prix.boutonCode | safe }} <span class="arr">→</span></a>
+      <a class="btn btn-ghost light" href="contact.html?profil=particulier">{{ nosproduits.prix.boutonContact | safe }}</a>
+    </div>
+  </div>
+</section>

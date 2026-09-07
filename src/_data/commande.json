@@ -1,11 +1,16 @@
 {
   "seo": {
-    "titre": "Commander — Les Saumons de Lionel",
-    "description": "Saisissez votre code partenaire pour accéder à votre offre : produits, tarifs remisés, retrait ou livraison. Précommande groupée sans paiement en ligne."
+    "titre": "J'ai un code CSE : commander chez Les Saumons de Lionel",
+    "description": "Saisissez votre code partenaire pour accéder à votre offre : produits, tarifs dédiés, retrait ou livraison. Précommande groupée sans paiement en ligne."
   },
   "hero": {
-    "eyebrow": "Précommande groupée",
-    "titre": "Votre code, <em>votre offre.</em>",
-    "accroche": "Saisissez le code communiqué par votre comité pour accéder à votre catalogue, vos tarifs et vos modalités de retrait. Sans paiement en ligne — vous réglez au retrait."
-  }
+    "eyebrow": "Précommande groupée · Code CSE",
+    "titre": "Votre code CSE, <em>votre offre.</em>",
+    "accroche": "Saisissez le code communiqué par votre comité pour accéder à votre catalogue, vos tarifs et vos modalités de retrait. Sans paiement en ligne : vous réglez au retrait."
+  },
+  "reassurance": [
+    { "chiffre": "-18", "unite": "°C", "titre": "Remis surgelé", "texte": "Le produit est remis surgelé, pensez au sac isotherme pour le trajet." },
+    { "chiffre": "24", "unite": "h", "titre": "Confirmation immédiate", "texte": "Un e-mail récapitulatif vous est envoyé dès la validation de votre précommande." },
+    { "chiffre": "±", "unite": "", "titre": "Modifiable", "texte": "Besoin de changer ou d'annuler ? Contactez-nous avec votre numéro de commande." }
+  ]
 }

@@ -1,16 +1,16 @@
 # ============================================================
-# Configuration Sveltia CMS — Les Saumons de Lionel
+# Configuration Sveltia CMS : Les Saumons de Lionel
 # Chaque champ ci-dessous édite un fichier de contenu du dépôt.
-# À l'enregistrement : commit git → Netlify reconstruit le site.
+# À l'enregistrement : commit git, puis Netlify reconstruit le site.
 #
-# ⚠️ PRÉREQUIS (à renseigner par Baptiste, cf. README-CMS.md) :
-#   - repo : le dépôt GitHub créé AU NOM DE RITA
+# PRÉREQUIS (cf. README-CMS.md) :
+#   - repo : le dépôt GitHub au nom de Rita
 #   - en local (démo) : bouton « Work with local repository »
 # ============================================================
 
 backend:
   name: github
-  # ⚠️ Compte PERSONNEL de Baptiste pour les tests — à transférer au compte
+  # Compte PERSONNEL de Baptiste pour les tests : à transférer au compte
   # de Rita à la livraison (Transfer repository), puis mettre à jour ici.
   repo: baptisteeoche-bit/site-les-saumons-de-lionel
   branch: main
@@ -28,35 +28,39 @@ collections:
     icon: "settings"
     files:
       - name: "site"
-        label: "Marque & coordonnées"
+        label: "Marque, coordonnées, sceau"
         file: "src/_data/site.json"
         fields:
           - { name: "nom", label: "Nom de la marque", widget: "string" }
+          - { name: "baseline", label: "Phrase de pied de page", widget: "text" }
           - name: "contact"
-            label: "Coordonnées"
+            label: "Coordonnées (pied de page et page Contact)"
             widget: "object"
             fields:
+              - { name: "responsable", label: "Nom affiché", widget: "string" }
               - { name: "email", label: "E-mail de contact", widget: "string" }
-              - name: "tel1"
-                label: "Téléphone 1"
+              - name: "tel"
+                label: "Téléphone"
                 widget: "object"
                 fields:
-                  - { name: "prenom", label: "Prénom affiché", widget: "string" }
-                  - { name: "numero", label: "Numéro affiché (ex. 07 81 71 51 27)", widget: "string" }
+                  - { name: "numero", label: "Numéro affiché (ex. 07 59 60 12 33)", widget: "string" }
                   - { name: "lien", label: "Numéro pour le lien d'appel (format +33…)", widget: "string" }
-              - name: "tel2"
-                label: "Téléphone 2"
-                widget: "object"
-                fields:
-                  - { name: "prenom", label: "Prénom affiché", widget: "string" }
-                  - { name: "numero", label: "Numéro affiché", widget: "string" }
-                  - { name: "lien", label: "Numéro pour le lien d'appel (format +33…)", widget: "string" }
+              - { name: "whatsapp", label: "Lien WhatsApp (ex. https://wa.me/33759601233, vide = bouton masqué)", widget: "string", required: false }
+              - { name: "facebook", label: "Adresse de la page Facebook (vide = lien masqué)", widget: "string", required: false }
+              - { name: "instagram", label: "Adresse Instagram (vide = lien masqué)", widget: "string", required: false }
               - { name: "adresse", label: "Adresse postale", widget: "string" }
+          - name: "sceau"
+            label: "Sceau « Since 1994 »"
+            widget: "object"
+            fields:
+              - { name: "haut", label: "Texte du haut (ex. Wild Sockeye Salmon)", widget: "string" }
+              - { name: "bas", label: "Texte du bas (ex. From Alaska · Since 1994)", widget: "string" }
+              - { name: "annee", label: "Année", widget: "string" }
           - { name: "ogImage", label: "Image de partage (réseaux sociaux)", widget: "image" }
           - { name: "favicon", label: "Favicon (icône d'onglet)", widget: "image" }
 
   # ---------------------------------------------------------
-  # PRODUITS (source unique de la page « La sélection »)
+  # PRODUITS (source unique : page Nos produits et cartes de l'accueil)
   # ---------------------------------------------------------
   - name: "catalogue"
     label: "Produits"
@@ -67,26 +71,31 @@ collections:
         file: "src/_data/produits.json"
         fields:
           - name: "liste"
-            label: "Produits (page La sélection)"
+            label: "Produits (page Nos produits)"
             label_singular: "produit"
             widget: "list"
             summary: "{{fields.nom}}"
             fields:
               - { name: "id", label: "Identifiant technique (minuscules, tirets, sans accent)", widget: "string", hint: "Sert d'ancre de lien, ex. filet-saumon" }
               - { name: "eyebrow", label: "Sur-titre (origine / label)", widget: "string", hint: "Ex. Alaska · Pêche sauvage" }
-              - { name: "nom", label: "Nom du produit", widget: "string" }
-              - { name: "infos", label: "Ligne d'infos (réf. · poids · mention)", widget: "string", hint: "Ex. Réf. SAU-FIL-1000 · ≈ 1 kg · Tranché main" }
+              - { name: "nom", label: "Nom complet du produit", widget: "string" }
+              - { name: "court", label: "Nom court (cartes de l'accueil)", widget: "string" }
+              - { name: "infos", label: "Ligne d'infos (réf. · poids · mention)", widget: "string", hint: "Ex. Réf. SAU-FIL-1000 · ≈ 1 kg · Tranché, sous vide" }
+              - { name: "sousTitre", label: "Sous-titre (cartes de l'accueil)", widget: "string" }
               - { name: "description", label: "Description", widget: "text" }
               - { name: "image", label: "Photo", widget: "image" }
               - { name: "alt", label: "Description de la photo (accessibilité)", widget: "string" }
+              - { name: "legende", label: "Légende sur la photo (lieu, date, crédit)", widget: "string", required: false }
+              - { name: "label", label: "Étiquette label (ex. AB, vide = rien)", widget: "string", required: false }
               - name: "specs"
-                label: "Caractéristiques"
+                label: "Relevé de traçabilité"
                 widget: "object"
                 fields:
+                  - { name: "espece", label: "Espèce", widget: "string" }
                   - { name: "origine", label: "Origine", widget: "string" }
-                  - { name: "poids", label: "Poids", widget: "string" }
-                  - { name: "allergenes", label: "Allergènes", widget: "string" }
+                  - { name: "preparation", label: "Préparation", widget: "string" }
                   - { name: "conservation", label: "Conservation", widget: "string" }
+                  - { name: "allergenes", label: "Allergènes", widget: "string" }
 
   # ---------------------------------------------------------
   # PAGES
@@ -119,62 +128,70 @@ collections:
               - { name: "boutonPrincipal", label: "Texte du bouton principal", widget: "string" }
               - { name: "boutonSecondaire", label: "Texte du bouton secondaire", widget: "string" }
               - { name: "noteBas", label: "Ligne de réassurance (bas du bandeau)", widget: "string" }
-              - { name: "imageFond", label: "Image de fond", widget: "image" }
-          - name: "manifesto"
-            label: "Bloc « La maison »"
+              - { name: "imageFond", label: "Photo de fond", widget: "image" }
+              - { name: "legende", label: "Légende de la photo (lieu, saison)", widget: "string", required: false }
+          - name: "faits"
+            label: "Bloc « Trois faits »"
             widget: "object"
             collapsed: true
             fields:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
-              - { name: "titre", label: "Titre", widget: "string", hint: "<br> = saut de ligne, <em>…</em> = italique" }
-              - name: "piliers"
-                label: "Les trois piliers"
-                label_singular: "pilier"
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - name: "liste"
+                label: "Les trois faits"
+                label_singular: "fait"
                 widget: "list"
                 summary: "{{fields.titre}}"
                 fields:
                   - { name: "label", label: "Étiquette", widget: "string" }
                   - { name: "titre", label: "Titre", widget: "string" }
                   - { name: "texte", label: "Texte", widget: "text" }
-          - name: "selection"
-            label: "Bloc « La sélection » (cartes produits)"
+          - name: "produits"
+            label: "Bloc « Nos produits » (habillage, les cartes viennent des fiches produits)"
             widget: "object"
             collapsed: true
             fields:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
-              - { name: "titre", label: "Titre", widget: "string", hint: "&amp; = le signe &" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
               - { name: "texteCote", label: "Texte de côté", widget: "text" }
-              - name: "cartes"
-                label: "Cartes produits (résumé pour l'accueil)"
-                label_singular: "carte"
+              - { name: "note", label: "Mention en pied de carte", widget: "string" }
+              - { name: "bouton", label: "Texte du bouton", widget: "string" }
+              - { name: "horsCseLien", label: "Texte du lien pour les particuliers", widget: "string" }
+          - name: "histoire"
+            label: "Bloc « Lionel » (résumé de l'histoire)"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - name: "paragraphes"
+                label: "Paragraphes"
+                label_singular: "paragraphe"
                 widget: "list"
-                summary: "{{fields.titre}}"
-                fields:
-                  - { name: "tag", label: "Étiquette sur la photo", widget: "string" }
-                  - { name: "image", label: "Photo", widget: "image" }
-                  - { name: "alt", label: "Description de la photo (accessibilité)", widget: "string" }
-                  - { name: "titre", label: "Titre", widget: "string" }
-                  - { name: "sousTitre", label: "Sous-titre", widget: "string" }
-                  - { name: "description", label: "Description courte", widget: "text" }
-                  - { name: "note", label: "Mention en pied de carte", widget: "string" }
-          - name: "process"
-            label: "Bloc « Le geste » (4 étapes)"
+                field: { name: "texte", label: "Texte", widget: "text" }
+              - { name: "image", label: "Photo", widget: "image" }
+              - { name: "imageAlt", label: "Description de la photo (accessibilité)", widget: "string" }
+              - { name: "legende", label: "Légende sur la photo (lieu, date, qui)", widget: "string", required: false }
+              - { name: "lien", label: "Texte du lien vers Notre histoire", widget: "string" }
+          - name: "avis"
+            label: "Bloc « Avis clients » (masqué tant que la liste est vide)"
             widget: "object"
             collapsed: true
             fields:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
               - { name: "titre", label: "Titre", widget: "string" }
-              - name: "etapes"
-                label: "Étapes"
-                label_singular: "étape"
+              - name: "liste"
+                label: "Retours clients"
+                label_singular: "retour"
                 widget: "list"
-                summary: "{{fields.titre}}"
+                required: false
+                summary: "{{fields.auteur}}"
                 fields:
-                  - { name: "numero", label: "Numéro et mot-clé (ex. 01 — Océan)", widget: "string" }
-                  - { name: "titre", label: "Titre", widget: "string" }
-                  - { name: "texte", label: "Texte", widget: "text" }
+                  - { name: "texte", label: "La phrase, telle quelle (sans guillemets)", widget: "text" }
+                  - { name: "auteur", label: "Prénom (ou prénom et initiale)", widget: "string" }
+                  - { name: "contexte", label: "CSE ou entreprise (facultatif)", widget: "string", required: false }
           - name: "cse"
-            label: "Bloc « Espace CSE »"
+            label: "Bloc « Offres CSE » (bandeau sombre)"
             widget: "object"
             collapsed: true
             fields:
@@ -183,13 +200,29 @@ collections:
               - { name: "texte", label: "Texte", widget: "text" }
               - { name: "codeExemple", label: "Code partenaire montré en exemple", widget: "string" }
               - { name: "bouton", label: "Texte du bouton", widget: "string" }
-              - { name: "lien", label: "Texte du lien vers l'Espace CSE", widget: "string" }
+              - { name: "lien", label: "Texte du lien vers les Offres CSE", widget: "string" }
               - { name: "imageFond", label: "Image de fond", widget: "image" }
+          - name: "froid"
+            label: "Bloc « Chaîne du froid » (4 étapes)"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - name: "etapes"
+                label: "Étapes"
+                label_singular: "étape"
+                widget: "list"
+                summary: "{{fields.titre}}"
+                fields:
+                  - { name: "temp", label: "Repère (température ou lieu, ex. -18 °C)", widget: "string" }
+                  - { name: "titre", label: "Titre", widget: "string" }
+                  - { name: "texte", label: "Texte", widget: "text" }
 
-      # ------------------ LA SÉLECTION (habillage) ------------------
-      - name: "selection"
-        label: "La sélection (habillage de page)"
-        file: "src/_data/selection.json"
+      # ------------------ NOS PRODUITS (habillage) ------------------
+      - name: "nosproduits"
+        label: "Nos produits (habillage de page)"
+        file: "src/_data/nosproduits.json"
         fields:
           - name: "seo"
             label: "Référencement (SEO)"
@@ -205,14 +238,32 @@ collections:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
               - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
               - { name: "accroche", label: "Texte d'accroche", widget: "text" }
-          - name: "noteFroid"
-            label: "Bloc « Le froid, notre promesse »"
+          - name: "pourquoi"
+            label: "Bloc « Pourquoi choisir un saumon sauvage d'Alaska ? »"
             widget: "object"
             collapsed: true
             fields:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
-              - { name: "titre", label: "Titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - { name: "intro", label: "Texte d'introduction", widget: "text" }
+              - name: "points"
+                label: "Points"
+                label_singular: "point"
+                widget: "list"
+                summary: "{{fields.titre}}"
+                fields:
+                  - { name: "titre", label: "Titre", widget: "string" }
+                  - { name: "texte", label: "Texte", widget: "text" }
+          - name: "prix"
+            label: "Bloc « Tarifs »"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
               - { name: "texte", label: "Texte", widget: "text" }
+              - { name: "boutonCode", label: "Texte du bouton code CSE", widget: "string" }
+              - { name: "boutonContact", label: "Texte du bouton contact", widget: "string" }
 
       # ------------------ NOTRE HISTOIRE ------------------
       - name: "histoire"
@@ -233,50 +284,65 @@ collections:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
               - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
               - { name: "accroche", label: "Texte d'accroche", widget: "text" }
-          - name: "recit"
-            label: "Récit de Lionel"
+          - name: "lionel"
+            label: "1. Lionel et l'Alaska, dès les années 80"
             widget: "object"
             fields:
-              - { name: "image", label: "Photo", widget: "image" }
-              - { name: "imageAlt", label: "Description de la photo (accessibilité)", widget: "string" }
-              - { name: "badge", label: "Badge sur la photo", widget: "string" }
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
-              - { name: "titre", label: "Titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
               - name: "paragraphes"
                 label: "Paragraphes"
                 label_singular: "paragraphe"
                 widget: "list"
                 field: { name: "texte", label: "Texte", widget: "text", hint: "<strong>…</strong> = gras" }
-              - { name: "signature", label: "Signature (phrase en exergue)", widget: "string" }
-          - name: "timeline"
-            label: "Frise « Le chemin d'une pièce »"
+              - { name: "provisoire", label: "Mention « texte provisoire » (vider pour la retirer)", widget: "string", required: false }
+              - { name: "image", label: "Photo", widget: "image" }
+              - { name: "imageAlt", label: "Description de la photo (accessibilité)", widget: "string" }
+              - { name: "legende", label: "Légende sur la photo (lieu, date, qui)", widget: "string", required: false }
+          - name: "famille"
+            label: "2. Une entreprise familiale depuis 1994"
+            widget: "object"
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - name: "paragraphes"
+                label: "Paragraphes"
+                label_singular: "paragraphe"
+                widget: "list"
+                field: { name: "texte", label: "Texte", widget: "text", hint: "<strong>…</strong> = gras" }
+              - { name: "provisoire", label: "Mention « texte provisoire » (vider pour la retirer)", widget: "string", required: false }
+              - { name: "image", label: "Photo", widget: "image" }
+              - { name: "imageAlt", label: "Description de la photo (accessibilité)", widget: "string" }
+              - { name: "legende", label: "Légende sur la photo (lieu, date, qui)", widget: "string", required: false }
+          - name: "parcours"
+            label: "3. De la pêche à la table (frise)"
             widget: "object"
             collapsed: true
             fields:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
-              - { name: "titre", label: "Titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
               - name: "etapes"
                 label: "Étapes"
                 label_singular: "étape"
                 widget: "list"
                 summary: "{{fields.titre}}"
                 fields:
-                  - { name: "periode", label: "Moment / lieu (ex. Atelier · Feu doux)", widget: "string" }
+                  - { name: "periode", label: "Repère (lieu, température, moment)", widget: "string" }
                   - { name: "titre", label: "Titre", widget: "string" }
                   - { name: "texte", label: "Texte", widget: "text" }
-          - name: "promesse"
-            label: "Bloc citation « La promesse »"
+          - name: "exergue"
+            label: "Bloc de fin (sceau et phrase)"
             widget: "object"
             collapsed: true
             fields:
               - { name: "imageFond", label: "Image de fond", widget: "image" }
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
-              - { name: "citation", label: "Citation", widget: "text", hint: "<br> = saut de ligne, <em>…</em> = italique" }
+              - { name: "titre", label: "Phrase", widget: "text", hint: "<em>…</em> = italique" }
               - { name: "bouton", label: "Texte du bouton", widget: "string" }
 
-      # ------------------ ESPACE CSE ------------------
+      # ------------------ OFFRES CSE ------------------
       - name: "cse"
-        label: "Espace CSE"
+        label: "Offres CSE"
         file: "src/_data/cse.json"
         fields:
           - name: "seo"
@@ -284,7 +350,7 @@ collections:
             widget: "object"
             collapsed: true
             fields:
-              - { name: "titre", label: "Titre de l'onglet (balise title)", widget: "string", hint: "&amp; = le signe &" }
+              - { name: "titre", label: "Titre de l'onglet (balise title)", widget: "string" }
               - { name: "description", label: "Description Google", widget: "text" }
           - name: "hero"
             label: "En-tête de page"
@@ -328,6 +394,23 @@ collections:
               - { name: "image", label: "Photo", widget: "image" }
               - { name: "imageAlt", label: "Description de la photo (accessibilité)", widget: "string" }
               - { name: "badge", label: "Badge sur la photo", widget: "string" }
+          - name: "references"
+            label: "Bloc « Ils nous font confiance » (masqué si la liste est vide)"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - { name: "texte", label: "Texte de côté", widget: "text" }
+              - name: "liste"
+                label: "Références"
+                label_singular: "référence"
+                widget: "list"
+                required: false
+                summary: "{{fields.nom}}"
+                fields:
+                  - { name: "nom", label: "Nom (ex. COSAT Toulouse)", widget: "string" }
+                  - { name: "detail", label: "Précision (ville, CSE, depuis quand)", widget: "string", required: false }
           - name: "engagements"
             label: "Bloc « Ce que votre comité y gagne »"
             widget: "object"
@@ -351,12 +434,64 @@ collections:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
               - { name: "titre", label: "Titre", widget: "string" }
               - { name: "texteCote", label: "Texte de côté", widget: "text" }
-              - { name: "noteEmail", label: "Note sous l'e-mail", widget: "string" }
               - { name: "besoin", label: "Texte « Ce qu'il nous faut »", widget: "text" }
+              - { name: "bouton", label: "Texte du bouton", widget: "string" }
 
-      # ------------------ COMMANDER (habillage) ------------------
+      # ------------------ CONTACT ------------------
+      - name: "contact"
+        label: "Contact"
+        file: "src/_data/contact.json"
+        fields:
+          - name: "seo"
+            label: "Référencement (SEO)"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "titre", label: "Titre de l'onglet (balise title)", widget: "string" }
+              - { name: "description", label: "Description Google", widget: "text" }
+          - name: "hero"
+            label: "En-tête de page"
+            widget: "object"
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - { name: "accroche", label: "Texte d'accroche", widget: "text" }
+          - name: "horsCse"
+            label: "Bloc « Commander hors CSE ? »"
+            widget: "object"
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string" }
+              - { name: "texte", label: "Texte", widget: "text" }
+          - name: "formulaire"
+            label: "Formulaire"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "titre", label: "Titre", widget: "string" }
+              - name: "profils"
+                label: "Choix « Je suis »"
+                label_singular: "profil"
+                widget: "list"
+                field: { name: "texte", label: "Libellé", widget: "string" }
+              - { name: "rgpd", label: "Phrase de consentement", widget: "string" }
+              - { name: "bouton", label: "Texte du bouton", widget: "string" }
+              - { name: "merci", label: "Message après envoi", widget: "string" }
+          - name: "cartes"
+            label: "Cartes de coordonnées"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "telephoneTitre", label: "Titre carte téléphone", widget: "string" }
+              - { name: "whatsapp", label: "Texte du bouton WhatsApp", widget: "string" }
+              - { name: "emailTitre", label: "Titre carte e-mail", widget: "string" }
+              - { name: "facebookTitre", label: "Titre carte Facebook", widget: "string" }
+              - { name: "facebookTexte", label: "Texte carte Facebook", widget: "string" }
+              - { name: "delai", label: "Délai de réponse annoncé", widget: "string" }
+
+      # ------------------ COMMANDE PAR CODE (habillage) ------------------
       - name: "commande"
-        label: "Commander (habillage de page)"
+        label: "Commande par code CSE (habillage de page)"
         file: "src/_data/commande.json"
         fields:
           - name: "seo"
@@ -373,6 +508,17 @@ collections:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
               - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
               - { name: "accroche", label: "Texte d'accroche", widget: "text" }
+          - name: "reassurance"
+            label: "Trois repères sous le formulaire"
+            label_singular: "repère"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.titre}}"
+            fields:
+              - { name: "chiffre", label: "Chiffre ou signe (ex. -18)", widget: "string" }
+              - { name: "unite", label: "Unité (ex. °C)", widget: "string", required: false }
+              - { name: "titre", label: "Titre", widget: "string" }
+              - { name: "texte", label: "Texte", widget: "text" }
 
       # ------------------ PAGES LÉGALES ------------------
       - name: "mentions"
