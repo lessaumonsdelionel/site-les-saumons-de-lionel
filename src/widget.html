@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--
   =====================================================================
-  Widget de précommande groupée — « Les Saumons de Lionel »
-  Agence EOCHE / Baptiste Eoche — Cliente : Margarit « Rita » Agayan-Sourine
+  Widget de précommande groupée, « Les Saumons de Lionel »
+  Agence EOCHE / Baptiste Eoche, Cliente : Margarit « Rita » Agayan-Sourine
   ---------------------------------------------------------------------
   • Fichier 100 % autonome (HTML + CSS + JS vanilla), chargé en iframe
     par commande.html (auto-hauteur gérée côté page parente).
@@ -16,14 +16,14 @@
   • Pas de localStorage / sessionStorage : tout l'état vit en mémoire.
   • Mode démo : ajouter ?demo=1 à l'URL (de la page ou du widget) pour
     afficher les codes de test des 4 cas limites.
-  • PRIX FICTIFS / PROVISOIRES — à remplacer par les tarifs réels.
+  • PRIX FICTIFS / PROVISOIRES, à remplacer par les tarifs réels.
   =====================================================================
 -->
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Précommande — Les Saumons de Lionel</title>
+  <title>Précommande : Les Saumons de Lionel</title>
 
   <!-- Polices de la marque : Fraunces (titres) + Switzer (corps) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,20 +36,20 @@
 
   <style>
     /* ============================ THÈME / VARIABLES ============================
-       Alignées sur le design system du site (css/styles.css) — contrastes AA. */
+       Alignées sur le design system du site (css/styles.css), contrastes AA. */
     :root {
-      --cuivre: #A04A32;        /* accent — AA (≥4.5) sur fonds clairs        */
+      --cuivre: #A04A32;        /* accent, AA (≥4.5) sur fonds clairs        */
       --cuivre-fonce: #8A3F2B;  /* survol                                     */
       --nuit: #0E1A1F;          /* fonds sombres, texte fort                  */
-      --saumon: #D98A6E;        /* accent sur fond nuit — AA (≥4.5) sur nuit  */
+      --saumon: #D98A6E;        /* accent sur fond nuit, AA (≥4.5) sur nuit  */
       --encre: #3A464A;         /* texte courant                              */
-      --gris: #5D6863;          /* texte secondaire — AA sur crème            */
+      --gris: #5D6863;          /* texte secondaire, AA sur crème            */
       --brume: #AEB9B7;         /* bordures                                   */
       --creme: #EFEBE2;         /* fonds de blocs clairs                      */
       --banquise: #F5F2EC;      /* fond de page                               */
       --blanc: #ffffff;
-      --vert: #2E6B55;          /* validations — AA sur blanc                 */
-      --ambre: #8A6508;         /* avertissements — AA sur fond clair         */
+      --vert: #2E6B55;          /* validations, AA sur blanc                 */
+      --ambre: #8A6508;         /* avertissements, AA sur fond clair         */
       --rayon: 14px;
       --rayon-sm: 10px;
       --ombre-douce: 0 2px 10px rgba(14, 26, 31, 0.06);
@@ -86,7 +86,7 @@
     }
 
     /* ============================ ÉTAPE 1 : SAISIE DU CODE ============================
-       Panneau pleine largeur sur fond « nuit » — le moment fort de la page :
+       Panneau pleine largeur sur fond « nuit », le moment fort de la page :
        intro à gauche, champ XXL + bouton à droite (une colonne sur mobile). */
     .sw-code-bloc {
       position: relative; overflow: hidden;
@@ -171,7 +171,7 @@
     .sw-btn-secondaire:hover { border-color: var(--nuit); }
     .sw-btn-bloc { width: 100%; }
 
-    /* Codes de test — visibles UNIQUEMENT en mode démo (?demo=1).
+    /* Codes de test, visibles UNIQUEMENT en mode démo (?demo=1).
        Posés sur le panneau sombre : libellé et puces en version claire. */
     .sw-aide-codes { margin-top: 22px; padding-top: 18px; border-top: 1px dashed rgba(245, 242, 236, 0.28); }
     .sw-aide-codes p { font-family: var(--mono); font-size: 11px; color: rgba(245, 242, 236, 0.65); margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.12em; }
@@ -397,7 +397,7 @@
       overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
     }
 
-    /* ============================ ANIMATIONS — desktop uniquement ============================
+    /* ============================ ANIMATIONS, desktop uniquement ============================
        Entrées de sections activées seulement si ≥861px ET pas de préférence
        « réduire les animations » (classe .sw-anim posée en JS). Mobile = statique. */
     .sw-anim .sw-entree { animation: sw-apparait 0.35s ease both; }
@@ -409,7 +409,7 @@
   <div id="saumon-widget">
 
     <!-- =============================================================
-         ÉTAPE 1 — Saisie & validation du code partenaire
+         ÉTAPE 1, Saisie & validation du code partenaire
          (pas d'en-tête interne : la page commande.html porte déjà le titre)
          ============================================================= -->
     <section id="sw-etape-code" class="sw-code-bloc">
@@ -417,7 +417,7 @@
         <div class="sw-code-intro">
           <p class="sw-code-kicker"><span class="sw-regle" aria-hidden="true"></span>Accès partenaire</p>
           <h2>Code partenaire</h2>
-          <p class="sw-sous">Le code communiqué par votre comité — exemple&nbsp;: <strong>ALLIANZ26</strong></p>
+          <p class="sw-sous">Le code communiqué par votre comité, exemple&nbsp;: <strong>ALLIANZ26</strong></p>
         </div>
 
         <div class="sw-code-saisie">
@@ -433,7 +433,7 @@
           <!-- Zone de message (cas limites, erreurs réseau). aria-live : lecteurs d'écran. -->
           <div id="sw-zone-message" class="sw-cache" aria-live="polite"></div>
 
-          <!-- Codes de test — cachés par défaut, affichés seulement avec ?demo=1 -->
+          <!-- Codes de test, cachés par défaut, affichés seulement avec ?demo=1 -->
           <div class="sw-aide-codes sw-cache" id="sw-aide-codes">
             <p>Codes de test (mode démo)</p>
             <div class="sw-puces" id="sw-puces-test"></div>
@@ -442,17 +442,17 @@
       </div>
     </section>
 
-    <!-- ÉTAPE 2 — Parcours de commande (injecté dynamiquement) -->
+    <!-- ÉTAPE 2, Parcours de commande (injecté dynamiquement) -->
     <section id="sw-etape-commande" class="sw-cache" aria-live="polite"></section>
 
-    <!-- ÉTAPE 3 — Confirmation (injectée dynamiquement) -->
+    <!-- ÉTAPE 3, Confirmation (injectée dynamiquement) -->
     <section id="sw-etape-confirmation" class="sw-cache" aria-live="polite"></section>
 
   </div>
 
   <script>
   /* =====================================================================
-     LOGIQUE DU WIDGET — Vanilla JS, état en mémoire (zéro stockage local)
+     LOGIQUE DU WIDGET, Vanilla JS, état en mémoire (zéro stockage local)
      ===================================================================== */
   (function () {
     "use strict";
@@ -487,7 +487,7 @@
        - vérifie le token ;
        - revérifie statut + fenêtre de dates CÔTÉ « SERVEUR » ;
        - RECALCULE tous les montants depuis les prix « Airtable »
-         (jamais confiance aux montants du navigateur — CLAUDE.md §15) ;
+         (jamais confiance aux montants du navigateur, CLAUDE.md §15) ;
        - applique l'idempotence par requestId (anti-doublon) ;
        - numérote CSE-AAAAMMJJ-#### (séquence du jour) ;
        - « écrit » la commande + ses lignes dans les tables en mémoire.
@@ -495,7 +495,7 @@
     var SIMULATEUR = (function () {
 
       /* ---- « Base Airtable » en mémoire (mêmes tables que docs/B) ----
-         PRIX FICTIFS / PROVISOIRES — à remplacer par les tarifs réels.   */
+         PRIX FICTIFS / PROVISOIRES, à remplacer par les tarifs réels.   */
       var TABLE_PRODUITS = {
         "SAU-FIL-1000": { reference: "SAU-FIL-1000", nom: "Filet de saumon sauvage fumé d'Alaska", detail: "Tranché, sous vide, ≈ 1 kg", prix: 77.00, poids: 1000 },
         "SAU-PLQ-130":  { reference: "SAU-PLQ-130",  nom: "Plaquette de saumon sauvage fumé d'Alaska", detail: "3 à 4 tranches, 130 g", prix: 16.50, poids: 130 },
@@ -504,7 +504,7 @@
       };
 
       /* Partenaires : les 2 réels (données de lancement) + 3 cas limites.
-         ⚠️ Fenêtres pensées pour la démo de l'été 2026 — BIENTOT26 reste
+         ⚠️ Fenêtres pensées pour la démo de l'été 2026, BIENTOT26 reste
          « pas encore ouvert » jusqu'au 31/07/2026. */
       var TABLE_PARTENAIRES = {
         "ALLIANZ26": {
@@ -527,12 +527,12 @@
           consignes: "", produits: ["SAU-FIL-1000"], livraisons: []
         },
         "BIENTOT26": {
-          nom: "Partenaire — campagne à venir", statut: "Actif", remisePct: 0.20,
+          nom: "Partenaire, campagne à venir", statut: "Actif", remisePct: 0.20,
           dateOuverture: "2026-12-01", dateCloture: "2026-12-31",
           consignes: "", produits: ["SAU-FIL-1000", "SAU-PLQ-130"], livraisons: []
         },
         "TERMINE26": {
-          nom: "Partenaire — campagne clôturée", statut: "Actif", remisePct: 0.20,
+          nom: "Partenaire, campagne clôturée", statut: "Actif", remisePct: 0.20,
           dateOuverture: "2026-04-01", dateCloture: "2026-05-31",
           consignes: "", produits: ["SAU-FIL-1000"], livraisons: []
         }
@@ -541,7 +541,7 @@
       var TABLE_MODES_LIVRAISON = {
         "alz-retrait":  { id: "alz-retrait",  libelle: "Retrait au siège", type: "Retrait", frais: 0, lieu: "Siège Allianz (à préciser)", date: "2026-10-02" },
         "alz-domicile": { id: "alz-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "France métropolitaine (supplément à préciser)", date: "2026-10-03" },
-        "tls-retrait":  { id: "tls-retrait",  libelle: "Retrait — Marché de Noël du COSAT", type: "Retrait", frais: 0, lieu: "Marché de Noël du COSAT (à préciser)", date: "2026-12-12" },
+        "tls-retrait":  { id: "tls-retrait",  libelle: "Retrait, marché de Noël du COSAT", type: "Retrait", frais: 0, lieu: "Marché de Noël du COSAT (à préciser)", date: "2026-12-12" },
         "tls-domicile": { id: "tls-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "Selon conditions (à préciser)", date: "2026-12-13" }
       };
 
@@ -608,7 +608,7 @@
           if (p.statut !== "Actif") return { ok: false, raison: "inactif" };
           if (jour < p.dateOuverture || jour > p.dateCloture) return { ok: false, raison: "termine" };
 
-          /* RECALCUL complet depuis les prix « Airtable » (§15) —
+          /* RECALCUL complet depuis les prix « Airtable » (§15) -
              on ignore les montants envoyés par le navigateur. */
           var sousTotal = 0, poids = 0;
           var lignesRecalc = (payload.lignes || []).map(function (l) {
@@ -658,7 +658,7 @@
     })();
 
     /* -------------------------------------------------------------------
-       2) COUCHE D'APPEL — bascule automatique simulateur / webhooks réels
+       2) COUCHE D'APPEL, bascule automatique simulateur / webhooks réels
     ------------------------------------------------------------------- */
     function appelerLectureConfig(donnees) {
       if (WEBHOOK_LECTURE) {
@@ -680,7 +680,7 @@
     }
 
     /* -------------------------------------------------------------------
-       3) ÉTAT EN MÉMOIRE (jamais persisté — ni localStorage ni session)
+       3) ÉTAT EN MÉMOIRE (jamais persisté, ni localStorage ni session)
     ------------------------------------------------------------------- */
     var etat = {
       code: null,
@@ -730,7 +730,7 @@
     var elInputCode = $("#sw-input-code");
 
     /* -------------------------------------------------------------------
-       5) ÉTAPE 1 — Validation du code & gestion des 4 cas limites
+       5) ÉTAPE 1, Validation du code & gestion des 4 cas limites
        (les vérifications font AUSSI foi côté serveur/simulateur)
     ------------------------------------------------------------------- */
     function afficherMessage(type, titre, texte, htmlSupplement) {
@@ -746,7 +746,7 @@
     }
     function masquerMessage() { elZoneMessage.className = "sw-cache"; elZoneMessage.innerHTML = ""; }
 
-    /* Messages des cas limites — mêmes « raisons » que le webhook Make. */
+    /* Messages des cas limites, mêmes « raisons » que le webhook Make. */
     function messagePourRaison(reponse) {
       switch (reponse.raison) {
         case "inexistant": return { type: "erreur", titre: "Code introuvable. ", texte: "Ce code n'existe pas. Vérifiez auprès de votre CSE." };
@@ -794,7 +794,7 @@
           etat.livraisonId = reponse.partenaire.livraisons.length === 1 ? reponse.partenaire.livraisons[0].id : null;
           afficherEtapeCommande();
         })
-        .catch(function () { // échec réseau (webhook injoignable) — §15 robustesse
+        .catch(function () { // échec réseau (webhook injoignable), §15 robustesse
           btn.disabled = false;
           btn.innerHTML = libelleInitial;
           afficherMessage("erreur", "Connexion impossible. ",
@@ -803,7 +803,7 @@
     }
 
     /* -------------------------------------------------------------------
-       6) ÉTAPE 2 — Rendu du parcours de commande
+       6) ÉTAPE 2, Rendu du parcours de commande
     ------------------------------------------------------------------- */
     function afficherEtapeCommande() {
       var p = etat.partenaire;
@@ -888,7 +888,7 @@
           '<label for="sw-f-siteweb">Votre site web</label>' +
           '<input type="text" id="sw-f-siteweb" tabindex="-1" autocomplete="off" />' +
         '</div>' +
-        /* Consentement RGPD (obligatoire — CLAUDE.md §15). */
+        /* Consentement RGPD (obligatoire, CLAUDE.md §15). */
         '<label class="sw-consent">' +
           '<input type="checkbox" id="sw-f-consent" />' +
           '<span>J\'accepte que mes coordonnées soient utilisées uniquement pour le traitement de ma précommande, ' +
@@ -906,7 +906,7 @@
         '<div class="sw-recap-totaux" id="sw-recap-totaux"></div>' +
         '<button type="button" class="sw-btn sw-btn-primaire sw-btn-bloc" id="sw-btn-commander">Valider ma précommande</button>' +
         '<div id="sw-zone-erreur-envoi"></div>' +
-        '<p class="sw-recap-note">Sans paiement en ligne — vous réglez au retrait. Un e-mail de confirmation vous sera envoyé.</p>' +
+        '<p class="sw-recap-note">Sans paiement en ligne : vous réglez au retrait. Un e-mail de confirmation vous sera envoyé.</p>' +
       '</div></aside>';
 
       html += '</div>'; // fin grille
@@ -998,7 +998,7 @@
     }
 
     /* -------------------------------------------------------------------
-       8) CALCULS EN TEMPS RÉEL (affichage — cf. CLAUDE.md §5)
+       8) CALCULS EN TEMPS RÉEL (affichage, cf. CLAUDE.md §5)
        Le simulateur / Make refait TOUS ces calculs côté serveur avant
        d'enregistrer : l'affichage n'est qu'indicatif.
     ------------------------------------------------------------------- */
@@ -1194,7 +1194,7 @@
     function arrondi(n) { return Math.round(n * 100) / 100; }
 
     /* -------------------------------------------------------------------
-       10) ÉTAPE 3 — Confirmation + aperçu de l'e-mail récapitulatif
+       10) ÉTAPE 3, Confirmation + aperçu de l'e-mail récapitulatif
     ------------------------------------------------------------------- */
     function afficherConfirmation(c, reponse) {
       var numero = reponse.numeroCommande;
@@ -1217,8 +1217,8 @@
         '<div class="sw-recap-final">' +
           ligneRF("Partenaire", etat.partenaire.nom) +
           ligneRF("Produits", lignes.map(function (l) { return l.q + "× " + l.nom; }).join(" · ")) +
-          ligneRF("Récupération", liv ? (liv.libelle + " — " + dateLongue(liv.date)) : "—") +
-          ligneRF("Lieu", liv ? liv.lieu : "—") +
+          ligneRF("Récupération", liv ? (liv.libelle + " · " + dateLongue(liv.date)) : "-") +
+          ligneRF("Lieu", liv ? liv.lieu : "-") +
           ligneRF("Poids total estimé", poidsLisible(poids)) +
           ligneRF("Total à régler sur place", eur(total)) +
         '</div>' +
@@ -1241,7 +1241,7 @@
     }
 
     /* Aperçu fidèle de l'e-mail récap que Make enverra (scénario B, module 19).
-       Affiché uniquement en simulation locale — en production, le vrai
+       Affiché uniquement en simulation locale, en production, le vrai
        e-mail part depuis l'adresse du domaine. */
     function construireApercuEmail(numero, cmd) {
       var lignesHtml = cmd.lignes.map(function (l) {
@@ -1257,7 +1257,7 @@
         '<div class="sw-email-entete">' +
           '<div><strong>De&nbsp;:</strong> Les Saumons de Lionel &lt;bonjour@lessaumonsdelionel.fr&gt;</div>' +
           '<div><strong>À&nbsp;:</strong> ' + echapper(cmd.salarie.email) + '</div>' +
-          '<div><strong>Objet&nbsp;:</strong> Votre précommande ' + echapper(numero) + ' — Les Saumons de Lionel</div>' +
+          '<div><strong>Objet&nbsp;:</strong> Votre précommande ' + echapper(numero) + ' · Les Saumons de Lionel</div>' +
         '</div>' +
         '<div class="sw-email-corps">' +
           '<p>Bonjour ' + echapper(prenom) + ',</p>' +
@@ -1274,8 +1274,8 @@
               '<td class="sw-num-cell">' + eur(cmd.total) + '</td></tr>' +
           '</table>' +
           '<p><strong>Récupération&nbsp;:</strong> ' +
-            (cmd.livraison ? echapper(cmd.livraison.libelle) + ' — ' + echapper(cmd.livraison.lieu) +
-              ', le ' + dateLongue(cmd.livraison.date) : "—") + '.<br>' +
+            (cmd.livraison ? echapper(cmd.livraison.libelle) + ' · ' + echapper(cmd.livraison.lieu) +
+              ', le ' + dateLongue(cmd.livraison.date) : "-") + '.<br>' +
             'Nos produits sont remis surgelés, à -18&nbsp;°C&nbsp;: pensez à votre sac isotherme. Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.</p>' +
           '<p>Pour modifier ou annuler, répondez à cet e-mail en indiquant votre n° de commande.</p>' +
           '<p class="sw-email-sign">Les Saumons de Lionel : saumon sauvage d\'Alaska, fumé, tranché et surgelé.</p>' +
@@ -1332,7 +1332,7 @@
         masquerMessage();
       });
 
-      // Puces de test — seulement en mode démo (?demo=1)
+      // Puces de test, seulement en mode démo (?demo=1)
       if (modeDemoActif()) {
         var codesDemo = [
           { code: "ALLIANZ26", note: "actif" },
