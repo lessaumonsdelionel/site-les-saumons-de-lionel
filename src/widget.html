@@ -503,21 +503,22 @@
         "TRU-PLQ-130":  { reference: "TRU-PLQ-130",  nom: "Plaquette de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, 130 g", prix: 15.50, poids: 130 }
       };
 
-      /* Partenaires : les 2 réels (données de lancement) + 3 cas limites.
-         ⚠️ Fenêtres pensées pour la démo de l'été 2026, BIENTOT26 reste
-         « pas encore ouvert » jusqu'au 31/07/2026. */
+      /* Partenaires de DÉMONSTRATION, jamais les vrais codes : ce fichier est
+         servi publiquement, un code écrit ici serait lisible par n'importe qui.
+         Les vrais partenaires vivent dans Airtable et arrivent par Make.
+         Ces données ne servent qu'en local, webhooks non injectés. */
       var TABLE_PARTENAIRES = {
-        "ALLIANZ26": {
-          nom: "Allianz, CSE", statut: "Actif", remisePct: 0,
+        "COMITE26": {
+          nom: "Comité de démonstration", statut: "Actif", remisePct: 0,
           dateOuverture: "2026-06-15", dateCloture: "2026-09-30",
           consignes: "Retrait gratuit au siège sur présentation du badge salarié. Lieu, date et frais définitifs à préciser.",
           produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-600", "TRU-PLQ-130"],
           livraisons: ["alz-retrait", "alz-domicile"]
         },
-        "COSAT26": {
-          nom: "COSAT Toulouse, CSE", statut: "Actif", remisePct: 0,
+        "COMITE27": {
+          nom: "Second comité de démonstration", statut: "Actif", remisePct: 0,
           dateOuverture: "2026-06-15", dateCloture: "2026-11-30",
-          consignes: "Retrait gratuit au marché de Noël du COSAT. Lieu exact, date et frais à préciser.",
+          consignes: "Retrait gratuit sur le point convenu avec le comité. Lieu exact, date et frais à préciser.",
           produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-600", "TRU-PLQ-130"],
           livraisons: ["tls-retrait", "tls-domicile"]
         },
@@ -1336,8 +1337,8 @@
       // Puces de test, seulement en mode démo (?demo=1)
       if (modeDemoActif()) {
         var codesDemo = [
-          { code: "ALLIANZ26", note: "actif" },
-          { code: "COSAT26", note: "actif" },
+          { code: "COMITE26", note: "actif" },
+          { code: "COMITE27", note: "actif" },
           { code: "INACTIF26", note: "inactif" },
           { code: "BIENTOT26", note: "pas encore ouvert" },
           { code: "TERMINE26", note: "terminé" },
