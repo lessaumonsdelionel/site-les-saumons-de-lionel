@@ -818,7 +818,12 @@
             ' · Commandes ouvertes jusqu\'au ' + dateLongue(p.dateCloture) + '</div>' +
           '<button type="button" class="sw-lien-retour" id="sw-retour-code">← Changer de code</button>' +
         '</div>' +
-        '<span class="sw-badge">−' + Math.round(p.remisePct * 100) + '% CSE</span>' +
+        /* La grille servie EST déjà la grille CSE : quand la remise vaut 0,
+           afficher « −0% CSE » n'a aucun sens pour le salarié. Le pourcentage
+           ne s'affiche que s'il existe vraiment. */
+        '<span class="sw-badge">' +
+          (p.remisePct > 0 ? '−' + Math.round(p.remisePct * 100) + '% CSE' : 'Tarif CSE') +
+        '</span>' +
       '</div>';
 
       // Consignes éventuelles du partenaire
