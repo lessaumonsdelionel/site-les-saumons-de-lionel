@@ -417,7 +417,7 @@
         <div class="sw-code-intro">
           <p class="sw-code-kicker"><span class="sw-regle" aria-hidden="true"></span>Accès partenaire</p>
           <h2>Code partenaire</h2>
-          <p class="sw-sous">Le code communiqué par votre comité, exemple&nbsp;: <strong>ALLIANZ26</strong></p>
+          <p class="sw-sous">Le code communiqué par votre comité, par exemple&nbsp;: <strong>COMITE26</strong></p>
         </div>
 
         <div class="sw-code-saisie">
@@ -1266,8 +1266,8 @@
           '<table>' +
             '<tr><th>Produit</th><th style="text-align:right">Qté</th><th style="text-align:right">Montant</th></tr>' +
             lignesHtml +
-            '<tr><td>Remise CSE (−' + Math.round(cmd.remisePct * 100) + '%)</td><td></td>' +
-              '<td class="sw-num-cell">− ' + eur(cmd.remise) + '</td></tr>' +
+            (cmd.remise > 0 ? '<tr><td>Remise CSE (−' + Math.round(cmd.remisePct * 100) + '%)</td><td></td>' +
+              '<td class="sw-num-cell">− ' + eur(cmd.remise) + '</td></tr>' : '') +
             '<tr><td>Frais de récupération</td><td></td>' +
               '<td class="sw-num-cell">' + (cmd.frais === 0 ? "Gratuit" : eur(cmd.frais)) + '</td></tr>' +
             '<tr class="sw-email-total"><td>Total à régler sur place</td><td></td>' +
@@ -1277,8 +1277,9 @@
             (cmd.livraison ? echapper(cmd.livraison.libelle) + ' · ' + echapper(cmd.livraison.lieu) +
               ', le ' + dateLongue(cmd.livraison.date) : "-") + '.<br>' +
             'Nos produits sont remis surgelés, à -18&nbsp;°C&nbsp;: pensez à votre sac isotherme. Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.</p>' +
-          '<p>Pour modifier ou annuler, répondez à cet e-mail en indiquant votre n° de commande.</p>' +
-          '<p class="sw-email-sign">Les Saumons de Lionel : saumon sauvage d\'Alaska, fumé, tranché et surgelé.</p>' +
+          '<p>Merci pour votre précommande. Votre commande sera préparée selon les modalités communiquées pour votre opération partenaire. Les filets étant vendus au poids réel, le montant final pourra être ajusté lors de la remise.</p>' +
+          '<p>Pour modifier ou annuler, répondez à cet e-mail en indiquant votre n° de commande. Pour toute question : bonjour@lessaumonsdelionel.fr</p>' +
+          '<p class="sw-email-sign">Rita - Les Saumons de Lionel</p>' +
         '</div>' +
       '</div>';
     }

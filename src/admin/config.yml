@@ -87,6 +87,8 @@ collections:
               - { name: "alt", label: "Description de la photo (accessibilité)", widget: "string" }
               - { name: "legende", label: "Légende sur la photo (lieu, date, crédit)", widget: "string", required: false }
               - { name: "label", label: "Étiquette label (ex. AB, vide = rien)", widget: "string", required: false }
+              - { name: "prixPublic", label: "Tarif particulier affiché (ex. 98,90 € TTC le kilo, vide = rien)", widget: "string", required: false }
+              - { name: "prixNote", label: "Mention sous le tarif particulier", widget: "string", required: false }
               - name: "specs"
                 label: "Relevé de traçabilité"
                 widget: "object"
@@ -262,6 +264,9 @@ collections:
               - { name: "eyebrow", label: "Sur-titre", widget: "string" }
               - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
               - { name: "texte", label: "Texte", widget: "text" }
+              - { name: "tarifsTitre", label: "Titre de la grille des tarifs particuliers", widget: "string" }
+              - { name: "tarifsNote", label: "Mention sous la grille (poids réel)", widget: "text" }
+              - { name: "disponibilites", label: "Phrase sur les disponibilités", widget: "text" }
               - { name: "boutonCode", label: "Texte du bouton code CSE", widget: "string" }
               - { name: "boutonContact", label: "Texte du bouton contact", widget: "string" }
 

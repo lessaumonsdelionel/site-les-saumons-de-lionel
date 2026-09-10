@@ -1,27 +1,27 @@
 {
   "seo": {
     "titre": "Les Saumons de Lionel : saumon sauvage d'Alaska fumé, depuis 1994",
-    "description": "Saumon sockeye sauvage d'Alaska et truite des Pyrénées AB, fumés, tranchés et surgelés. Entreprise familiale depuis 1994. Offres CSE par code partenaire, particuliers selon disponibilités.",
+    "description": "Saumon sockeye sauvage d'Alaska, fumé et tranché à la main, surgelé. Truite fumée des Pyrénées issue de l'agriculture biologique. Une histoire familiale commencée en 1994 avec Lionel. Offres CSE par code partenaire, particuliers en commandes groupées.",
     "ogTitre": "Les Saumons de Lionel : saumon sauvage d'Alaska, depuis 1994",
-    "ogDescription": "Saumon sockeye sauvage d'Alaska, fumé, tranché et surgelé. Offres CSE et entreprises, particuliers selon disponibilités."
+    "ogDescription": "Saumon sockeye sauvage d'Alaska, fumé, tranché à la main et surgelé. Offres CSE et entreprises, particuliers en commandes groupées."
   },
   "hero": {
-    "eyebrow": "Golfe d'Alaska · Sockeye sauvage · Depuis 1994",
+    "eyebrow": "Pacifique Nord · Sockeye sauvage · Depuis 1994",
     "titre": "Saumon sauvage d'Alaska, <em>depuis 1994.</em>",
-    "accroche": "Filets et plaquettes de saumon sockeye sauvage, fumés, tranchés et surgelés. Une entreprise familiale née de l'histoire de Lionel avec l'Alaska. Proposé aux CSE et aux entreprises, et aux particuliers selon disponibilités.",
+    "accroche": "Filets et plaquettes de saumon sockeye sauvage, fumés, tranchés et surgelés. Une entreprise familiale née de l'histoire de Lionel Maye avec l'Alaska. Proposé aux CSE et aux entreprises, et aux particuliers sous forme de commandes groupées.",
     "boutonPrincipal": "J'ai un code CSE",
     "boutonSecondaire": "Nos produits",
     "noteBas": "Pêche sauvage · Jamais d'élevage · Surgelé à -18 °C",
-    "imageFond": "assets/img/hero-alaska.webp",
-    "legende": "Alaska · image provisoire"
+    "imageFond": "assets/img/hero-riviere.webp",
+    "legende": "Photo d'ambiance"
   },
   "faits": {
     "eyebrow": "Ce qui nous distingue",
     "titre": "Trois faits, <em>rien d'autre.</em>",
     "liste": [
-      { "label": "Origine", "titre": "Pêché en milieu naturel", "texte": "Le sockeye, Oncorhynchus nerka, est pêché en saison dans le Pacifique Nord, au large de l'Alaska. Jamais d'élevage, aucun antibiotique, aucun colorant." },
-      { "label": "Préparation", "titre": "Fumé, tranché, surgelé", "texte": "Les filets sont fumés puis tranchés et mis sous vide, avant d'être surgelés. Ils voyagent et se conservent à -18 °C, jusqu'à votre table." },
-      { "label": "Depuis 1994", "titre": "Une entreprise familiale", "texte": "Une histoire commencée dans les années 80 avec Lionel et l'Alaska, poursuivie en famille depuis 1994." }
+      { "label": "Origine", "titre": "Saumon sockeye sauvage d'Alaska", "texte": "Pas d'élevage, pas d'antibiotiques, pas de colorants. Un poisson pêché en mer, dans les eaux froides du Pacifique Nord, au large de l'Alaska." },
+      { "label": "Préparation", "titre": "Fumé, tranché à la main", "texte": "Fumé, tranché à la main, conditionné sous vide et livré par nos soins, partout en France métropolitaine." },
+      { "label": "Depuis 1994", "titre": "Une histoire familiale", "texte": "Une histoire familiale commencée en 1994 avec Lionel, et poursuivie aujourd'hui autour du même produit : le saumon sauvage sockeye." }
     ]
   },
   "produits": {
@@ -30,17 +30,18 @@
     "texteCote": "Le saumon sockeye sauvage d'Alaska en filet et en plaquette, la truite fumée des Pyrénées issue de l'agriculture biologique en filet et en plaquette.",
     "note": "Tarif CSE avec votre code",
     "bouton": "Voir les produits",
-    "horsCseLien": "Commander hors CSE ? Contactez-nous"
+    "horsCseLien": "Une demande hors CSE ? Contactez-nous"
   },
   "histoire": {
     "eyebrow": "Notre histoire",
-    "titre": "Lionel et l'Alaska, <em>depuis les années 80.</em>",
+    "titre": "Lionel et l'Alaska, <em>depuis 1980.</em>",
     "paragraphes": [
-      "Tout commence dans les années 80, quand Lionel découvre l'Alaska et son saumon sauvage. Depuis 1994, l'activité se transmet en famille, avec le même produit : du sockeye sauvage, fumé, tranché et livré froid."
+      "Lionel Maye a vécu l'Alaska de l'intérieur. Installé à Anchorage dès 1980, il y fonde Grand Frisson pour faire découvrir ce territoire aux voyageurs, aux pêcheurs et aux photographes. Son univers mêlait grands espaces, rivières sauvages, ours bruns, saumons du Pacifique et produits d'Alaska.",
+      "Les Saumons de Lionel prolongent aujourd'hui cette histoire familiale autour du saumon sauvage sockeye."
     ],
-    "image": "assets/img/peche.webp",
-    "imageAlt": "Pêche en eaux froides, Alaska",
-    "legende": "Alaska · image provisoire",
+    "image": "assets/img/lionel-portrait.webp",
+    "imageAlt": "Portrait de Lionel Maye, chapka et parka rouge",
+    "legende": "Lionel Maye · Alaska",
     "lien": "Lire notre histoire"
   },
   "avis": {
@@ -52,19 +53,19 @@
     "eyebrow": "Offres CSE &amp; entreprises",
     "titre": "Une offre dédiée, <em>un simple code.</em>",
     "texte": "Votre CSE vous a transmis un code partenaire ? Saisissez-le pour accéder à votre offre, vos tarifs et votre point de retrait. Précommande groupée, sans paiement en ligne.",
-    "codeExemple": "ALLIANZ26",
+    "codeExemple": "COMITE26",
     "bouton": "J'ai un code CSE",
     "lien": "Vous êtes un CSE ou une entreprise ? Voir les offres CSE",
     "imageFond": "assets/img/texture-glace.webp"
   },
   "froid": {
     "eyebrow": "La chaîne du froid",
-    "titre": "De la pêche à votre table, <em>sans rompre le froid.</em>",
+    "titre": "De la pêche à la remise, <em>sans rompre le froid.</em>",
     "etapes": [
-      { "temp": "Alaska", "titre": "Pêche sauvage", "texte": "Pêché en saison dans le Pacifique Nord, au large de l'Alaska." },
-      { "temp": "Fumoir", "titre": "Fumaison", "texte": "Fumé, puis tranché et mis sous vide." },
-      { "temp": "-18 °C", "titre": "Surgélation", "texte": "Surgelé après la fumaison, transporté et stocké à -18 °C." },
-      { "temp": "-18 °C", "titre": "Remise", "texte": "Remis surgelé au point de retrait ou livré à domicile. À conserver au congélateur." }
+      { "temp": "Alaska · Mi-mai à fin août", "titre": "La pêche en mer", "texte": "Saumon sockeye sauvage pêché en saison au large de l'Alaska, par nos partenaires de pêche." },
+      { "temp": "Environ -40 °C", "titre": "Congelé à l'origine", "texte": "Préparé puis congelé rapidement après la pêche, et expédié congelé vers la France. C'est ce qui fixe la texture, la couleur et le goût." },
+      { "temp": "Pays de la Loire", "titre": "Fumé, tranché à la main", "texte": "Salé, fumé lentement au bois de hêtre, tranché à la main et mis sous vide dans un atelier agréé aux normes européennes." },
+      { "temp": "-18 °C", "titre": "Surgelé, puis remis", "texte": "Le produit fini est surgelé, puis remis surgelé à votre point de retrait ou livré à domicile. Il se conserve 2 ans au congélateur." }
     ]
   }
 }

@@ -6,11 +6,11 @@
   "hero": {
     "eyebrow": "Précommande groupée · Code CSE",
     "titre": "Votre code CSE, <em>votre offre.</em>",
-    "accroche": "Saisissez le code communiqué par votre comité pour accéder à votre catalogue, vos tarifs et vos modalités de retrait. Sans paiement en ligne : vous réglez au retrait."
+    "accroche": "Saisissez le code communiqué par votre comité pour accéder à votre catalogue, vos tarifs et vos modalités de retrait. Sans paiement en ligne : vous réglez lors de la remise."
   },
   "reassurance": [
     { "chiffre": "-18", "unite": "°C", "titre": "Remis surgelé", "texte": "Le produit est remis surgelé, pensez au sac isotherme pour le trajet." },
     { "chiffre": "24", "unite": "h", "titre": "Confirmation immédiate", "texte": "Un e-mail récapitulatif vous est envoyé dès la validation de votre précommande." },
-    { "chiffre": "±", "unite": "", "titre": "Modifiable", "texte": "Besoin de changer ou d'annuler ? Contactez-nous avec votre numéro de commande." }
+    { "chiffre": "±", "unite": "", "titre": "Ajusté au poids réel", "texte": "Les filets sont vendus au poids réel : le montant affiché est estimatif, ajusté lors de la remise. Pour modifier ou annuler, écrivez-nous avec votre numéro de commande." }
   ]
 }

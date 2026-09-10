@@ -13,7 +13,7 @@ La présente politique décrit comment « Les Saumons de Lionel » (Margarit Aga
 ## Quelles données collectons-nous ?
 
 - **Données de précommande** : nom, adresse e-mail, numéro de téléphone, code partenaire, produits commandés et éventuel commentaire.
-- **Données du formulaire de contact** : nom, adresse e-mail, téléphone si vous le renseignez, votre profil (particulier, salarié, responsable de CSE) et votre message.
+- **Données du formulaire de contact** : nom, adresse e-mail, téléphone si vous le renseignez, code postal et ville, votre profil (particulier, salarié, responsable de CSE), le nom de votre CSE ou entreprise si vous le renseignez, et votre message.
 - Aucune donnée bancaire n'est collectée sur ce site (pas de paiement en ligne).
 
 ## Pour quelles finalités ?
@@ -28,8 +28,6 @@ Base légale : l'exécution du contrat de précommande et les mesures prises à 
 ## Combien de temps ?
 
 Vos données de précommande sont conservées pendant la durée de la campagne, puis archivées au maximum **24 mois** à des fins de gestion et d'obligations comptables, avant suppression. Les messages reçus par le formulaire de contact sont conservés le temps de traiter votre demande, au maximum 12 mois.
-
-<p class="todo">Durées à confirmer avec la responsable de traitement avant mise en ligne.</p>
 
 ## Où sont-elles hébergées ?
 

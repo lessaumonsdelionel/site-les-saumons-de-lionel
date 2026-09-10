@@ -325,6 +325,19 @@ section{padding:clamp(72px,9vw,130px) 0}
 .specs dt{color:var(--gris);font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding-top:3px;flex:none}
 .specs dd{text-align:right;max-width:38ch}
 
+/* Tarif particulier indicatif, sur la fiche produit */
+.prix-public{margin-top:12px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font-size:13.5px;color:var(--gris);max-width:52ch}
+.prix-public b{font-family:var(--serif);font-weight:400;font-size:24px;color:var(--nuit);line-height:1}
+
+/* Grille des tarifs particuliers, dans le bandeau sombre de la page Nos produits */
+.tarifs{margin:36px auto 0;max-width:600px;text-align:left}
+.tarifs-titre{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--saumon);margin-bottom:10px}
+.tarifs ul{border-top:1px solid rgba(245,242,236,.2)}
+.tarifs li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:13px 0;border-bottom:1px solid rgba(245,242,236,.12);font-size:15.5px;color:var(--banquise)}
+.tarifs li small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,242,236,.55);margin-top:3px}
+.tarifs li b{font-family:var(--serif);font-weight:400;font-size:21px;white-space:nowrap}
+.cse-band .tarifs-note{font-size:13.5px;color:rgba(245,242,236,.6);margin:14px 0 0;max-width:none}
+
 /* ---------- Page Histoire : frise ---------- */
 .timeline{position:relative;margin-top:clamp(40px,5vw,64px);display:flex;flex-direction:column;gap:clamp(40px,6vw,72px)}
 .timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--brume)}

@@ -27,6 +27,7 @@ eleventyComputed:
         <span class="eyebrow reveal">{{ p.eyebrow | safe }}</span>
         <h3 class="reveal">{{ p.nom | safe }}{% if p.label %} <span class="label-ab">{{ p.label | safe }}</span>{% endif %}</h3>
         <span class="wt reveal">{{ p.infos | safe }}</span>
+        {% if p.prixPublic %}<p class="prix-public reveal"><b>{{ p.prixPublic | safe }}</b> <span>{{ p.prixNote | safe }}</span></p>{% endif %}
         <p class="reveal">{{ p.description | safe }}</p>
         <dl class="specs reveal">
           <div><dt>Espèce</dt><dd>{{ p.specs.espece | safe }}</dd></div>
@@ -37,7 +38,7 @@ eleventyComputed:
         </dl>
         <div class="reveal" style="margin-top:24px;display:flex;gap:14px 24px;flex-wrap:wrap;align-items:center">
           <a class="btn btn-primary" href="commande.html">J'ai un code CSE <span class="arr">→</span></a>
-          <a class="link-more" href="contact.html?profil=particulier">Commander hors CSE ? Contactez-nous <span class="arr">→</span></a>
+          <a class="link-more" href="contact.html?profil=particulier">Une demande hors CSE ? Contactez-nous <span class="arr">→</span></a>
         </div>
       </div>
     </article>{% endfor %}
@@ -72,7 +73,15 @@ eleventyComputed:
     <span class="eyebrow reveal">{{ nosproduits.prix.eyebrow | safe }}</span>
     <h2 class="reveal">{{ nosproduits.prix.titre | safe }}</h2>
     <p class="reveal">{{ nosproduits.prix.texte | safe }}</p>
-    <div class="reveal" data-d="1" style="margin-top:32px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <div class="tarifs reveal" data-d="1">
+      <span class="tarifs-titre">{{ nosproduits.prix.tarifsTitre | safe }}</span>
+      <ul>{% for p in produits.liste %}
+        <li><span>{{ p.court | safe }} <small>{{ p.sousTitre | safe }}</small></span><b>{{ p.prixPublic | safe }}</b></li>{% endfor %}
+      </ul>
+      <p class="tarifs-note">{{ nosproduits.prix.tarifsNote | safe }}</p>
+      <p class="tarifs-note">{{ nosproduits.prix.disponibilites | safe }}</p>
+    </div>
+    <div class="reveal" data-d="2" style="margin-top:32px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
       <a class="btn btn-primary" href="commande.html">{{ nosproduits.prix.boutonCode | safe }} <span class="arr">→</span></a>
       <a class="btn btn-ghost light" href="contact.html?profil=particulier">{{ nosproduits.prix.boutonContact | safe }}</a>
     </div>

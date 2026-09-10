@@ -54,12 +54,26 @@ eleventyComputed:
             <input type="tel" id="c-tel" name="telephone" autocomplete="tel">
           </div>
         </div>
+        <div class="form-grid">
+          <div>
+            <label for="c-cp">Code postal</label>
+            <input type="text" id="c-cp" name="code_postal" required autocomplete="postal-code" inputmode="numeric">
+          </div>
+          <div>
+            <label for="c-ville">Ville</label>
+            <input type="text" id="c-ville" name="ville" required autocomplete="address-level2">
+          </div>
+        </div>
         <fieldset class="form-row">
           <legend>Je suis</legend>
           <div class="radios">{% for p in contact.formulaire.profils %}
             <label><input type="radio" name="profil" value="{{ p | safe }}"{% if loop.first %} checked{% endif %}> {{ p | safe }}</label>{% endfor %}
           </div>
         </fieldset>
+        <div class="form-row">
+          <label for="c-cse">Nom de votre CSE ou entreprise <span class="muted" style="text-transform:none;letter-spacing:0">(facultatif)</span></label>
+          <input type="text" id="c-cse" name="cse_entreprise" autocomplete="organization">
+        </div>
         <div class="form-row">
           <label for="c-message">Message</label>
           <textarea id="c-message" name="message" rows="6" required></textarea>
