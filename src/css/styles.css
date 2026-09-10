@@ -19,6 +19,7 @@
   --gris:#5D6863;          /* foncé pour garantir un contraste AA (4.5+)   */
   --cuivre:#A04A32;        /* accent unique, nuance texte, AA sur clair    */
   --saumon:#D98A6E;
+  --saumon-clair:#EDB59D;  /* italique sur photo : contraste AA sur le hero */
   --givre:#7FA6A6;
   --serif:"Fraunces",Georgia,"Times New Roman",serif;
   --sans:"Switzer","Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -97,11 +98,13 @@ h1 em,h2 em,h3 em{font-style:italic;color:var(--cuivre);font-weight:340}
 .lat .bar::before{left:0}.lat .bar::after{right:0}
 .lat .bar i{position:absolute;left:50%;top:-2.5px;width:1px;height:6px;background:var(--cuivre)}
 
-/* Sceau « Wild Sockeye Salmon from Alaska · Since 1994 » :
-   anneau typographique fin autour de l'emblème, couleur héritée (currentColor). */
+/* Sceau « Saumon sockeye sauvage · d'Alaska, depuis 1994 » :
+   anneau typographique fin autour de l'emblème, couleur héritée (currentColor).
+   L'espacement est calé sur le texte français, plus long que l'anglais d'origine :
+   à 2px, « SAUMON SOCKEYE SAUVAGE » débordait de son arc et mordait les repères. */
 .sceau{width:150px;line-height:0}
 .sceau svg{display:block;width:100%;height:auto;overflow:visible}
-.sc-txt{font-family:var(--mono);font-size:9.5px;letter-spacing:2px;fill:currentColor}
+.sc-txt{font-family:var(--mono);font-size:9px;letter-spacing:1.3px;fill:currentColor}
 
 /* Photo légendée façon reportage : la légende (lieu, saison, crédit) fait la preuve */
 .figure{position:relative;border-radius:var(--r-m);overflow:hidden;margin:0}
@@ -171,8 +174,15 @@ body.nav-open .burger span:nth-child(3){transform:translateY(-8px) rotate(-45deg
 .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;
   color:var(--banquise);overflow:hidden;isolation:isolate}
 .hero .bg{position:absolute;inset:0;z-index:-2;background-position:center;background-size:cover}
+/* Deux voiles superposés. Le vertical tient le menu en haut et le pied en bas.
+   L'horizontal protège la colonne de texte à gauche : sans lui, l'italique
+   saumon de « depuis 1994 » passe sur le ciel et les montagnes claires, où il
+   devient illisible (contraste mesuré à 1,1 pour 1). L'image reste nette à
+   droite, là où se trouvent le pêcheur et la rivière. */
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg,rgba(14,26,31,.62) 0%,rgba(14,26,31,.18) 38%,rgba(14,26,31,.8) 100%)}
+  background:
+    linear-gradient(90deg,rgba(14,26,31,.86) 0%,rgba(14,26,31,.70) 40%,rgba(14,26,31,.24) 70%,rgba(14,26,31,0) 100%),
+    linear-gradient(180deg,rgba(14,26,31,.62) 0%,rgba(14,26,31,.22) 38%,rgba(14,26,31,.82) 100%)}
 /* grain film léger */
 .hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.28 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -181,12 +191,15 @@ body.nav-open .burger span:nth-child(3){transform:translateY(-8px) rotate(-45deg
 .hero .eyebrow{color:var(--banquise);text-shadow:0 1px 14px rgba(14,26,31,.5)}
 .hero .eyebrow::before{--tick:var(--saumon)}
 .hero h1{color:var(--banquise);font-size:clamp(44px,7vw,104px);font-weight:320;max-width:14ch;margin:22px 0 0}
-.hero h1 em{color:var(--saumon)}
+/* Sur la photo, l'accent passe en saumon clair : mesuré 4,5 pour 1 contre le
+   voile, là où le saumon de la charte tombait à 2,4 pour 1. */
+.hero h1 em{color:var(--saumon-clair)}
 .hero .lead{font-size:clamp(16px,1.4vw,19px);color:rgba(245,242,236,.88);max-width:52ch;margin:26px 0 38px}
 .hero .cta-row{display:flex;gap:16px;flex-wrap:wrap}
 /* Le sceau, posé en haut à droite du hero, comme un tampon sur une photo */
 .hero .sceau{position:absolute;right:clamp(20px,4vw,48px);top:calc(var(--nav-h) + 30px);
-  width:clamp(128px,12vw,172px);color:rgba(245,242,236,.92);filter:drop-shadow(0 2px 14px rgba(14,26,31,.35))}
+  width:clamp(128px,12vw,172px);color:rgba(245,242,236,.95);
+  filter:drop-shadow(0 2px 18px rgba(14,26,31,.75))}
 .hero .hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-top:72px;
   padding-top:22px;border-top:1px solid rgba(245,242,236,.22);position:relative}
 /* graduations fines le long du filet du pied de hero (rappel « relevé ») */
@@ -423,7 +436,7 @@ footer a{display:block;color:rgba(245,242,236,.72);margin-bottom:11px;font-size:
 footer a:hover{color:var(--saumon)}
 .foot-who{display:block;color:var(--banquise);margin-bottom:11px;font-size:14.5px}
 .foot-bottom{position:relative;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
-  padding-top:28px;font-size:12.5px;color:rgba(245,242,236,.45)}
+  padding-top:28px;font-size:12.5px;color:rgba(245,242,236,.62)}
 .foot-bottom .coords{font-family:var(--mono);letter-spacing:.18em;text-transform:uppercase}
 
 /* =====================================================================

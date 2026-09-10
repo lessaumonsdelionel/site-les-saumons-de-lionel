@@ -16,7 +16,7 @@
     "texteCote": "Vous définissez l'offre avec nous une fois. Ensuite, tout est automatique : vous n'avez plus rien à gérer.",
     "gestes": [
       { "titre": "On définit votre offre", "texte": "Produits proposés, tarifs dédiés, dates d'ouverture et de clôture, point de retrait ou livraison : tout est établi ensemble, selon vos envies." },
-      { "titre": "Vous partagez un code", "texte": "Nous créons votre code partenaire (par exemple <strong>COMITE26</strong>). Vous le diffusez à vos salariés par e-mail ou affichage : c'est votre seule mission." },
+      { "titre": "Vous partagez un code", "texte": "Nous créons un code partenaire réservé à votre comité. Vous le diffusez à vos salariés par e-mail ou affichage : c'est votre seule mission." },
       { "titre": "Nous gérons la suite", "texte": "Précommandes, confirmations, récapitulatifs, préparation et remise au froid, selon les modalités de l'opération : nous nous en occupons, et vous recevez le bilan de la campagne." }
     ]
   },
@@ -27,7 +27,7 @@
       "Le salarié saisit le code du comité sur notre page de commande. Son offre s'affiche : produits, tarifs, dates et lieu de retrait. Il choisit ses quantités, valide, et reçoit aussitôt un e-mail récapitulatif.",
       "<strong>Sans paiement en ligne :</strong> la précommande est réglée au moment de la remise, selon les modalités convenues avec votre comité. Les filets sont vendus au poids réel, le montant final est ajusté lors de la remise."
     ],
-    "codeExemple": "COMITE26",
+    "codeExemple": "VOTRE CODE",
     "lien": "Voir la page de commande",
     "image": "assets/img/remise-camion.webp",
     "imageAlt": "Remise de filets de saumon fumé sous vide, à la porte du camion frigorifique",
