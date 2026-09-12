@@ -69,7 +69,7 @@ eleventyComputed:
         <span class="eyebrow reveal">{{ cse.references.eyebrow | safe }}</span>
         <h2 class="reveal">{{ cse.references.titre | safe }}</h2>
       </div>
-      <p class="side reveal">{{ cse.references.texte | safe }}</p>
+      {% if cse.references.texte %}<p class="side reveal">{{ cse.references.texte | safe }}</p>{% endif %}
     </div>
     <div class="refs reveal">{% for r in cse.references.liste %}
       <div class="ref"><b>{{ r.nom | safe }}</b>{% if r.detail %}<span>{{ r.detail | safe }}</span>{% endif %}</div>{% endfor %}

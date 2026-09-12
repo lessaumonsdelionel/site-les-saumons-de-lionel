@@ -315,6 +315,18 @@
     .sw-deux-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width: 520px) { .sw-deux-cols { grid-template-columns: 1fr; } }
 
+    /* Adresse de livraison : bloc affiché seulement quand le mode choisi est
+       une livraison à domicile (type « Livraison » dans Airtable), masqué sinon. */
+    .sw-adresse { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--brume); }
+    .sw-adresse-titre { font-family: var(--titre); font-weight: 600; font-size: 15px; color: var(--nuit); margin: 0 0 12px; }
+    .sw-adresse-titre span { display: block; font-family: var(--corps); font-weight: 400; font-size: 13px; color: var(--gris); margin-top: 2px; }
+    .sw-cp-ville { display: grid; grid-template-columns: minmax(120px, 170px) 1fr; gap: 14px; }
+    @media (max-width: 520px) { .sw-cp-ville { grid-template-columns: 1fr; } }
+    /* Mobile : 16px dans les champs, sinon iOS zoome la page à la prise de focus. */
+    @media (max-width: 860px) {
+      .sw-champ input, .sw-champ textarea, .sw-qte input { font-size: 16px; }
+    }
+
     /* Consentement RGPD */
     .sw-consent { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; margin-top: 4px; }
     .sw-consent input { flex: 0 0 auto; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--cuivre); cursor: pointer; }
@@ -689,7 +701,7 @@
       partenaire: null,        // config renvoyée par le scénario A
       quantites: {},           // { reference: quantite }
       livraisonId: null,
-      salarie: { nom: "", email: "", telephone: "", commentaire: "" },
+      salarie: { nom: "", email: "", telephone: "", adresse: "", codePostal: "", ville: "", commentaire: "" },
       consentement: false,
       requestId: null          // identifiant unique de la tentative d'envoi
     };
@@ -751,7 +763,8 @@
     /* Messages des cas limites, mêmes « raisons » que le webhook Make. */
     function messagePourRaison(reponse) {
       switch (reponse.raison) {
-        case "inexistant": return { type: "erreur", titre: "Code introuvable. ", texte: "Ce code n'existe pas. Vérifiez auprès de votre CSE." };
+        case "inexistant": return { type: "erreur", titre: "Code introuvable. ", texte: "Ce code n'existe pas. Contactez-nous : ",
+                                    html: '<a href="mailto:bonjour@lessaumonsdelionel.fr" style="color:var(--cuivre);font-weight:600">bonjour@lessaumonsdelionel.fr</a>' };
         case "inactif":    return { type: "erreur", titre: "Partenariat indisponible. ", texte: "Ce partenariat n'est pas / plus actif." };
         case "pas_ouvert": return { type: "info",   titre: "Bientôt disponible. ", texte: "Les commandes pour ce partenaire ouvriront le " + dateCourte(reponse.dateOuverture) + "." };
         case "termine":    return { type: "erreur", titre: "Période terminée. ", texte: "La période de commande pour ce partenaire est désormais terminée." };
@@ -783,7 +796,7 @@
 
           if (!reponse || !reponse.ok) {
             var m = messagePourRaison(reponse || {});
-            afficherMessage(m.type, m.titre, m.texte);
+            afficherMessage(m.type, m.titre, m.texte, m.html);
             elInputCode.focus();
             elInputCode.select();
             return;
@@ -877,6 +890,16 @@
         '</label>';
       });
       html += '<span class="sw-champ-erreur" id="sw-err-livraison">Veuillez choisir un mode de récupération.</span>';
+      /* Adresse de livraison : rendue une fois, affichée par majBlocAdresse()
+         seulement si le mode choisi est une livraison à domicile. */
+      html += '<div class="sw-adresse sw-cache" id="sw-bloc-adresse">' +
+        '<p class="sw-adresse-titre">Adresse de livraison<span>Où livrer votre commande.</span></p>' +
+        champTexte("adresse", "Adresse", "text", true) +
+        '<div class="sw-cp-ville">' +
+          champTexte("codePostal", "Code postal", "text", true) +
+          champTexte("ville", "Ville", "text", true) +
+        '</div>' +
+      '</div>';
       html += '</div>';
 
       /* --- Section 3 : Coordonnées + consentement RGPD --- */
@@ -927,16 +950,19 @@
 
       brancherEvenementsCommande();
       recalculer();
+      majBlocAdresse();
       window.scrollTo({ top: 0, behavior: "auto" });
     }
 
+    var AUTOCOMPLETE = { nom: "name", email: "email", telephone: "tel", adresse: "street-address", codePostal: "postal-code", ville: "address-level2" };
     function champTexte(champ, label, type, obligatoire) {
       var etoile = obligatoire ? ' <span class="sw-oblig" aria-hidden="true">*</span>' : '';
+      var extra = champ === "codePostal" ? ' inputmode="numeric" maxlength="5"' : '';
       return '<div class="sw-champ">' +
         '<label for="sw-f-' + champ + '">' + label + etoile + '</label>' +
         '<input type="' + type + '" id="sw-f-' + champ + '" data-champ="' + champ + '"' +
                (obligatoire ? ' required aria-required="true"' : '') +
-               ' autocomplete="' + (champ === "email" ? "email" : champ === "telephone" ? "tel" : "name") + '" />' +
+               ' autocomplete="' + (AUTOCOMPLETE[champ] || "on") + '"' + extra + ' />' +
         '<span class="sw-champ-erreur" id="sw-err-' + champ + '"></span>' +
       '</div>';
     }
@@ -971,6 +997,7 @@
           etat.livraisonId = radio.value;
           $("#sw-err-livraison").classList.remove("sw-actif");
           recalculer();
+          majBlocAdresse();
         });
       });
 
@@ -1035,6 +1062,31 @@
       var t = etat.partenaire.livraisons.filter(function (l) { return l.id === id; });
       return t.length ? t[0] : null;
     }
+    /* Un mode est une livraison à domicile si Airtable le type « Livraison »
+       (ou, à défaut, si son libellé parle de domicile). */
+    function estLivraisonDomicile(liv) {
+      if (!liv) return false;
+      return String(liv.type || "").toLowerCase() === "livraison" || /domicile/i.test(liv.libelle || "");
+    }
+    function adresseLisible() {
+      var rue = etat.salarie.adresse.trim();
+      var cpVille = (etat.salarie.codePostal.trim() + " " + etat.salarie.ville.trim()).trim();
+      return [rue, cpVille].filter(Boolean).join(", ");
+    }
+    function majBlocAdresse() {
+      var bloc = $("#sw-bloc-adresse");
+      if (!bloc) return;
+      if (estLivraisonDomicile(trouverLivraison(etat.livraisonId))) {
+        bloc.classList.remove("sw-cache");
+      } else {
+        bloc.classList.add("sw-cache");
+        ["adresse", "codePostal", "ville"].forEach(function (champ) {
+          var err = $("#sw-err-" + champ), input = $("#sw-f-" + champ);
+          if (err) err.classList.remove("sw-actif");
+          if (input) input.removeAttribute("aria-invalid");
+        });
+      }
+    }
 
     function recalculer() {
       var c = calculer();
@@ -1088,6 +1140,17 @@
         $("#sw-err-livraison").classList.add("sw-actif");
         var sectionLiv = elEtapeCommande.querySelectorAll(".sw-section")[1];
         if (sectionLiv) sectionLiv.scrollIntoView({ behavior: "auto", block: "center" });
+      }
+
+      // b bis) Livraison à domicile : adresse, code postal et ville obligatoires
+      if (estLivraisonDomicile(c.livraison)) {
+        var adresseOk = verifierChamp("adresse", function (v) { return v.trim().length >= 5; }, "Adresse requise (numéro et rue).");
+        adresseOk = verifierChamp("codePostal", function (v) { return /^\d{5}$/.test(v.trim()); }, "Code postal à 5 chiffres.") && adresseOk;
+        adresseOk = verifierChamp("ville", function (v) { return v.trim().length >= 2; }, "Ville requise.") && adresseOk;
+        if (!adresseOk) {
+          if (ok) $("#sw-bloc-adresse").scrollIntoView({ behavior: "auto", block: "center" });
+          ok = false;
+        }
       }
 
       // c) Coordonnées obligatoires + téléphone plausible s'il est renseigné
@@ -1168,6 +1231,14 @@
 
     function construirePayload(c) {
       var p = etat.partenaire;
+      /* Livraison à domicile : l'adresse part en champs séparés ET en tête du
+         commentaire. Le scénario Make B écrit le commentaire dans la colonne
+         « Commentaire » d'Airtable et dans la notification interne : l'adresse
+         y arrive donc sans toucher au scénario. Une colonne dédiée reste possible. */
+      var domicile = estLivraisonDomicile(c.livraison);
+      var adresseLigne = domicile ? adresseLisible() : "";
+      var commentaire = etat.salarie.commentaire.trim();
+      if (adresseLigne) commentaire = "Adresse de livraison : " + adresseLigne + (commentaire ? ". " + commentaire : "");
       return {
         token: WIDGET_TOKEN,
         requestId: etat.requestId,
@@ -1176,8 +1247,12 @@
         salarie: {
           nom: etat.salarie.nom.trim(),
           email: etat.salarie.email.trim(),
-          telephone: etat.salarie.telephone.trim()
+          telephone: etat.salarie.telephone.trim(),
+          adresse: domicile ? etat.salarie.adresse.trim() : "",
+          codePostal: domicile ? etat.salarie.codePostal.trim() : "",
+          ville: domicile ? etat.salarie.ville.trim() : ""
         },
+        adresseLivraison: adresseLigne,
         lignes: c.lignes.map(function (l) {
           return { reference: l.ref, nom: l.nom, quantite: l.q, prixUnitaire: l.prix, sousTotalLigne: arrondi(l.montant) };
         }),
@@ -1191,7 +1266,7 @@
           id: c.livraison.id, libelle: c.livraison.libelle, type: c.livraison.type,
           lieu: c.livraison.lieu, date: c.livraison.date, frais: c.livraison.frais
         } : null,
-        commentaire: etat.salarie.commentaire.trim(),
+        commentaire: commentaire,
         consentementRGPD: etat.consentement,
         siteweb: ($("#sw-f-siteweb") ? $("#sw-f-siteweb").value : ""), // honeypot
         statutCommande: "Confirmée",
@@ -1226,6 +1301,7 @@
           ligneRF("Produits", lignes.map(function (l) { return l.q + "× " + l.nom; }).join(" · ")) +
           ligneRF("Récupération", liv ? (liv.libelle + " · " + dateLongue(liv.date)) : "-") +
           ligneRF("Lieu", liv ? liv.lieu : "-") +
+          (estLivraisonDomicile(liv) ? ligneRF("Adresse de livraison", adresseLisible()) : "") +
           ligneRF("Poids total estimé", poidsLisible(poids)) +
           ligneRF("Total à régler sur place", eur(total)) +
         '</div>' +
@@ -1296,7 +1372,7 @@
     ------------------------------------------------------------------- */
     function retourSaisieCode() {
       etat = { code: null, partenaire: null, quantites: {}, livraisonId: null,
-               salarie: { nom: "", email: "", telephone: "", commentaire: "" },
+               salarie: { nom: "", email: "", telephone: "", adresse: "", codePostal: "", ville: "", commentaire: "" },
                consentement: false, requestId: null };
       elEtapeCommande.classList.add("sw-cache");
       elEtapeConfirmation.classList.add("sw-cache");

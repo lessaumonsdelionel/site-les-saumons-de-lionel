@@ -1,12 +1,12 @@
 {
   "seo": {
     "titre": "Contact : Les Saumons de Lionel",
-    "description": "Une question, une demande hors CSE, un projet pour votre comité : écrivez-nous ou appelez-nous. Nous répondons généralement sous 48 heures."
+    "description": "Une question, une demande hors CSE, un projet pour votre comité : écrivez-nous ou appelez-nous. Nous répondons sous 24 heures."
   },
   "hero": {
     "eyebrow": "Contact",
     "titre": "Écrivez-nous, <em>ou appelez-nous.</em>",
-    "accroche": "Une question sur nos produits, une demande hors CSE, un projet pour votre comité d'entreprise : nous répondons généralement sous 48 heures."
+    "accroche": "Une question sur nos produits, une demande hors CSE, un projet pour votre comité d'entreprise : nous répondons sous 24 heures."
   },
   "horsCse": {
     "eyebrow": "Particuliers",
@@ -18,7 +18,7 @@
     "profils": ["Particulier", "Salarié avec un code CSE", "Responsable CSE ou entreprise"],
     "rgpd": "J'accepte que ces informations servent uniquement à répondre à ma demande.",
     "bouton": "Envoyer",
-    "merci": "Merci, votre message est bien envoyé. Nous répondons généralement sous 48 heures."
+    "merci": "Merci, votre message est bien envoyé. Nous répondons sous 24 heures."
   },
   "cartes": {
     "telephoneTitre": "Par téléphone",
@@ -26,6 +26,6 @@
     "emailTitre": "Par e-mail",
     "facebookTitre": "Sur Facebook",
     "facebookTexte": "Nos actualités et nos dates de salon.",
-    "delai": "Nous répondons généralement sous 48 heures."
+    "delai": "Nous répondons sous 24 heures."
   }
 }

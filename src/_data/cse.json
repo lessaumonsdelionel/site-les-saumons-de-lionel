@@ -36,7 +36,7 @@
   "references": {
     "eyebrow": "Ils nous font confiance",
     "titre": "Des comités qui nous ont <em>déjà fait confiance.</em>",
-    "texte": "Des références réelles, citées avec leur accord.",
+    "texte": "",
     "liste": [
       { "nom": "COSAT de la Ville de Toulouse", "detail": "" },
       { "nom": "Allianz Partners", "detail": "" },
@@ -56,7 +56,7 @@
   "contact": {
     "eyebrow": "Devenir partenaire",
     "titre": "Parlons de votre campagne.",
-    "texteCote": "Un échange de quinze minutes suffit pour définir votre offre. Nous répondons généralement sous 48 heures.",
+    "texteCote": "Un échange de quinze minutes suffit pour définir votre offre. Nous répondons sous 24 heures.",
     "besoin": "Vos dates idéales, le lieu de retrait envisagé et une estimation du nombre de salariés. Nous faisons le reste.",
     "bouton": "Nous écrire"
   }
