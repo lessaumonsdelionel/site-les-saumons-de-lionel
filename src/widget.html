@@ -906,7 +906,7 @@
       html += '<div class="sw-carte sw-section"><h3><span class="sw-num" aria-hidden="true">3</span> Vos coordonnées</h3>' +
         '<div class="sw-deux-cols">' +
           champTexte("nom", "Nom et prénom", "text", true) +
-          champTexte("telephone", "Téléphone", "tel", false) +
+          champTexte("telephone", "Téléphone", "tel", true) +
         '</div>' +
         champTexte("email", "Email", "email", true) +
         '<div class="sw-champ">' +
@@ -1153,13 +1153,14 @@
         }
       }
 
-      // c) Coordonnées obligatoires + téléphone plausible s'il est renseigné
+      // c) Coordonnées obligatoires : nom, e-mail et téléphone (demande de la cliente, 13/09)
       ok = verifierChamp("nom", function (v) { return v.trim().length >= 2; }, "Nom requis.") && ok;
       ok = verifierChamp("email", function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }, "Email invalide.") && ok;
       ok = verifierChamp("telephone", function (v) {
         var t = v.replace(/[\s.\-()]/g, "");
-        return t === "" || /^(?:\+33|0)[1-9]\d{8}$/.test(t);
-      }, "Numéro invalide (ex. 06 12 34 56 78).") && ok;
+        /* Numéro français, ou international commençant par + ou 00 (Belgique, Suisse, Luxembourg) */
+        return /^(?:\+33|0033|0)[1-9]\d{8}$/.test(t) || /^(?:\+|00)(?!33)\d{8,14}$/.test(t);
+      }, "Téléphone requis (ex. 06 12 34 56 78).") && ok;
 
       // d) Consentement RGPD obligatoire
       if (!etat.consentement) {
