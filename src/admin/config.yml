@@ -191,7 +191,7 @@ collections:
                 fields:
                   - { name: "texte", label: "La phrase, telle quelle (sans guillemets)", widget: "text" }
                   - { name: "auteur", label: "Prénom (ou prénom et initiale)", widget: "string" }
-                  - { name: "contexte", label: "CSE ou entreprise (facultatif)", widget: "string", required: false }
+                  - { name: "contexte", label: "Contexte et ville, ex. dégustation CSE, Dax (40) (facultatif)", widget: "string", required: false }
           - name: "cse"
             label: "Bloc « Offres CSE » (bandeau sombre)"
             widget: "object"
