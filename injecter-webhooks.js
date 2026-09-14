@@ -9,7 +9,10 @@
      WEBHOOK_ECRITURE  = https://hook.eu2.make.com/…   (scénario B)
      WIDGET_TOKEN      = secret partagé anti-spam
 
-   Sans ces variables, le widget reste en SIMULATION LOCALE (démo).
+   Sans ces variables, le build ÉCHOUE volontairement (depuis le 15/09/2026) :
+   un site publié avec le widget en simulation locale afficherait des prix et
+   accepterait des commandes qui ne partent nulle part, sans aucune erreur.
+   Pour un build local de démonstration : SIMULATION_LOCALE=1 node injecter-webhooks.js
    Usage : node injecter-webhooks.js   (après `npx @11ty/eleventy`)
    ===================================================================== */
 "use strict";
@@ -22,8 +25,15 @@ const ecriture = process.env.WEBHOOK_ECRITURE || "";
 const token = process.env.WIDGET_TOKEN || "";
 
 if (!lecture || !ecriture || !token) {
-  console.log("injecter-webhooks : variables absentes → widget laissé en simulation locale.");
-  process.exit(0);
+  if (process.env.SIMULATION_LOCALE === "1") {
+    console.log("injecter-webhooks : SIMULATION_LOCALE=1, widget laissé en simulation (démo locale).");
+    process.exit(0);
+  }
+  console.error("injecter-webhooks : ÉCHEC VOLONTAIRE DU BUILD. Variables manquantes : "
+    + [!lecture && "WEBHOOK_LECTURE", !ecriture && "WEBHOOK_ECRITURE", !token && "WIDGET_TOKEN"].filter(Boolean).join(", ")
+    + ". Sans elles, le widget de commande tourne en simulation et aucune commande n'est enregistrée."
+    + " Poser les 3 variables dans Netlify (Project configuration, Environment variables) puis relancer le déploiement.");
+  process.exit(1);
 }
 
 let html = fs.readFileSync(FICHIER, "utf8");

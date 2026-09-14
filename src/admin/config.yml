@@ -10,9 +10,9 @@
 
 backend:
   name: github
-  # Compte PERSONNEL de Baptiste pour les tests : à transférer au compte
-  # de Rita à la livraison (Transfer repository), puis mettre à jour ici.
-  repo: baptisteeoche-bit/site-les-saumons-de-lionel
+  # Dépôt au nom de la cliente depuis le 15/09/2026 (transfert du dépôt
+  # baptisteeoche-bit/site-les-saumons-de-lionel vers son compte GitHub).
+  repo: lessaumonsdelionel/site-les-saumons-de-lionel
   branch: main
 
 # Les images envoyées depuis le CMS sont rangées avec celles du site :
