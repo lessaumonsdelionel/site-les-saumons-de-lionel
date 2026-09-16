@@ -11,7 +11,7 @@ hero:
 ## Éditrice du site
 
 **Margarit Agayan-Sourine**, entreprise individuelle, exerçant sous l'enseigne « Les Saumons de Lionel ».<br>
-499 route d'Orist, 40180 Siest, France.<br>
+40180 Siest, France.<br>
 SIREN : 106 558 927.<br>
 TVA non applicable, article 293 B du CGI. Les prix affichés sont TTC.<br>
 Contact : <a href="mailto:bonjour@lessaumonsdelionel.fr" style="color:var(--cuivre)">bonjour@lessaumonsdelionel.fr</a> · 07 59 60 12 33.

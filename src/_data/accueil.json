@@ -19,9 +19,21 @@
     "eyebrow": "Ce qui nous distingue",
     "titre": "Trois faits, <em>rien d'autre.</em>",
     "liste": [
-      { "label": "Origine", "titre": "Saumon sockeye sauvage d'Alaska", "texte": "Pas d'élevage, pas d'antibiotiques, pas de colorants. Un poisson pêché en mer, dans les eaux froides du Pacifique Nord, au large de l'Alaska." },
-      { "label": "Préparation", "titre": "Fumé, tranché à la main", "texte": "Fumé, tranché à la main, conditionné sous vide et livré par nos soins, partout en France métropolitaine." },
-      { "label": "Depuis 1994", "titre": "Une histoire familiale", "texte": "Une histoire familiale commencée en 1994 avec Lionel, et poursuivie aujourd'hui autour du même produit : le saumon sauvage sockeye." }
+      {
+        "label": "Origine",
+        "titre": "Saumon sockeye sauvage d'Alaska",
+        "texte": "Pas d'élevage, pas d'antibiotiques, pas de colorants. Un poisson pêché en mer, dans les eaux froides du Pacifique Nord, au large de l'Alaska."
+      },
+      {
+        "label": "Préparation",
+        "titre": "Fumé, tranché à la main",
+        "texte": "Fumé, tranché à la main, conditionné sous vide et livré par nos soins, partout en France métropolitaine."
+      },
+      {
+        "label": "Depuis 1994",
+        "titre": "Une histoire familiale",
+        "texte": "Une histoire familiale commencée en 1994 avec Lionel, et poursuivie aujourd'hui autour du même produit : le saumon sauvage sockeye."
+      }
     ]
   },
   "produits": {
@@ -48,11 +60,31 @@
     "eyebrow": "Ils l'ont goûté",
     "titre": "Retours de dégustation",
     "liste": [
-      { "texte": "J’ai réellement rarement goûté un saumon aussi bon que le vôtre.", "auteur": "Manon B.", "contexte": "dégustation CSE, Boulogne-sur-Mer (62)" },
-      { "texte": "Ce saumon était tout simplement FA-BU-LEUX !", "auteur": "Frédérique S.", "contexte": "cliente entreprise, Paris" },
-      { "texte": "Un parfait régal, celui que je préfère.", "auteur": "Danielle J.", "contexte": "cliente particulière, Clamart (92)" },
-      { "texte": "C’est tellement bon que je complète la commande moi-même.", "auteur": "Baptiste B.", "contexte": "client particulier, Bruxelles (Belgique)" },
-      { "texte": "La dégustation a été top.", "auteur": "Cathy R.", "contexte": "retour dégustation, Dax (40)" }
+      {
+        "texte": "Sauvage, fondant, fumé tout en finesse. Ces saumons d'Alaska sont un vrai trésor ! Plus de dix ans qu'on y revient, et toujours le même plaisir.",
+        "auteur": "Christian M.",
+        "contexte": "Alsace"
+      },
+      {
+        "texte": "Les Saumons de Lionel, les goûter, c'est les adopter. C'est notre rendez-vous de fin d'année.",
+        "auteur": "Fabrice P-P",
+        "contexte": "Loire-Atlantique"
+      },
+      {
+        "texte": "Excellent saumon pêché en Alaska et proposé sous forme de filets fumés. J'ai testé, je recommande vivement.",
+        "auteur": "Pierre L.",
+        "contexte": "Yvelines"
+      },
+      {
+        "texte": "Un vrai régal depuis près de vingt ans déjà.",
+        "auteur": "Gérard B.",
+        "contexte": "Dordogne"
+      },
+      {
+        "texte": "La nouvelle équipe est totalement à l'image de Lionel, qui revit à travers leur gentillesse, leur dynamisme et un réel professionnalisme.",
+        "auteur": "Sylviane C.",
+        "contexte": "Seine-Maritime"
+      }
     ]
   },
   "cse": {
@@ -68,10 +100,26 @@
     "eyebrow": "La chaîne du froid",
     "titre": "De la pêche à la remise, <em>sans rompre le froid.</em>",
     "etapes": [
-      { "temp": "Alaska · Mi-mai à fin août", "titre": "La pêche en mer", "texte": "Saumon sockeye sauvage pêché en saison au large de l'Alaska, par nos partenaires de pêche." },
-      { "temp": "Environ -40 °C", "titre": "Congelé à l'origine", "texte": "Préparé puis congelé rapidement après la pêche, et expédié congelé vers la France. C'est ce qui fixe la texture, la couleur et le goût." },
-      { "temp": "Pays de la Loire", "titre": "Fumé, tranché à la main", "texte": "Salé, fumé lentement au bois de hêtre, tranché à la main et mis sous vide dans un atelier agréé aux normes européennes." },
-      { "temp": "-18 °C", "titre": "Surgelé, puis remis", "texte": "Le produit fini est surgelé, puis remis surgelé à votre point de retrait ou livré à domicile. Il se conserve 2 ans au congélateur." }
+      {
+        "temp": "Alaska · Mi-mai à fin août",
+        "titre": "La pêche en mer",
+        "texte": "Saumon sockeye sauvage pêché en saison au large de l'Alaska, par nos partenaires de pêche."
+      },
+      {
+        "temp": "Environ -40 °C",
+        "titre": "Congelé à l'origine",
+        "texte": "Préparé puis congelé rapidement après la pêche, et expédié congelé vers la France. C'est ce qui fixe la texture, la couleur et le goût."
+      },
+      {
+        "temp": "Pays de la Loire",
+        "titre": "Fumé, tranché à la main",
+        "texte": "Salé, fumé lentement au bois de hêtre, tranché à la main et mis sous vide dans un atelier agréé aux normes européennes."
+      },
+      {
+        "temp": "-18 °C",
+        "titre": "Surgelé, puis remis",
+        "texte": "Le produit fini est surgelé, puis remis surgelé à votre point de retrait ou livré à domicile. Il se conserve 2 ans au congélateur."
+      }
     ]
   }
 }
