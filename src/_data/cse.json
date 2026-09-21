@@ -10,6 +10,19 @@
     "boutonPrincipal": "Devenir partenaire",
     "boutonSecondaire": "J'ai déjà un code"
   },
+  "tarif": {
+    "afficher": true,
+    "eyebrow": "Tarif CSE",
+    "titre": "Le même filet, <em>au prix comité.</em>",
+    "texte": "Filet de saumon sockeye sauvage d'Alaska ou de truite fumée bio des Pyrénées. Même produit, même préparation, au tarif négocié par votre comité.",
+    "libellePrixBarre": "Prix particulier",
+    "prixBarre": 98.9,
+    "libellePrixCse": "Tarif CSE",
+    "prixCse": 77,
+    "unite": "le kilo TTC",
+    "parUnite": "par kilo",
+    "note": "Tarif CSE de référence. La grille de votre comité s'affiche avec votre code partenaire. Filets vendus au poids réel de la pièce."
+  },
   "partenariat": {
     "eyebrow": "Côté comité",
     "titre": "Un partenariat en trois gestes",

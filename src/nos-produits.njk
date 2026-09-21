@@ -27,7 +27,7 @@ eleventyComputed:
         <span class="eyebrow reveal">{{ p.eyebrow | safe }}</span>
         <h3 class="reveal">{{ p.nom | safe }}{% if p.label %} <span class="label-ab">{{ p.label | safe }}</span>{% endif %}</h3>
         <span class="wt reveal">{{ p.infos | safe }}</span>
-        {% if p.prixPublic %}<p class="prix-public reveal"><b>{{ p.prixPublic | safe }}</b> <span>{{ p.prixNote | safe }}</span></p>{% endif %}
+        {% if p.prixPublic %}<p class="prix-public reveal"><b>{{ p.prixPublic | safe }}</b> <span>{{ p.prixNote | safe }}</span></p>{% else %}<p class="prix-public reveal"><b>{{ nosproduits.prix.surDemande | safe }}</b> <span>{{ nosproduits.prix.surDemandeNote | safe }}</span></p>{% endif %}
         <p class="reveal">{{ p.description | safe }}</p>
         <dl class="specs reveal">
           <div><dt>Espèce</dt><dd>{{ p.specs.espece | safe }}</dd></div>
@@ -74,11 +74,18 @@ eleventyComputed:
     <h2 class="reveal">{{ nosproduits.prix.titre | safe }}</h2>
     <p class="reveal">{{ nosproduits.prix.texte | safe }}</p>
     <div class="tarifs reveal" data-d="1">
+      {# Prix vide sur toutes les fiches (Nos produits, demande du 21/09/2026) : une seule ligne « Prix sur demande ». #}
+      {% set prixAffiches = produits.liste | selectattr("prixPublic") %}{% if prixAffiches | length %}
       <span class="tarifs-titre">{{ nosproduits.prix.tarifsTitre | safe }}</span>
-      <ul>{% for p in produits.liste %}
+      <ul>{% for p in prixAffiches %}
         <li><span>{{ p.court | safe }} <small>{{ p.sousTitre | safe }}</small></span><b>{{ p.prixPublic | safe }}</b></li>{% endfor %}
       </ul>
-      <p class="tarifs-note">{{ nosproduits.prix.tarifsNote | safe }}</p>
+      <p class="tarifs-note">{{ nosproduits.prix.tarifsNote | safe }}</p>{% else %}
+      <span class="tarifs-titre">{{ nosproduits.prix.surDemandeTitre | safe }}</span>
+      <ul>
+        <li><span>{{ nosproduits.prix.surDemandeLigne | safe }} <small>{{ nosproduits.prix.surDemandeDetail | safe }}</small></span><b>{{ nosproduits.prix.surDemande | safe }}</b></li>
+      </ul>
+      <p class="tarifs-note">{{ nosproduits.prix.surDemandeNoteGrille | safe }}</p>{% endif %}
       <p class="tarifs-note">{{ nosproduits.prix.disponibilites | safe }}</p>
     </div>
     <div class="reveal" data-d="2" style="margin-top:32px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">

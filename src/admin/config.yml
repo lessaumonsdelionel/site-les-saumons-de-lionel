@@ -87,7 +87,7 @@ collections:
               - { name: "alt", label: "Description de la photo (accessibilité)", widget: "string" }
               - { name: "legende", label: "Légende sur la photo (lieu, date, crédit)", widget: "string", required: false }
               - { name: "label", label: "Étiquette label (ex. AB, vide = rien)", widget: "string", required: false }
-              - { name: "prixPublic", label: "Tarif particulier affiché (ex. 98,90 € TTC le kilo, vide = rien)", widget: "string", required: false }
+              - { name: "prixPublic", label: "Tarif particulier affiché (ex. 98,90 € TTC le kilo, vide = Prix sur demande)", widget: "string", required: false }
               - { name: "prixNote", label: "Mention sous le tarif particulier", widget: "string", required: false }
               - name: "specs"
                 label: "Relevé de traçabilité"
@@ -265,6 +265,12 @@ collections:
               - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
               - { name: "texte", label: "Texte", widget: "text" }
               - { name: "tarifsTitre", label: "Titre de la grille des tarifs particuliers", widget: "string" }
+              - { name: "surDemande", label: "Texte affiché quand un produit n'a pas de tarif (ex. Prix sur demande)", widget: "string" }
+              - { name: "surDemandeNote", label: "Mention à côté de « Prix sur demande » sur chaque fiche", widget: "string" }
+              - { name: "surDemandeTitre", label: "Titre de la grille quand aucun tarif n'est affiché", widget: "string" }
+              - { name: "surDemandeLigne", label: "Ligne de la grille quand aucun tarif n'est affiché", widget: "string" }
+              - { name: "surDemandeDetail", label: "Petit texte sous cette ligne", widget: "string" }
+              - { name: "surDemandeNoteGrille", label: "Mention sous la grille quand aucun tarif n'est affiché", widget: "text" }
               - { name: "tarifsNote", label: "Mention sous la grille (poids réel)", widget: "text" }
               - { name: "disponibilites", label: "Phrase sur les disponibilités", widget: "text" }
               - { name: "boutonCode", label: "Texte du bouton code CSE", widget: "string" }
@@ -366,6 +372,22 @@ collections:
               - { name: "accroche", label: "Texte d'accroche", widget: "text", hint: "<strong>…</strong> = gras" }
               - { name: "boutonPrincipal", label: "Texte du bouton principal", widget: "string" }
               - { name: "boutonSecondaire", label: "Texte du bouton secondaire", widget: "string" }
+          - name: "tarif"
+            label: "Bloc « Tarif CSE » (prix particulier barré et tarif CSE)"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "afficher", label: "Afficher ce bloc", widget: "boolean", default: true }
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - { name: "texte", label: "Texte", widget: "text" }
+              - { name: "libellePrixBarre", label: "Libellé du prix barré", widget: "string" }
+              - { name: "prixBarre", label: "Prix barré, en euros (ex. 98.9)", widget: "number", value_type: "float", step: 0.01 }
+              - { name: "libellePrixCse", label: "Libellé du tarif CSE", widget: "string" }
+              - { name: "prixCse", label: "Tarif CSE, en euros (ex. 77)", widget: "number", value_type: "float", step: 0.01, hint: "La remise en % et l'économie se calculent seules" }
+              - { name: "unite", label: "Unité après le tarif CSE (ex. le kilo TTC)", widget: "string" }
+              - { name: "parUnite", label: "Unité de l'économie (ex. par kilo)", widget: "string" }
+              - { name: "note", label: "Mention sous le prix", widget: "text", required: false }
           - name: "partenariat"
             label: "Bloc « Un partenariat en trois gestes »"
             widget: "object"

@@ -1,12 +1,12 @@
 {
   "seo": {
     "titre": "Nos produits : saumon sauvage d'Alaska et truite des Pyrénées fumés",
-    "description": "Quatre références : filet et plaquette de saumon sockeye sauvage d'Alaska fumé, filet et plaquette de truite fumée des Pyrénées issue de l'agriculture biologique. Tranchés à la main, surgelés. Tarifs particuliers indicatifs, commande par code CSE."
+    "description": "Quatre références : filet et plaquette de saumon sockeye sauvage d'Alaska fumé, filet et plaquette de truite fumée des Pyrénées issue de l'agriculture biologique. Tranchés à la main, surgelés. Commande par code CSE, prix sur demande pour les particuliers."
   },
   "hero": {
     "eyebrow": "Nos produits",
     "titre": "Quatre références <em>au lancement.</em>",
-    "accroche": "Le saumon sockeye sauvage d'Alaska en filet et en plaquette, la truite fumée des Pyrénées issue de l'agriculture biologique en filet et en plaquette. Tranchés à la main, mis sous vide et surgelés. Tarifs CSE avec votre code partenaire, tarifs particuliers indicatifs sur chaque fiche."
+    "accroche": "Le saumon sockeye sauvage d'Alaska en filet et en plaquette, la truite fumée des Pyrénées issue de l'agriculture biologique en filet et en plaquette. Tranchés à la main, mis sous vide et surgelés. Tarifs CSE avec votre code partenaire, prix sur demande pour les particuliers."
   },
   "pourquoi": {
     "eyebrow": "Sauvage ou élevage",
@@ -23,8 +23,14 @@
   "prix": {
     "eyebrow": "Tarifs et disponibilités",
     "titre": "Avec votre code CSE, <em>ou sur demande.</em>",
-    "texte": "Les tarifs CSE s'affichent avec votre code partenaire sur la page de commande. Pour les particuliers, les tarifs ci-dessous sont indicatifs, selon disponibilités : le parcours de commande en ligne est réservé aux CSE, écrivez-nous pour une demande hors CSE.",
+    "texte": "Les tarifs CSE s'affichent avec votre code partenaire sur la page de commande. Pour les particuliers, les prix sont communiqués sur demande, selon les disponibilités : le parcours de commande en ligne est réservé aux CSE, écrivez-nous ou appelez-nous pour une demande hors CSE.",
     "tarifsTitre": "Tarifs particuliers indicatifs",
+    "surDemande": "Prix sur demande",
+    "surDemandeNote": "Tarif particulier communiqué selon les disponibilités du moment.",
+    "surDemandeTitre": "Particuliers",
+    "surDemandeLigne": "Filets et plaquettes",
+    "surDemandeDetail": "Saumon sauvage d'Alaska, truite bio des Pyrénées",
+    "surDemandeNoteGrille": "Les filets sont vendus au poids réel de la pièce. Nous répondons sous 24 heures.",
     "tarifsNote": "Prix TTC. Pour les filets vendus au poids, le montant final dépend du poids réel de la pièce.",
     "disponibilites": "Les ventes fonctionnent principalement par campagnes de précommande, notamment à l'automne, à l'approche des fêtes. Les disponibilités dépendent des arrivages, des opérations CSE et des quantités restantes.",
     "boutonCode": "J'ai un code CSE",

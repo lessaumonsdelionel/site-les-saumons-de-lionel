@@ -12,7 +12,7 @@
     "alt": "Filet entier de saumon sockeye sauvage fumé, sous vide sur carton doré, avec son étiquette",
     "legende": "Filet entier de sockeye fumé, sous vide · Photo de la maison",
     "label": "",
-    "prixPublic": "98,90 € TTC le kilo",
+    "prixPublic": "",
     "prixNote": "Tarif particulier indicatif, selon disponibilités. Le montant final dépend du poids réel de la pièce.",
     "specs": {
       "espece": "Saumon sockeye, Oncorhynchus nerka",
@@ -34,7 +34,7 @@
     "alt": "Plaquette de saumon sockeye sauvage fumé, 3 à 4 tranches sous vide sur carton doré",
     "legende": "Plaquette de sockeye fumé, 3 à 4 tranches · Photo de la maison",
     "label": "",
-    "prixPublic": "16,90 € TTC",
+    "prixPublic": "",
     "prixNote": "Tarif particulier indicatif, selon disponibilités.",
     "specs": {
       "espece": "Saumon sockeye, Oncorhynchus nerka",
@@ -56,7 +56,7 @@
     "alt": "Filet entier de truite fumée bio des Pyrénées, sous vide sur carton doré, avec son étiquette",
     "legende": "Filet entier de truite fumée bio, sous vide · Photo de la maison",
     "label": "AB",
-    "prixPublic": "98,90 € TTC le kilo",
+    "prixPublic": "",
     "prixNote": "Tarif particulier indicatif, selon disponibilités. Le montant final dépend du poids réel de la pièce.",
     "specs": {
       "espece": "Truite arc-en-ciel, Oncorhynchus mykiss",
@@ -78,7 +78,7 @@
     "alt": "Plaquette de truite fumée bio des Pyrénées, tranches sous vide sur carton doré",
     "legende": "Plaquette de truite fumée bio · Photo de la maison",
     "label": "AB",
-    "prixPublic": "16,90 € TTC",
+    "prixPublic": "",
     "prixNote": "Tarif particulier indicatif, selon disponibilités.",
     "specs": {
       "espece": "Truite arc-en-ciel, Oncorhynchus mykiss",

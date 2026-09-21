@@ -6,6 +6,7 @@
 <title>{{ titre | safe }}</title>
 {% if description %}<meta name="description" content="{{ description | safe }}">
 {% endif %}{% if noindex %}<meta name="robots" content="noindex">
+{% else %}<link rel="canonical" href="https://lessaumonsdelionel.fr{{ page.url }}">
 {% endif %}{% if ogTitre %}<meta property="og:title" content="{{ ogTitre | safe }}">
 <meta property="og:description" content="{{ ogDescription | safe }}">
 <meta property="og:image" content="{{ ogImage | safe }}">
