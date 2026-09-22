@@ -242,6 +242,10 @@
     .sw-produit-info .sw-nom { font-family: var(--titre); font-weight: 600; font-size: 15.5px; }
     .sw-produit-info .sw-detail { font-size: 13px; color: var(--gris); margin-top: 2px; }
     .sw-produit-info .sw-prix { font-family: var(--titre); font-weight: 600; color: var(--cuivre); font-size: 15px; margin-top: 4px; }
+    /* Prix public barré devant le tarif CSE (demande du 22/09/2026), seulement si Airtable porte un « Prix public » plus haut */
+    .sw-produit-info .sw-prix s { font-weight: 400; color: var(--gris); margin-right: 8px; text-decoration: line-through; text-decoration-thickness: 1.5px; }
+    .sw-produit-info .sw-prix small { display: block; font-family: var(--corps, inherit); font-weight: 400; font-size: 12px; color: var(--gris); margin-top: 2px; }
+    .sw-visuellement-cache { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
     /* Mobile : le stepper passe sous le nom, sur toute la largeur */
     @media (max-width: 560px) {
       .sw-produit { grid-template-columns: 1fr; gap: 10px; }
@@ -510,10 +514,10 @@
       /* ---- « Base Airtable » en mémoire (mêmes tables que docs/B) ----
          PRIX FICTIFS / PROVISOIRES, à remplacer par les tarifs réels.   */
       var TABLE_PRODUITS = {
-        "SAU-FIL-1000": { reference: "SAU-FIL-1000", nom: "Filet de saumon sauvage fumé d'Alaska", detail: "Tranché, sous vide, ≈ 1 kg", prix: 77.00, poids: 1000 },
-        "SAU-PLQ-130":  { reference: "SAU-PLQ-130",  nom: "Plaquette de saumon sauvage fumé d'Alaska", detail: "3 à 4 tranches, 130 g", prix: 16.50, poids: 130 },
-        "TRU-FIL-600":  { reference: "TRU-FIL-600",  nom: "Filet de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, ≈ 600 g", prix: 46.20, poids: 600 },
-        "TRU-PLQ-130":  { reference: "TRU-PLQ-130",  nom: "Plaquette de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, 130 g", prix: 15.50, poids: 130 }
+        "SAU-FIL-1000": { reference: "SAU-FIL-1000", nom: "Filet de saumon sauvage fumé d'Alaska", detail: "Tranché, sous vide, ≈ 1 kg", prix: 79.00, prixPublic: 98.90, poids: 1000, ordre: 1 },
+        "TRU-FIL-600":  { reference: "TRU-FIL-600",  nom: "Filet de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, ≈ 600 g", prix: 47.40, prixPublic: 59.30, poids: 600, ordre: 2 },
+        "SAU-PLQ-130":  { reference: "SAU-PLQ-130",  nom: "Plaquette de saumon sauvage fumé d'Alaska", detail: "3 à 4 tranches, 130 g", prix: 16.90, prixPublic: 0, poids: 130, ordre: 3 },
+        "TRU-PLQ-120":  { reference: "TRU-PLQ-120",  nom: "Plaquette de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, 120 g", prix: 15.90, prixPublic: 0, poids: 120, ordre: 4 }
       };
 
       /* Partenaires de DÉMONSTRATION, jamais les vrais codes : ce fichier est
@@ -525,14 +529,14 @@
           nom: "Comité de démonstration", statut: "Actif", remisePct: 0,
           dateOuverture: "2026-06-15", dateCloture: "2026-09-30",
           consignes: "Retrait gratuit au siège sur présentation du badge salarié. Lieu, date et frais définitifs à préciser.",
-          produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-600", "TRU-PLQ-130"],
+          produits: ["SAU-FIL-1000", "TRU-FIL-600", "SAU-PLQ-130", "TRU-PLQ-120"],
           livraisons: ["alz-retrait", "alz-domicile"]
         },
         "COMITE27": {
           nom: "Second comité de démonstration", statut: "Actif", remisePct: 0,
           dateOuverture: "2026-06-15", dateCloture: "2026-11-30",
           consignes: "Retrait gratuit sur le point convenu avec le comité. Lieu exact, date et frais à préciser.",
-          produits: ["SAU-FIL-1000", "SAU-PLQ-130", "TRU-FIL-600", "TRU-PLQ-130"],
+          produits: ["SAU-FIL-1000", "TRU-FIL-600", "SAU-PLQ-130", "TRU-PLQ-120"],
           livraisons: ["tls-retrait", "tls-domicile"]
         },
         "INACTIF26": {
@@ -712,6 +716,32 @@
     function eur(n) {
       return n.toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
     }
+    /* Ordre d'affichage demandé le 22/09/2026 : filet de saumon, filet de truite, plaquette de saumon,
+       plaquette de truite. Le champ « Ordre » d'Airtable prime s'il est rempli, sinon la référence décide. */
+    function rangParDefaut(ref) {
+      var r = String(ref || "");
+      if (/^SAU-FIL/.test(r)) return 1;
+      if (/^TRU-FIL/.test(r)) return 2;
+      if (/^SAU-PLQ/.test(r)) return 3;
+      if (/^TRU-PLQ/.test(r)) return 4;
+      return 9;
+    }
+    function trierProduits(liste) {
+      return (liste || []).slice().sort(function (a, b) {
+        var oa = Number(a.ordre) > 0 ? Number(a.ordre) : 100 + rangParDefaut(a.reference);
+        var ob = Number(b.ordre) > 0 ? Number(b.ordre) : 100 + rangParDefaut(b.reference);
+        return oa - ob;
+      });
+    }
+    /* Tarif CSE, précédé du prix public barré quand Airtable en donne un plus élevé. */
+    function prixAffiche(prod) {
+      var pub = Number(prod.prixPublic) || 0;
+      if (pub > prod.prix + 0.004) {
+        return '<s><span class="sw-visuellement-cache">Prix public : </span>' + eur(pub) + '</s>' + eur(prod.prix) +
+          '<small>Tarif CSE, au lieu de ' + eur(pub) + ' au tarif public</small>';
+      }
+      return eur(prod.prix);
+    }
     function poidsLisible(grammes) {
       if (grammes >= 1000) {
         return (grammes / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 }) + " kg";
@@ -804,6 +834,7 @@
           // Code valide → on charge le parcours
           etat.code = reponse.partenaire.code;
           etat.partenaire = reponse.partenaire;
+          etat.partenaire.produits = trierProduits(etat.partenaire.produits);
           etat.quantites = {};
           etat.consentement = false;
           etat.livraisonId = reponse.partenaire.livraisons.length === 1 ? reponse.partenaire.livraisons[0].id : null;
@@ -855,7 +886,7 @@
           '<div class="sw-produit-info">' +
             '<div class="sw-nom">' + echapper(prod.nom) + '</div>' +
             '<div class="sw-detail">' + echapper(prod.detail) + '</div>' +
-            '<div class="sw-prix">' + eur(prod.prix) + '</div>' +
+            '<div class="sw-prix">' + prixAffiche(prod) + '</div>' +
           '</div>' +
           '<div class="sw-qte" data-ref="' + echapper(prod.reference) + '">' +
             '<button type="button" class="sw-qte-moins" aria-label="Retirer un ' + echapper(prod.nom) + '">−</button>' +

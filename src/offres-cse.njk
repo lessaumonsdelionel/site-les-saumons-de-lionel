@@ -20,31 +20,6 @@ eleventyComputed:
   </div>
 </section>
 
-<!-- ============================== TARIF CSE : PRIX BARRÉ (demande du 21/09/2026) ============================== -->
-{% set t = cse.tarif %}{% if t and t.afficher and t.prixBarre and t.prixCse %}
-<section class="tarif-cse alt" id="tarif-cse">
-  <div class="wrap tarif-cse-grid">
-    <div>
-      <span class="eyebrow reveal">{{ t.eyebrow | safe }}</span>
-      <h2 class="reveal">{{ t.titre | safe }}</h2>
-      <p class="reveal">{{ t.texte | safe }}</p>
-    </div>
-    <div class="prix-cse reveal" data-d="1">
-      <div class="prix-cse-avant">
-        <span class="prix-cse-lib">{{ t.libellePrixBarre | safe }}</span>
-        <del><span class="sr-only">{{ t.libellePrixBarre | safe }} : </span>{{ t.prixBarre | prixFr }}</del>
-      </div>
-      <div class="prix-cse-apres">
-        <span class="prix-cse-lib">{{ t.libellePrixCse | safe }}</span>
-        <p><strong>{{ t.prixCse | prixFr }}</strong> <span>{{ t.unite | safe }}</span></p>
-      </div>
-      <p class="prix-cse-eco">-{{ t.prixBarre | remisePct(t.prixCse) }} % <span>soit {{ t.prixBarre | ecartPrix(t.prixCse) | prixFr }} d'économie {{ t.parUnite | safe }}</span></p>
-      {% if t.note %}<p class="prix-cse-note">{{ t.note | safe }}</p>{% endif %}
-    </div>
-  </div>
-</section>
-{% endif %}
-
 <!-- ============================== COMMENT ÇA MARCHE (CSE) ============================== -->
 <section>
   <div class="wrap">
