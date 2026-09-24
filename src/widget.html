@@ -202,10 +202,16 @@
     }
     .sw-bandeau h2 { font-size: 20px; font-weight: 600; }
     .sw-bandeau .sw-meta { font-size: 13px; color: rgba(245, 242, 236, 0.75); margin-top: 4px; }
+    /* Badge de réduction, bien visible : demande d'Aurélien du 24/09/2026 (« RÉDUCTION DE 20 % MINIMUM ») */
     .sw-bandeau .sw-badge {
-      font-family: var(--mono); font-weight: 700; font-size: 12px; letter-spacing: 0.06em;
-      background: var(--saumon, #D98A6E); color: var(--nuit); padding: 6px 12px; border-radius: 999px; white-space: nowrap;
+      font-family: var(--titre); font-weight: 700; font-size: 17px; letter-spacing: 0.04em; text-transform: uppercase;
+      background: var(--saumon, #D98A6E); color: var(--nuit); padding: 12px 20px; border-radius: 10px; white-space: nowrap;
+      box-shadow: 0 0 0 3px rgba(217, 138, 110, 0.35);
     }
+    @media (max-width: 560px) { .sw-bandeau .sw-badge { white-space: normal; text-align: center; width: 100%; font-size: 16px; } }
+    .sw-condition { margin: 8px 0 0; font-size: 12.5px; color: var(--gris); }
+    .sw-condition.sw-condition-ko { color: var(--cuivre); font-weight: 600; }
+    .sw-condition.sw-condition-ok { color: var(--vert); font-weight: 600; }
     .sw-lien-retour {
       background: none; border: none; color: rgba(245, 242, 236, 0.8); font-family: var(--corps);
       font-weight: 600; font-size: 13px; cursor: pointer; padding: 0; text-decoration: underline; margin-top: 8px;
@@ -533,7 +539,7 @@
           livraisons: ["alz-retrait", "alz-domicile"]
         },
         "COMITE27": {
-          nom: "Second comité de démonstration", statut: "Actif", remisePct: 0,
+          nom: "Second comité de démonstration", statut: "Actif", remisePct: 0, commandeMinimum: 70, francoPort: 200,
           dateOuverture: "2026-06-15", dateCloture: "2026-11-30",
           consignes: "Retrait gratuit sur le point convenu avec le comité. Lieu exact, date et frais à préciser.",
           produits: ["SAU-FIL-1000", "TRU-FIL-600", "SAU-PLQ-130", "TRU-PLQ-120"],
@@ -596,6 +602,7 @@
               code: code,
               nom: p.nom,
               remisePct: p.remisePct,
+              commandeMinimum: p.commandeMinimum || 0, francoPort: p.francoPort || 0,
               dateCloture: p.dateCloture,
               consignes: p.consignes,
               produits: p.produits.map(function (ref) { return TABLE_PRODUITS[ref]; }).filter(Boolean),
@@ -641,7 +648,9 @@
           sousTotal = arrondi(sousTotal);
           var remise = arrondi(sousTotal * (p.remisePct || 0));
           var mode = payload.livraison ? TABLE_MODES_LIVRAISON[payload.livraison.id] : null;
+          if (p.commandeMinimum > 0 && sousTotal < p.commandeMinimum) return { ok: false, raison: "minimum" };
           var frais = mode ? mode.frais : 0;
+          if (mode && mode.type === "Livraison" && p.francoPort > 0 && sousTotal >= p.francoPort) frais = 0;
           var total = arrondi(sousTotal - remise + frais);
 
           /* N° de commande : CSE-AAAAMMJJ-#### (séquence du jour). */
@@ -751,6 +760,25 @@
     function dateCourte(iso) { // JJ/MM
       var d = new Date(iso + "T00:00:00");
       return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2);
+    }
+    /* Une livraison a une date limite, un retrait a une date : « au plus tard le 18 décembre 2026 », « le 12 décembre 2026 » */
+    function quandLisible(liv) {
+      if (!liv || !liv.date) return "";
+      return (String(liv.type || "").toLowerCase() === "livraison" ? "au plus tard le " : "le ") + dateLongue(liv.date);
+    }
+    /* Texte du badge : réduction minimale par rapport au prix public, remise partenaire comprise. */
+    function texteBadge(p) {
+      var mini = null;
+      (p.produits || []).forEach(function (prod) {
+        var pub = Number(prod.prixPublic) || 0;
+        if (pub > 0 && pub > prod.prix) {
+          var r = 1 - (prod.prix * (1 - (p.remisePct || 0))) / pub;
+          if (mini === null || r < mini) mini = r;
+        }
+      });
+      if (mini !== null && mini > 0) return "Réduction de " + Math.floor(mini * 100 + 1e-9) + " % minimum";
+      if (p.remisePct > 0) return "−" + Math.round(p.remisePct * 100) + " % CSE";
+      return "Tarif CSE";
     }
     function dateLongue(iso) { // ex. 2 octobre 2026
       var d = new Date(iso + "T00:00:00");
@@ -866,9 +894,7 @@
         /* La grille servie EST déjà la grille CSE : quand la remise vaut 0,
            afficher « −0% CSE » n'a aucun sens pour le salarié. Le pourcentage
            ne s'affiche que s'il existe vraiment. */
-        '<span class="sw-badge">' +
-          (p.remisePct > 0 ? '−' + Math.round(p.remisePct * 100) + '% CSE' : 'Tarif CSE') +
-        '</span>' +
+        '<span class="sw-badge">' + echapper(texteBadge(p)) + '</span>' +
       '</div>';
 
       // Consignes éventuelles du partenaire
@@ -914,7 +940,7 @@
             '<span class="sw-radio-faux" aria-hidden="true"></span>' +
             '<span class="sw-livraison-texte">' +
               '<span class="sw-l-titre">' + echapper(liv.libelle) + '</span>' +
-              '<span class="sw-l-detail">' + echapper(liv.lieu) + ' · ' + dateLongue(liv.date) + '</span>' +
+              '<span class="sw-l-detail">' + echapper(liv.lieu) + ' · ' + quandLisible(liv) + '</span>' +
             '</span>' +
             fraisTxt +
           '</span>' +
@@ -1084,9 +1110,15 @@
       var remise = sousTotal * (p.remisePct || 0);
       var liv = trouverLivraison(etat.livraisonId);
       var frais = liv ? liv.frais : 0;
+      /* Franco de port (Airtable, par partenaire) : livraison à domicile offerte dès ce montant, hors frais */
+      var francoAtteint = !!(liv && estLivraisonDomicile(liv) && p.francoPort > 0 && sousTotal >= p.francoPort - 1e-9);
+      if (francoAtteint) frais = 0;
+      var minimum = p.commandeMinimum > 0 ? p.commandeMinimum : 0;
+      var sousMinimum = lignes.length > 0 && minimum > 0 && sousTotal < minimum - 1e-9;
       var total = sousTotal - remise + frais;
 
-      return { lignes: lignes, sousTotal: sousTotal, remise: remise, frais: frais, total: total, poids: poids, livraison: liv };
+      return { lignes: lignes, sousTotal: sousTotal, remise: remise, frais: frais, total: total, poids: poids, livraison: liv,
+               francoAtteint: francoAtteint, minimum: minimum, sousMinimum: sousMinimum };
     }
     function trouverLivraison(id) {
       if (!id || !etat.partenaire) return null;
@@ -1146,13 +1178,24 @@
                 '<span class="sw-val">− ' + eur(c.remise) + '</span></div>';
       }
       html += '<div class="sw-toto"><span>Frais de récupération</span><span class="sw-val">' +
-              (c.frais === 0 ? "Gratuit" : eur(c.frais)) + '</span></div>';
+              (c.francoAtteint ? "Offerts" : (c.frais === 0 ? "Gratuit" : eur(c.frais))) + '</span></div>';
+      var p = etat.partenaire;
+      if (c.livraison && estLivraisonDomicile(c.livraison) && p.francoPort > 0 && c.livraison.frais > 0) {
+        html += c.francoAtteint
+          ? '<p class="sw-condition sw-condition-ok">Frais de port offerts dès ' + eur(p.francoPort) + ' de commande.</p>'
+          : '<p class="sw-condition">Frais de port offerts dès ' + eur(p.francoPort) + ' de commande' + (c.lignes.length ? ', il manque ' + eur(p.francoPort - c.sousTotal) : '') + '.</p>';
+      }
+      if (c.sousMinimum) {
+        html += '<p class="sw-condition sw-condition-ko" role="alert">Commande minimum ' + eur(c.minimum) + ', il manque ' + eur(c.minimum - c.sousTotal) + '.</p>';
+      } else if (c.minimum > 0 && c.lignes.length === 0) {
+        html += '<p class="sw-condition">Commande minimum ' + eur(c.minimum) + '.</p>';
+      }
       html += '<div class="sw-total-final"><span class="sw-tf-label">Total</span><span class="sw-tf-val">' + eur(c.total) + '</span></div>';
       html += '<p class="sw-estimatif">Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.</p>';
       html += '<div class="sw-poids">Poids total estimé&nbsp;: ' + poidsLisible(c.poids) + '</div>';
       elTotaux.innerHTML = html;
 
-      btn.disabled = c.lignes.length === 0;
+      btn.disabled = c.lignes.length === 0 || c.sousMinimum;
     }
 
     /* -------------------------------------------------------------------
@@ -1162,8 +1205,8 @@
       var c = calculer();
       var ok = true;
 
-      // a) Au moins un produit
-      if (c.lignes.length === 0) return;
+      // a) Au moins un produit, et le minimum de commande du partenaire atteint
+      if (c.lignes.length === 0 || c.sousMinimum) return;
 
       // b) Un mode de récupération choisi
       if (!etat.livraisonId && etat.partenaire.livraisons.length > 0) {
@@ -1236,6 +1279,10 @@
 
       appelerCreationCommande(payload)
         .then(function (reponse) {
+          if (reponse && reponse.raison === "minimum") {
+            afficherErreurEnvoi(c, "Le montant est sous le minimum de commande de ce partenaire.");
+            return;
+          }
           if (!reponse || !reponse.numeroCommande) {
             afficherErreurEnvoi(c, "La commande n'a pas pu être enregistrée. Réessayez.");
             return;
@@ -1331,7 +1378,7 @@
         '<div class="sw-recap-final">' +
           ligneRF("Partenaire", etat.partenaire.nom) +
           ligneRF("Produits", lignes.map(function (l) { return l.q + "× " + l.nom; }).join(" · ")) +
-          ligneRF("Récupération", liv ? (liv.libelle + " · " + dateLongue(liv.date)) : "-") +
+          ligneRF("Récupération", liv ? (liv.libelle + " · " + quandLisible(liv)) : "-") +
           ligneRF("Lieu", liv ? liv.lieu : "-") +
           (estLivraisonDomicile(liv) ? ligneRF("Adresse de livraison", adresseLisible()) : "") +
           ligneRF("Poids total estimé", poidsLisible(poids)) +

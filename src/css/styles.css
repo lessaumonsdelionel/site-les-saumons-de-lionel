@@ -294,6 +294,8 @@ section{padding:clamp(72px,9vw,130px) 0}
 .avis-item p::after{content:" »"}
 .avis-item footer{position:static;overflow:visible;background:none;margin-top:auto;padding:18px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
 .avis-item footer b{color:var(--cuivre);font-weight:400}
+/* Retours de clients pro sous les références de la page Offres CSE (24/09/2026) */
+.avis-cse{margin-top:clamp(40px,5vw,64px)}
 
 /* Références « Ils nous font confiance » */
 .refs{display:flex;flex-wrap:wrap;gap:20px 56px;margin-top:clamp(30px,4vw,48px);padding-top:30px;border-top:1px solid var(--brume)}

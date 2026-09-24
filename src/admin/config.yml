@@ -422,6 +422,16 @@ collections:
                 fields:
                   - { name: "nom", label: "Nom (ex. COSAT Toulouse)", widget: "string" }
                   - { name: "detail", label: "Précision (ville, CSE, depuis quand)", widget: "string", required: false }
+              - name: "avis"
+                label: "Retours de clients professionnels (sous les références)"
+                label_singular: "retour"
+                widget: "list"
+                required: false
+                summary: "{{fields.auteur}}"
+                fields:
+                  - { name: "texte", label: "La phrase, telle quelle (sans guillemets)", widget: "text" }
+                  - { name: "auteur", label: "Prénom et initiale", widget: "string" }
+                  - { name: "contexte", label: "Contexte et ville, ex. dégustation CSE, Dax (40)", widget: "string", required: false }
           - name: "engagements"
             label: "Bloc « Ce que votre comité y gagne »"
             widget: "object"

@@ -74,6 +74,15 @@ eleventyComputed:
     <div class="refs reveal">{% for r in cse.references.liste %}
       <div class="ref"><b>{{ r.nom | safe }}</b>{% if r.detail %}<span>{{ r.detail | safe }}</span>{% endif %}</div>{% endfor %}
     </div>
+    {# Retours de clients professionnels, demande d'Aurélien du 24/09/2026 #}
+    {% if cse.references.avis and cse.references.avis.length %}
+    <div class="avis avis-cse">{% for a in cse.references.avis %}
+      <blockquote class="avis-item reveal"{% if not loop.first %} data-d="{{ loop.index0 }}"{% endif %}>
+        <p>{{ a.texte | safe }}</p>
+        <footer><b>{{ a.auteur | safe }}</b>{% if a.contexte %} <span>· {{ a.contexte | safe }}</span>{% endif %}</footer>
+      </blockquote>{% endfor %}
+    </div>
+    {% endif %}
   </div>
 </section>
 {% endif %}
