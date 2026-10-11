@@ -1,0 +1,271 @@
+---
+layout: "base.njk"
+permalink: "ccifa.html"
+racine: "/"
+pageId: "ccifa"
+partenaire: "ccifa"
+noindex: true
+eleventyComputed:
+  titre: "{{ ccifa.seo.titre | safe }}"
+  description: "{{ ccifa.seo.description | safe }}"
+  ogTitre: "{{ ccifa.seo.ogTitre | safe }}"
+  ogDescription: "{{ ccifa.seo.ogDescription | safe }}"
+  ogImage: "https://lessaumonsdelionel.fr/{{ site.ogImage | safe }}"
+---
+{#- Page partenaire CCIFA (devis 2026-0015). Contenus d'Aurélien du 03/10/2026, dans son ordre d'affichage :
+    bandeau, introduction, notre histoire, commande personnelle, commande entreprise, calendrier, contact.
+    Photos d'Aurélien du 11/10/2026 : Rita devant l'Ararat (bandeau), portrait de Lionel et photo de pêche
+    (histoire), ours et fumoir (univers Alaska et savoir-faire), port en Alaska (entreprise).
+    Hors menu, hors plan du site, noindex. Adresse publique : /ccifa (réécriture dans netlify.toml).
+    Commande personnelle : le widget habituel, habillé CCIFA, code pré-saisi, chargé au clic.
+    Entreprise : formulaire Netlify « ccifa-entreprise ».
+    Tous les textes sont dans _data/ccifa.json, modifiables dans /admin. -#}
+{% import "macros.njk" as m %}
+<div class="page-partenaire" id="haut">
+
+<!-- ============================== 1. BANDEAU ============================== -->
+<section class="page-hero on-dark hero-partenaire{% if ccifa.hero.image %} hero-avec-photo{% endif %}">
+  {% if ccifa.hero.imageFond %}<div class="bgimg" style="background-image:url('/{{ ccifa.hero.imageFond | safe }}')"></div>{% endif %}
+  <img class="watermark" src="/assets/img/logo-blanc.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <div class="hero-texte">
+    <div class="duo">
+      <span class="duo-nom">{{ ccifa.partenaire.mention | safe }}</span>
+      <span class="duo-partenaire">{% if ccifa.partenaire.logo %}<img src="/{{ ccifa.partenaire.logo | safe }}" alt="{{ ccifa.partenaire.logoAlt | safe }}">{% else %}<b title="{{ ccifa.partenaire.nom | safe }}">{{ ccifa.partenaire.sigle | safe }}</b>{% endif %}</span>
+    </div>
+    <h1>{{ ccifa.hero.titre | safe }}</h1>
+    <p class="lead">{{ ccifa.hero.accroche | safe }}</p>
+    {% if ccifa.hero.provisoire %}<span class="provisoire provisoire-sombre">{{ ccifa.hero.provisoire | safe }}</span>{% endif %}
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#commander" data-ouvrir-commande>{{ ccifa.hero.boutonPersonnel | safe }} <span class="arr">→</span></a>
+      <a class="btn btn-ghost light" href="#entreprise">{{ ccifa.hero.boutonEntreprise | safe }}</a>
+    </div>
+    </div>
+    {#- Photo principale (Arménie, Rita) : chargée tout de suite, c'est la première image vue -#}
+    {% if ccifa.hero.image %}<figure class="figure hero-photo">
+      <img src="/{{ ccifa.hero.image | safe }}" alt="{{ ccifa.hero.imageAlt | safe }}" fetchpriority="high">
+      {% if ccifa.hero.legende %}<figcaption>{{ ccifa.hero.legende | safe }}</figcaption>{% endif %}
+    </figure>{% endif %}
+  </div>
+  <span class="tricolore hero-tricolore" aria-hidden="true"></span>
+</section>
+
+<!-- ============================== 2. INTRODUCTION ============================== -->
+<section class="intro-ccifa">
+  <div class="wrap">
+    <span class="tricolore intro-tricolore" aria-hidden="true"></span>{% for para in ccifa.intro.paragraphes %}
+    <p class="{% if loop.first %}intro-lead {% endif %}reveal">{{ para | safe }}</p>{% endfor %}
+  </div>
+</section>
+
+<!-- ============================== 3. NOTRE HISTOIRE ============================== -->
+<section class="alt" id="maison">
+  <div class="wrap split rev">
+    <div class="reveal portrait-peche">
+      {{ m.figure("/" + ccifa.histoire.image, ccifa.histoire.imageAlt, ccifa.histoire.legende) }}
+      {% if ccifa.histoire.imagePeche %}<img class="vignette-peche" src="/{{ ccifa.histoire.imagePeche | safe }}" alt="{{ ccifa.histoire.imagePecheAlt | safe }}" loading="lazy">{% endif %}
+    </div>
+    <div>
+      <span class="eyebrow reveal">{{ ccifa.histoire.eyebrow | safe }}</span>
+      <h2 class="reveal">{{ ccifa.histoire.titre | safe }}</h2>{% for para in ccifa.histoire.paragraphes %}
+      <p class="reveal">{{ para | safe }}</p>{% endfor %}
+      {% if ccifa.histoire.provisoire %}<span class="provisoire">{{ ccifa.histoire.provisoire | safe }}</span>{% endif %}
+    </div>
+  </div>
+  {#- Univers Alaska et savoir-faire : deux photos fortes, pas de galerie (consigne d'Aurélien du 11/10) -#}
+  {% if ccifa.univers and ccifa.univers.photos and ccifa.univers.photos.length %}<div class="wrap univers-ccifa">{% for p in ccifa.univers.photos %}
+    <div class="reveal"{% if not loop.first %} data-d="1"{% endif %}>{{ m.figure("/" + p.image, p.alt, p.legende) }}</div>{% endfor %}
+  </div>{% endif %}
+</section>
+
+<!-- ============================== 4. VOUS COMMANDEZ À TITRE PERSONNEL ============================== -->
+<section id="commander">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow reveal">{{ ccifa.personnel.eyebrow | safe }}</span>
+        <h2 class="reveal">{{ ccifa.personnel.titre | safe }}</h2>
+      </div>
+    </div>
+
+    <!-- Avant le clic : l'offre, sans appel au serveur de commande.
+         Le widget ne se charge qu'au clic, pour ne pas consommer d'opérations Make à chaque visite. -->
+    <div id="zone-commande" class="offre-perso">
+      <ul class="offres">{% for o in ccifa.personnel.offres %}
+        <li class="offre reveal"{% if not loop.first %} data-d="{{ loop.index0 }}"{% endif %}>
+          <img src="/{{ o.image | safe }}" alt="" loading="lazy">
+          <div class="offre-texte"><b>{{ o.nom | safe }}</b><span>{{ o.detail | replace(" €", "&nbsp;€") | safe }}</span></div>
+          <div class="offre-prix">{% if o.prixBarre %}<s><span class="visuellement-cache">Au lieu de </span>{{ o.prixBarre | replace(" €", "&nbsp;€") | safe }}</s>{% endif %}<b>{{ o.prix | replace(" €", "&nbsp;€") | safe }}</b></div>
+        </li>{% endfor %}
+      </ul>
+      <p class="offre-livraison reveal">{{ ccifa.personnel.livraison | replace(" €", "&nbsp;€") | safe }}</p>
+      <div class="ouvrir-commande reveal">
+        <a class="btn btn-primary" href="#commander" data-ouvrir-commande>{{ ccifa.personnel.bouton | safe }} <span class="arr">→</span></a>
+      </div>
+    </div>
+    <div id="zone-widget" class="zone-widget" hidden>
+      <p class="chargement-widget" role="status">{{ ccifa.personnel.chargement | safe }}…</p>
+    </div>
+    {% if ccifa.personnel.mentions and ccifa.personnel.mentions.length %}<ul class="mentions-offre">{% for mention in ccifa.personnel.mentions %}
+      <li>{{ mention | replace(" kg", "&nbsp;kg") | safe }}</li>{% endfor %}
+    </ul>{% endif %}
+  </div>
+</section>
+
+<!-- ============================== 5. VOUS COMMANDEZ POUR VOTRE ENTREPRISE ============================== -->
+<section class="alt" id="entreprise">
+  <div class="wrap entreprise-grille">
+    <div>
+      <span class="eyebrow reveal">{{ ccifa.entreprise.eyebrow | safe }}</span>
+      <h2 class="titre-entreprise reveal">{{ ccifa.entreprise.titre | safe }}</h2>{% for para in ccifa.entreprise.paragraphes %}
+      <p class="reveal">{{ para | safe }}</p>{% endfor %}
+      {% if ccifa.entreprise.image %}<div class="entreprise-photo reveal">{{ m.figure("/" + ccifa.entreprise.image, ccifa.entreprise.imageAlt, ccifa.entreprise.legende) }}</div>{% endif %}
+    </div>
+    <div>
+      <p class="form-merci" hidden tabindex="-1">{{ ccifa.entreprise.merci | safe }}</p>
+      <!-- Formulaire Netlify Forms « ccifa-entreprise » : détecté au déploiement,
+           les demandes arrivent dans Netlify (onglet Forms) et par notification e-mail. -->
+      <form class="form reveal" id="formulaire-entreprise" name="ccifa-entreprise" method="POST" action="/ccifa?envoye=1#entreprise" data-netlify="true" netlify-honeypot="piege">
+        <input type="hidden" name="form-name" value="ccifa-entreprise">
+        <input type="hidden" name="origine" value="Page CCIFA">
+        <p class="hidden-field" aria-hidden="true"><label>Ne pas remplir ce champ <input name="piege" tabindex="-1" autocomplete="off"></label></p>
+        <div class="form-row">
+          <label for="e-entreprise">Nom de l'entreprise</label>
+          <input type="text" id="e-entreprise" name="entreprise" required autocomplete="organization">
+        </div>
+        <div class="form-grid">
+          <div>
+            <label for="e-contact">Contact (nom et prénom)</label>
+            <input type="text" id="e-contact" name="contact" required autocomplete="name">
+          </div>
+          <div>
+            <label for="e-tel">Téléphone</label>
+            <input type="tel" id="e-tel" name="telephone" required autocomplete="tel" inputmode="tel" minlength="10" title="Votre numéro de téléphone, ex. 06 12 34 56 78">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div>
+            <label for="e-email">E-mail</label>
+            <input type="email" id="e-email" name="email" required autocomplete="email">
+          </div>
+          <div>
+            <label for="e-cp">Code postal</label>
+            <input type="text" id="e-cp" name="code_postal" required autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" title="Code postal à 5 chiffres">
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="e-salaries">Nombre de salariés</label>
+          <input type="text" id="e-salaries" name="nombre_salaries" required inputmode="numeric" pattern="[0-9 ]{1,7}" title="Un nombre, ex. 45">
+        </div>
+        <fieldset class="form-row">
+          <legend>Opération envisagée</legend>
+          <div class="radios">{% for o in ccifa.entreprise.operations %}
+            <label><input type="radio" name="operation" value="{{ o | safe }}" required{% if loop.first %} checked{% endif %}> {{ o | safe }}</label>{% endfor %}
+          </div>
+        </fieldset>
+        <div class="form-row">
+          <label for="e-precisions">Votre projet en quelques mots <span class="muted" style="text-transform:none;letter-spacing:0">(facultatif)</span></label>
+          <textarea id="e-precisions" name="precisions" rows="4"></textarea>
+        </div>
+        <label class="check"><input type="checkbox" name="rgpd" value="oui" required> <span>{{ ccifa.entreprise.rgpd | safe }} <a href="/politique-confidentialite.html">politique de confidentialité</a>.</span></label>
+        <div><button class="btn btn-primary" type="submit">{{ ccifa.entreprise.bouton | safe }} <span class="arr">→</span></button></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 6. CALENDRIER ============================== -->
+<section class="calendrier-ccifa">
+  <div class="wrap">
+    <span class="eyebrow reveal">{{ ccifa.calendrier.titre | safe }}</span>
+    <div class="stats stats-deux">{% for d in ccifa.calendrier.dates %}
+      <div class="stat reveal"{% if not loop.first %} data-d="{{ loop.index0 }}"{% endif %}><span class="n">{{ d.chiffre | safe }}{% if d.unite %}<small>{{ d.unite | safe }}</small>{% endif %}</span><h3>{{ d.titre | safe }}</h3><p>{{ d.texte | safe }}</p></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 7. CONTACT ============================== -->
+<section class="alt" id="contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow reveal">{{ ccifa.contact.titre | safe }}</span>
+        <h2 class="reveal">{{ ccifa.contact.nom | safe }}</h2>
+      </div>
+    </div>
+    <div class="contact-grid contact-grid-deux">
+      <div class="contact-card reveal">
+        <span class="lat"><span class="bar"><i></i></span> Appeler</span>
+        <h3>Par téléphone</h3>
+        <a href="tel:{{ ccifa.contact.tel.lien | safe }}">{{ ccifa.contact.tel.numero | safe }}</a>
+      </div>
+      <div class="contact-card reveal" data-d="1">
+        <span class="lat"><span class="bar"><i></i></span> Écrire</span>
+        <h3>Par e-mail</h3>
+        <a href="mailto:{{ ccifa.contact.email | safe }}">{{ ccifa.contact.email | safe }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+/* Page CCIFA : chargement du widget de commande au premier clic, avec l'habillage CCIFA.
+   Le widget lit window.HABILLAGE_WIDGET (même origine) : textes, code pré-saisi.
+   ?code=XXX dans l'adresse remplace le code CCIFA (ex. lien envoyé à une entreprise). */
+(function () {
+  "use strict";
+  var params = new URLSearchParams(window.location.search);
+  var codeAdresse = (params.get("code") || "").toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 24);
+  var habillage = {{ ccifa.widget | dump | safe }};
+  habillage.code = codeAdresse || {{ ccifa.personnel.code | dump | safe }};
+  window.HABILLAGE_WIDGET = habillage;
+
+  var zoneCommande = document.getElementById("zone-commande");
+  var zoneWidget = document.getElementById("zone-widget");
+  var section = document.getElementById("commander");
+  var cadre = null;
+
+  function ajuster() {
+    try {
+      var d = cadre.contentDocument;
+      if (d && d.body) cadre.style.height = Math.max(300, d.body.scrollHeight + 24) + "px";
+    } catch (e) { /* origine différente : on garde la hauteur CSS */ }
+  }
+
+  function ouvrir(e) {
+    if (e) e.preventDefault();
+    document.body.classList.remove("nav-open");
+    if (!cadre) {
+      cadre = document.createElement("iframe");
+      cadre.className = "widget-frame";
+      cadre.title = "Formulaire de commande, offre CCIFA, Les Saumons de Lionel";
+      cadre.src = "/widget.html" + (params.get("demo") === "1" ? "?demo=1" : "");
+      cadre.addEventListener("load", function () {
+        var attente = zoneWidget.querySelector(".chargement-widget");
+        if (attente) attente.remove();
+        ajuster();
+        setInterval(ajuster, 400);
+      });
+      zoneWidget.hidden = false;
+      zoneWidget.appendChild(cadre);
+      zoneCommande.hidden = true;
+    }
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  document.querySelectorAll("[data-ouvrir-commande]").forEach(function (a) {
+    a.addEventListener("click", ouvrir);
+  });
+  if (window.location.hash === "#commander" || codeAdresse) ouvrir();
+
+  /* Retour du formulaire entreprise (Netlify redirige vers ?envoye=1#entreprise) */
+  var merci = document.querySelector("#entreprise .form-merci");
+  if (params.get("envoye") === "1" && merci) {
+    merci.hidden = false;
+    document.getElementById("formulaire-entreprise").hidden = true;
+    merci.focus();
+  }
+})();
+</script>

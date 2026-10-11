@@ -1,0 +1,165 @@
+{
+  "seo": {
+    "titre": "Les Saumons de Lionel, partenaires de la CCIFA",
+    "description": "Une offre réservée aux amis de la Chambre de Commerce et d'Industrie Franco-Arménienne pour les fêtes 2026 : saumon sauvage d'Alaska à 84 €/kg au lieu de 98,90 €, livré à domicile.",
+    "ogTitre": "Les Saumons de Lionel, partenaires de la CCIFA",
+    "ogDescription": "Une offre réservée aux amis de la Chambre de Commerce et d'Industrie Franco-Arménienne pour les fêtes 2026."
+  },
+  "partenaire": {
+    "sigle": "CCIFA",
+    "nom": "Chambre de Commerce et d'Industrie Franco-Arménienne",
+    "logo": "assets/img/ccifa-logo.png",
+    "logoAlt": "Logo de la CCIFA",
+    "mention": "En partenariat avec"
+  },
+  "hero": {
+    "titre": "Les Saumons de Lionel, <em>partenaires de la CCIFA</em>",
+    "accroche": "Une offre réservée aux amis de la Chambre de Commerce et d'Industrie Franco-Arménienne pour les fêtes 2026.",
+    "provisoire": "",
+    "boutonPersonnel": "Je commande",
+    "boutonEntreprise": "Demander mon offre",
+    "image": "assets/img/ccifa-rita-ararat.webp",
+    "imageAlt": "Rita Agayan-Sourine en Arménie, le mont Ararat enneigé en arrière-plan",
+    "legende": "Rita Agayan-Sourine, devant l'Ararat",
+    "imageFond": ""
+  },
+  "intro": {
+    "paragraphes": [
+      "Entre l'Alaska de Lionel et l'Arménie de Rita, notre maison s'écrit aujourd'hui autour d'une même histoire de transmission et de liens entre les territoires.",
+      "Nous sommes heureux de proposer aux membres et aux amis de la CCIFA une offre réservée pour les fêtes, à titre personnel ou pour leur entreprise."
+    ]
+  },
+  "histoire": {
+    "eyebrow": "Depuis 1994",
+    "titre": "Notre histoire",
+    "paragraphes": [
+      "Au début des années 1980, Lionel Maye s'installe en Alaska. Photographe animalier maintes fois primé et guide de pêche réputé, il acquiert au fil des décennies une connaissance intime de ses rivières, de sa faune et de ses saumons sauvages.",
+      "En 1994, il fonde Les Saumons de Lionel, autour du saumon rouge Sockeye d'Alaska.",
+      "Aujourd'hui, l'entreprise familiale est dirigée par Rita Agayan-Sourine. Née à Erevan, où elle a grandi et étudié, elle est aujourd'hui installée en France et perpétue cet héritage avec son mari Aurélien.",
+      "Notre saumon est pêché à l'état sauvage en Alaska, jamais élevé, puis fumé lentement au bois de hêtre et tranché à la main en France."
+    ],
+    "provisoire": "",
+    "image": "assets/img/lionel-portrait.webp",
+    "imageAlt": "Portrait de Lionel Maye, chapka et parka rouge",
+    "legende": "Lionel Maye, Alaska",
+    "imagePeche": "assets/img/ccifa-lionel-peche.webp",
+    "imagePecheAlt": "Retour de pêche en Alaska, un saumon sauvage dans les mains"
+  },
+  "univers": {
+    "photos": [
+      {
+        "image": "assets/img/ours-sockeye.webp",
+        "alt": "Ours brun d'Alaska, un saumon sockeye dans la gueule",
+        "legende": "Alaska, photographie de Lionel Maye"
+      },
+      {
+        "image": "assets/img/fond-fumoir.webp",
+        "alt": "Filets de saumon suspendus dans le fumoir",
+        "legende": "Le fumoir : fumage lent au bois de hêtre"
+      }
+    ]
+  },
+  "personnel": {
+    "eyebrow": "Commande personnelle",
+    "titre": "Vous commandez <em>à titre personnel</em>",
+    "offres": [
+      {
+        "image": "assets/img/saumon-filet-entier.webp",
+        "nom": "Saumon sauvage d'Alaska",
+        "detail": "Filets d'environ 1 kg",
+        "prix": "84 €/kg",
+        "prixBarre": "98,90 €"
+      },
+      {
+        "image": "assets/img/truite-filet-entier.webp",
+        "nom": "Truite fumée des Pyrénées, issue de l'agriculture biologique",
+        "detail": "Soit environ 50,40 € le filet d'environ 600 g",
+        "prix": "84 €/kg",
+        "prixBarre": ""
+      },
+      {
+        "image": "assets/img/saumon-plaquette.webp",
+        "nom": "Plaquette de saumon",
+        "detail": "130 g, 3-4 tranches",
+        "prix": "16,90 €",
+        "prixBarre": ""
+      },
+      {
+        "image": "assets/img/truite-plaquette.webp",
+        "nom": "Plaquette de truite",
+        "detail": "120 g, 3 tranches",
+        "prix": "15,90 €",
+        "prixBarre": ""
+      }
+    ],
+    "livraison": "Livraison surgelée à domicile en France métropolitaine, hors Corse : 10 €, offerte dès 200 € de commande, minimum de commande 70 €.",
+    "mentions": [
+      "Commandes groupées de plus de 20 kg : remises supplémentaires, nous consulter.",
+      "Poids variable d'un filet à l'autre, prix ajusté au poids réel."
+    ],
+    "bouton": "Je commande",
+    "code": "CCIFA26",
+    "chargement": "Chargement de l'offre CCIFA"
+  },
+  "widget": {
+    "kicker": "Réseau CCIFA",
+    "titre": "Votre code",
+    "sous": "Le code de l'offre CCIFA est déjà saisi. Vous avez un code entreprise ? Saisissez-le à la place.",
+    "libelleTarif": "Tarif CCIFA",
+    "libelleRemise": "Remise",
+    "noteRecap": "Sans paiement en ligne. Un e-mail de confirmation vous est envoyé.",
+    "libelleTotal": "Total de la commande",
+    "titreModes": "Livraison",
+    "erreurModes": "Veuillez choisir le mode de livraison.",
+    "libelleFrais": "Frais de livraison",
+    "libelleRecuperation": "Livraison",
+    "noteEstimatif": "Montant estimatif sur le poids de référence, ajusté au poids réel.",
+    "placeholderCommentaire": "Digicode, étage, précision pour la livraison…"
+  },
+  "entreprise": {
+    "eyebrow": "Entreprises",
+    "titre": "Vous commandez <em>pour votre entreprise</em>",
+    "paragraphes": [
+      "Cadeaux clients, cadeaux salariés ou commande groupée : nous construisons une offre sur mesure selon vos volumes et votre organisation.",
+      "Livraison groupée sur site ou à domicile, code dédié pour vos collaborateurs, et possibilité pour l'entreprise de prendre en charge tout ou partie du prix proposé aux salariés."
+    ],
+    "operations": [
+      "Cadeaux clients",
+      "Cadeaux salariés",
+      "Commande groupée",
+      "Autre projet"
+    ],
+    "rgpd": "J'accepte que ces informations soient utilisées pour étudier ma demande et y répondre, conformément à la",
+    "bouton": "Demander mon offre",
+    "merci": "Merci, votre demande est bien envoyée. Nous revenons vers vous pour construire votre offre.",
+    "image": "assets/img/ccifa-port-alaska.webp",
+    "imageAlt": "Préparation du poisson sur un ponton de pêche en Alaska",
+    "legende": "Préparation du poisson, Alaska"
+  },
+  "calendrier": {
+    "titre": "Calendrier",
+    "dates": [
+      {
+        "chiffre": "30",
+        "unite": "nov.",
+        "titre": "Fin des commandes",
+        "texte": "Commandes jusqu'au 30 novembre 2026, dans la limite des stocks disponibles."
+      },
+      {
+        "chiffre": "18",
+        "unite": "déc.",
+        "titre": "Livraisons",
+        "texte": "Livraisons prévues avant le 18 décembre 2026."
+      }
+    ]
+  },
+  "contact": {
+    "titre": "Contact",
+    "nom": "Rita Agayan-Sourine",
+    "tel": {
+      "numero": "07 59 60 12 33",
+      "lien": "+33759601233"
+    },
+    "email": "rita@lessaumonsdelionel.fr"
+  }
+}

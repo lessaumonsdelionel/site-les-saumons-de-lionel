@@ -541,6 +541,178 @@ collections:
               - { name: "titre", label: "Titre", widget: "string" }
               - { name: "texte", label: "Texte", widget: "text" }
 
+      # ------------------ PAGE PARTENAIRE CCIFA (02/10/2026, contenus du 04/10) ------------------
+      # Page /ccifa, hors menu et non référencée. Le code et les prix de l'offre
+      # vivent dans Airtable (table Partenaires) : ici, seulement les textes.
+      - name: "ccifa"
+        label: "Page partenaire CCIFA (/ccifa)"
+        file: "src/_data/ccifa.json"
+        fields:
+          - name: "seo"
+            label: "Titre d'onglet et aperçu de partage"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "titre", label: "Titre de l'onglet", widget: "string" }
+              - { name: "description", label: "Description", widget: "text" }
+              - { name: "ogTitre", label: "Titre de l'aperçu (lien partagé)", widget: "string" }
+              - { name: "ogDescription", label: "Texte de l'aperçu (lien partagé)", widget: "text" }
+          - name: "partenaire"
+            label: "Partenaire"
+            widget: "object"
+            fields:
+              - { name: "sigle", label: "Sigle (affiché si pas de logo)", widget: "string" }
+              - { name: "nom", label: "Nom complet", widget: "string" }
+              - { name: "logo", label: "Logo du partenaire (vide = sigle en toutes lettres)", widget: "image", required: false }
+              - { name: "logoAlt", label: "Description du logo (accessibilité)", widget: "string" }
+              - { name: "mention", label: "Mention devant le logo (ex. En partenariat avec)", widget: "string" }
+          - name: "hero"
+            label: "1. Bandeau"
+            widget: "object"
+            fields:
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - { name: "accroche", label: "Sous-titre", widget: "text" }
+              - { name: "provisoire", label: "Mention « provisoire » (vider pour la retirer)", widget: "string", required: false }
+              - { name: "boutonPersonnel", label: "Bouton commande personnelle", widget: "string" }
+              - { name: "boutonEntreprise", label: "Bouton entreprise", widget: "string" }
+              - { name: "image", label: "Photo du bandeau (à droite du titre)", widget: "image", required: false }
+              - { name: "imageAlt", label: "Description de la photo (accessibilité)", widget: "string", required: false }
+              - { name: "legende", label: "Légende sur la photo", widget: "string", required: false }
+              - { name: "imageFond", label: "Photo voilée en fond du bandeau (facultatif)", widget: "image", required: false }
+          - name: "intro"
+            label: "2. Introduction"
+            widget: "object"
+            fields:
+              - name: "paragraphes"
+                label: "Paragraphes"
+                label_singular: "paragraphe"
+                widget: "list"
+                field: { name: "texte", label: "Texte", widget: "text", hint: "<strong>…</strong> = gras" }
+          - name: "histoire"
+            label: "3. Notre histoire"
+            widget: "object"
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - name: "paragraphes"
+                label: "Paragraphes"
+                label_singular: "paragraphe"
+                widget: "list"
+                field: { name: "texte", label: "Texte", widget: "text", hint: "<strong>…</strong> = gras" }
+              - { name: "provisoire", label: "Mention « texte provisoire » (vider pour la retirer)", widget: "string", required: false }
+              - { name: "image", label: "Photo", widget: "image" }
+              - { name: "imageAlt", label: "Description de la photo (accessibilité)", widget: "string" }
+              - { name: "legende", label: "Légende sur la photo", widget: "string", required: false }
+              - { name: "imagePeche", label: "Petite photo de pêche sur le coin du portrait (vide = aucune)", widget: "image", required: false }
+              - { name: "imagePecheAlt", label: "Description de la petite photo (accessibilité)", widget: "string", required: false }
+          - name: "univers"
+            label: "3 bis. Photos Alaska et savoir-faire (sous Notre histoire)"
+            widget: "object"
+            fields:
+              - name: "photos"
+                label: "Photos (deux conseillées : une en largeur, une carrée)"
+                label_singular: "photo"
+                widget: "list"
+                summary: "{{fields.legende}}"
+                fields:
+                  - { name: "image", label: "Photo", widget: "image" }
+                  - { name: "alt", label: "Description de la photo (accessibilité)", widget: "string" }
+                  - { name: "legende", label: "Légende sur la photo", widget: "string", required: false }
+          - name: "personnel"
+            label: "4. Vous commandez à titre personnel"
+            widget: "object"
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - name: "offres"
+                label: "Offres et prix affichés (les prix commandés viennent d'Airtable)"
+                label_singular: "offre"
+                widget: "list"
+                summary: "{{fields.nom}}, {{fields.prix}}"
+                fields:
+                  - { name: "image", label: "Vignette", widget: "image" }
+                  - { name: "nom", label: "Produit", widget: "string" }
+                  - { name: "detail", label: "Détail", widget: "string" }
+                  - { name: "prix", label: "Prix affiché (ex. 84 €/kg)", widget: "string" }
+                  - { name: "prixBarre", label: "Prix barré (vide = aucun)", widget: "string", required: false }
+              - { name: "livraison", label: "Phrase sur la livraison", widget: "text" }
+              - name: "mentions"
+                label: "Mentions sous l'offre"
+                label_singular: "mention"
+                widget: "list"
+                field: { name: "mention", label: "Mention", widget: "string" }
+              - { name: "bouton", label: "Bouton de commande", widget: "string" }
+              - { name: "code", label: "Code pré-saisi (doit exister et être Actif dans Airtable)", widget: "string" }
+              - { name: "chargement", label: "Texte pendant le chargement", widget: "string" }
+          - name: "widget"
+            label: "Textes du formulaire de commande sur cette page"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { name: "kicker", label: "Sur-titre du panneau du code", widget: "string" }
+              - { name: "titre", label: "Titre du panneau du code", widget: "string" }
+              - { name: "sous", label: "Texte du panneau du code", widget: "text" }
+              - { name: "libelleTarif", label: "Nom du tarif (ex. Tarif CCIFA)", widget: "string" }
+              - { name: "libelleRemise", label: "Nom de la remise", widget: "string" }
+              - { name: "noteRecap", label: "Note sous le bouton de validation", widget: "text" }
+              - { name: "libelleTotal", label: "Libellé du total sur la confirmation", widget: "string" }
+              - { name: "titreModes", label: "Titre de l'étape livraison", widget: "string" }
+              - { name: "erreurModes", label: "Message si aucun mode n'est choisi", widget: "string" }
+              - { name: "libelleFrais", label: "Nom des frais (ex. Frais de livraison)", widget: "string" }
+              - { name: "libelleRecuperation", label: "Ligne livraison sur la confirmation", widget: "string" }
+              - { name: "noteEstimatif", label: "Note sous le total (poids réel)", widget: "text" }
+              - { name: "placeholderCommentaire", label: "Exemple dans le champ commentaire", widget: "string" }
+          - name: "entreprise"
+            label: "5. Vous commandez pour votre entreprise"
+            widget: "object"
+            fields:
+              - { name: "eyebrow", label: "Sur-titre", widget: "string" }
+              - { name: "titre", label: "Titre", widget: "string", hint: "<em>…</em> = italique" }
+              - name: "paragraphes"
+                label: "Paragraphes"
+                label_singular: "paragraphe"
+                widget: "list"
+                field: { name: "texte", label: "Texte", widget: "text", hint: "<strong>…</strong> = gras" }
+              - name: "operations"
+                label: "Opérations proposées dans le formulaire"
+                label_singular: "opération"
+                widget: "list"
+                field: { name: "operation", label: "Opération", widget: "string" }
+              - { name: "rgpd", label: "Case de consentement (suivie du lien vers la politique de confidentialité)", widget: "text" }
+              - { name: "bouton", label: "Bouton d'envoi", widget: "string" }
+              - { name: "merci", label: "Message après l'envoi", widget: "text" }
+              - { name: "image", label: "Photo sous les textes (masquée sur téléphone)", widget: "image", required: false }
+              - { name: "imageAlt", label: "Description de la photo (accessibilité)", widget: "string", required: false }
+              - { name: "legende", label: "Légende sur la photo", widget: "string", required: false }
+          - name: "calendrier"
+            label: "6. Calendrier"
+            widget: "object"
+            fields:
+              - { name: "titre", label: "Titre", widget: "string" }
+              - name: "dates"
+                label: "Dates"
+                label_singular: "date"
+                widget: "list"
+                summary: "{{fields.chiffre}} {{fields.unite}}, {{fields.titre}}"
+                fields:
+                  - { name: "chiffre", label: "Jour (ex. 30)", widget: "string" }
+                  - { name: "unite", label: "Mois abrégé (ex. nov.)", widget: "string" }
+                  - { name: "titre", label: "Titre", widget: "string" }
+                  - { name: "texte", label: "Texte", widget: "text" }
+          - name: "contact"
+            label: "7. Contact"
+            widget: "object"
+            fields:
+              - { name: "titre", label: "Titre", widget: "string" }
+              - { name: "nom", label: "Nom affiché", widget: "string" }
+              - name: "tel"
+                label: "Téléphone"
+                widget: "object"
+                fields:
+                  - { name: "numero", label: "Numéro affiché", widget: "string" }
+                  - { name: "lien", label: "Numéro pour le lien d'appel (format +33…)", widget: "string" }
+              - { name: "email", label: "E-mail", widget: "string" }
+
       # ------------------ PAGES LÉGALES ------------------
       - name: "mentions"
         label: "Mentions légales"

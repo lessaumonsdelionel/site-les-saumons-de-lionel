@@ -11,20 +11,22 @@
 <meta property="og:description" content="{{ ogDescription | safe }}">
 <meta property="og:image" content="{{ ogImage | safe }}">
 <meta property="og:type" content="website">
-{% endif %}<link rel="icon" type="image/png" href="{{ site.favicon | safe }}">
+{% endif %}<link rel="icon" type="image/png" href="{{ racine }}{{ site.favicon | safe }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Space+Mono&display=swap" rel="stylesheet">
 <link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="{{ racine }}css/styles.css">
 </head>
 <body class="header-dark">
 
-{% include "header.njk" %}
+{# Pages partenaires (page CCIFA du 02/10/2026) : en-tête et pied sans liens CSE, p = données du partenaire #}
+{% set p = ccifa %}{% if partenaire %}{% include "header-partenaire.njk" %}{% else %}{% include "header.njk" %}{% endif %}
 {{ content | safe }}
-{% if footerSimple %}{% include "footer-simple.njk" %}{% else %}<!-- ============================== FOOTER ============================== -->
+{% if partenaire %}<!-- ============================== FOOTER PARTENAIRE ============================== -->
+{% include "footer-partenaire.njk" %}{% elif footerSimple %}{% include "footer-simple.njk" %}{% else %}<!-- ============================== FOOTER ============================== -->
 {% include "footer.njk" %}{% endif %}
-<script src="js/main.js"></script>
+<script src="{{ racine }}js/main.js"></script>
 {% if scriptIframe %}<script>
 /* Ajuste la hauteur de l'iframe à son contenu (même origine). */
 (function () {

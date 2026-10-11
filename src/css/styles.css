@@ -539,3 +539,121 @@ footer a:hover{color:var(--saumon)}
   .avis-item p{font-size:19px}
   .avis-item footer{line-height:1.7}
 }
+
+/* =====================================================================
+   PAGE PARTENAIRE CCIFA (02/10/2026, contenus d'Aurélien intégrés le 04/10)
+   Même univers que le site, avec quelques touches aux couleurs de
+   l'Arménie : rouge, bleu, abricot. Usage décoratif seulement (filets,
+   barres), jamais pour du texte : contraste insuffisant sur fond clair.
+   ===================================================================== */
+:root{--am-rouge:#D90012;--am-bleu:#0033A0;--am-abricot:#F2A800}
+.tricolore{display:inline-block;width:42px;height:4px;border-radius:2px;flex:none;
+  background:linear-gradient(90deg,var(--am-rouge) 0 33.4%,var(--am-bleu) 33.4% 66.7%,var(--am-abricot) 66.7% 100%)}
+.page-partenaire [id]{scroll-margin-top:84px}
+.visuellement-cache{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+/* En-tête : rappel du partenaire à droite, à la place du bouton CSE */
+.cobrand{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;border:1px solid rgba(14,26,31,.22);
+  border-radius:999px;color:var(--nuit);white-space:nowrap}
+.cobrand b{font-family:var(--serif);font-weight:500;font-size:15px;letter-spacing:.08em}
+.cobrand .tricolore{width:22px;height:3px}
+.cobrand img{height:28px;width:28px;background:#fff;border-radius:6px;padding:1px;margin:-4px 0 -4px -8px}
+.header-dark .site-header:not(.solid) .cobrand{color:var(--banquise);border-color:rgba(245,242,236,.35)}
+
+/* 1. Bandeau : photo voilée, logo du partenaire, ruban tricolore en haut de page */
+.hero-partenaire{padding-bottom:clamp(56px,7vw,96px)}
+.hero-partenaire .bgimg{position:absolute;inset:0;z-index:0;background-position:center;background-size:cover;opacity:.24}
+.hero-partenaire .hero-tricolore{position:absolute;left:0;right:0;top:0;width:auto;height:4px;border-radius:0;z-index:2}
+.duo{display:flex;width:fit-content;align-items:center;flex-wrap:wrap;gap:10px 14px;margin-bottom:22px}
+.duo-nom{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,242,236,.7)}
+.duo-partenaire b{font-family:var(--serif);font-weight:500;font-size:22px;letter-spacing:.1em;color:var(--banquise)}
+/* Logo CCIFA de leur page HelloAsso (140 px, carré sur fond blanc) : affiché à 76 px, net sur écran haute densité */
+.duo-partenaire img{display:block;height:76px;width:76px;background:#fff;border-radius:10px;padding:4px}
+.hero-partenaire h1{max-width:20ch}
+.hero-partenaire .cta-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px}
+.provisoire-sombre{color:var(--saumon);border-color:rgba(217,138,110,.6)}
+/* Bandeau avec photo (Rita devant l'Ararat) : texte à gauche, photo à droite.
+   Cadrage calé sur le bas de l'image : l'Ararat et Rita restent visibles. */
+.hero-avec-photo>.wrap{display:grid;grid-template-columns:1.12fr .88fr;gap:clamp(36px,5vw,72px);align-items:center}
+.hero-avec-photo h1{font-size:clamp(36px,4.4vw,62px)}
+.hero-photo img{height:clamp(440px,44vw,600px);object-position:50% 86%}
+.hero-avec-photo .watermark{display:none} /* la photo prend sa place, le filigrane passait sous le texte */
+
+/* 3. Notre histoire : portrait de Lionel, photo de pêche en vignette sur le coin */
+.portrait-peche{position:relative}
+.vignette-peche{position:absolute;left:clamp(-40px,-3vw,-20px);top:clamp(-40px,-3vw,-20px);z-index:1;width:44%;
+  aspect-ratio:4/3;object-fit:cover;border:6px solid var(--banquise);border-radius:var(--r-m);
+  box-shadow:0 18px 40px -18px rgba(14,26,31,.45)}
+/* Univers Alaska et savoir-faire : l'ours (paysage) et le fumoir, à la même hauteur */
+.univers-ccifa{display:grid;grid-template-columns:1.45fr 1fr;gap:clamp(14px,2vw,24px);margin-top:clamp(56px,7vw,96px)}
+.univers-ccifa .figure img{height:clamp(300px,32vw,440px)}
+.univers-ccifa>div:last-child .figure img{object-position:50% 30%}
+.univers-ccifa>div:first-child figcaption{text-align:right} /* la signature de Lionel est en bas à gauche de l'ours */
+
+/* 5. Entreprise : photo du port sous les textes, dans la colonne laissée libre par le formulaire */
+.entreprise-photo{margin-top:clamp(28px,3vw,40px)}
+.entreprise-photo .figure img{height:clamp(320px,30vw,440px);object-position:50% 60%}
+
+/* 2. Introduction : texte centré, une barre tricolore au-dessus */
+.intro-ccifa{padding:clamp(56px,7vw,96px) 0;text-align:center}
+.intro-ccifa .wrap{max-width:900px}
+.intro-tricolore{display:block;width:56px;margin:0 auto 28px}
+.intro-lead{font-family:var(--serif);font-weight:340;font-size:clamp(22px,2.5vw,31px);line-height:1.4;color:var(--nuit);margin-bottom:20px}
+.intro-ccifa p:not(.intro-lead){font-size:16.5px;color:var(--gris);max-width:58ch;margin:0 auto}
+
+/* 4. Commande personnelle : liste des offres avec vignettes, puis widget chargé au clic */
+.offres{border-top:1px solid var(--brume);max-width:900px}
+.offre{display:grid;grid-template-columns:72px 1fr auto;gap:18px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(174,185,183,.6)}
+.offre img{width:72px;height:72px;object-fit:cover;border-radius:10px}
+.offre-texte b{display:block;font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.25;color:var(--nuit)}
+.offre-texte span{display:block;font-size:14px;color:var(--gris);margin-top:3px}
+.offre-prix{text-align:right;white-space:nowrap}
+.offre-prix s{display:block;font-size:13px;color:var(--gris);text-decoration-thickness:1.5px}
+.offre-prix b{font-family:var(--serif);font-weight:400;font-size:24px;color:var(--cuivre)}
+.offre-livraison{margin-top:22px;max-width:900px;font-size:15px;color:var(--nuit)}
+.offre-perso .ouvrir-commande{margin-top:clamp(24px,3vw,34px)}
+.zone-widget{margin-top:4px}
+.chargement-widget{text-align:center;padding:48px 0;font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gris)}
+.mentions-offre{margin-top:22px;max-width:900px}
+.mentions-offre li{position:relative;padding-left:18px;margin-top:6px;font-size:13.5px;color:var(--gris)}
+.mentions-offre li::before{content:"";position:absolute;left:0;top:.75em;width:8px;height:1px;background:var(--cuivre)}
+
+/* 5. Commande entreprise : textes à gauche, formulaire à droite */
+.entreprise-grille{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(36px,6vw,80px);align-items:start}
+.titre-entreprise{font-size:clamp(30px,3.8vw,50px);margin:16px 0 6px}
+.entreprise-grille p{margin-top:14px;max-width:46ch}
+.entreprise-grille .form{margin-top:0}
+.page-partenaire .form .check a{color:var(--cuivre);font-weight:600}
+
+/* 6. Calendrier et 7. Contact */
+.calendrier-ccifa{padding:clamp(56px,7vw,96px) 0}
+.stats-deux{grid-template-columns:repeat(2,1fr);max-width:900px;margin-top:24px}
+.contact-grid-deux{grid-template-columns:repeat(2,1fr);max-width:900px}
+.contact-grid-deux a{font-size:17px}
+
+/* Pied de page partenaire */
+.foot-note{display:block;font-size:13.5px;max-width:28ch;color:rgba(245,242,236,.62);margin-bottom:14px}
+
+@media (max-width:860px){
+  .entreprise-grille,.stats-deux,.contact-grid-deux{grid-template-columns:1fr}
+  .hero-avec-photo>.wrap{grid-template-columns:1fr;gap:40px}
+  .hero-photo img{height:400px}
+  .vignette-peche{left:auto;right:14px;top:auto;bottom:-26px;width:42%;border-width:4px}
+  .portrait-peche{margin-bottom:26px}
+  .univers-ccifa{grid-template-columns:1fr}
+  .univers-ccifa .figure img{height:280px}
+  .entreprise-photo{display:none} /* sur mobile, le formulaire passe avant l'ambiance */
+  .intro-ccifa{text-align:left}
+  .intro-tricolore{margin-left:0}
+  .intro-ccifa p:not(.intro-lead){margin-left:0}
+}
+@media (max-width:560px){
+  .offre{grid-template-columns:56px 1fr;gap:6px 14px}
+  .offre img{width:56px;height:56px;grid-row:span 2}
+  .offre-prix{text-align:left}
+  .offre-prix s{display:inline;margin-right:8px}
+}
+@media (max-width:480px){
+  .cobrand{display:none} /* le logo du bandeau suffit, l'en-tête garde la place du menu */
+}

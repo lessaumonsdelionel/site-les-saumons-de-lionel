@@ -1,0 +1,38 @@
+{#- Pied de page des pages partenaires (page CCIFA du 02/10/2026) : coordonnées et pages légales,
+    sans les liens vers les offres CSE. p = données de la page (ex. ccifa.json). -#}
+{% import "macros.njk" as m %}<footer>
+  <img class="watermark" src="/assets/img/logo-blanc.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <div class="foot-grid foot-grid-partenaire">
+      <div>
+        <img class="logo" src="/assets/img/logo-blanc.png" alt="{{ site.nom | safe }}">
+        <p class="baseline">{{ site.baseline | safe }}</p>
+        <div class="foot-sceau">{{ m.sceau(site, "pied", "/assets/img/logo-blanc.png") }}</div>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        {#- Coordonnées propres à la page partenaire si elle en donne (CCIFA : rita@), sinon celles du site -#}
+        {% set contactPage = p.contact if (p and p.contact) else {} %}
+        <span class="foot-who">{{ (contactPage.nom or site.contact.responsable) | safe }}</span>
+        <a href="tel:{{ (contactPage.tel.lien if contactPage.tel else site.contact.tel.lien) | safe }}">{{ (contactPage.tel.numero if contactPage.tel else site.contact.tel.numero) | safe }}</a>
+        <a href="mailto:{{ (contactPage.email or site.contact.email) | safe }}">{{ (contactPage.email or site.contact.email) | safe }}</a>
+        {% if site.contact.whatsapp %}<a href="{{ site.contact.whatsapp | safe }}" rel="noopener" target="_blank">WhatsApp</a>{% endif %}
+      </div>
+      <div>
+        <h4>Partenariat</h4>
+        <span class="foot-who">{{ p.partenaire.sigle | safe }}</span>
+        <span class="foot-note">{{ p.partenaire.nom | safe }}</span>
+        <span class="tricolore foot-tricolore" aria-hidden="true"></span>
+      </div>
+      <div>
+        <h4>Légal</h4>
+        <a href="/mentions-legales.html">Mentions légales</a>
+        <a href="/politique-confidentialite.html">Politique de confidentialité</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> {{ site.nom | safe }}, {{ site.contact.responsable | safe }}. TVA non applicable, art. 293 B du CGI</span>
+      <span class="coords">61°13′ N, 149°54′ O, Anchorage, Alaska</span>
+    </div>
+  </div>
+</footer>

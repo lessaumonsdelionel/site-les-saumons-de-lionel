@@ -438,9 +438,9 @@
     <section id="sw-etape-code" class="sw-code-bloc">
       <div class="sw-code-inner">
         <div class="sw-code-intro">
-          <p class="sw-code-kicker"><span class="sw-regle" aria-hidden="true"></span>Accès partenaire</p>
-          <h2>Code partenaire</h2>
-          <p class="sw-sous">Le code que votre comité vous a communiqué</p>
+          <p class="sw-code-kicker"><span class="sw-regle" aria-hidden="true"></span><span id="sw-code-kicker-texte">Accès partenaire</span></p>
+          <h2 id="sw-code-titre">Code partenaire</h2>
+          <p class="sw-sous" id="sw-code-sous">Le code que votre comité vous a communiqué</p>
         </div>
 
         <div class="sw-code-saisie">
@@ -493,6 +493,24 @@
     var WIDGET_TOKEN = "SIMULATION-LOCALE"; // secret partagé anti-spam (docs/C §0.4)
 
     /* -------------------------------------------------------------------
+       0 bis) HABILLAGE D'UNE PAGE PARTENAIRE (page CCIFA, 02/10/2026)
+       -------------------------------------------------------------------
+       Une page de la même origine peut poser window.HABILLAGE_WIDGET avant
+       de charger l'iframe : textes (tarif, remise, total, panneau du code)
+       et code pré-saisi, validé tout seul au chargement. Sans habillage,
+       rien ne change : la page commande.html garde ses textes CSE.
+    ------------------------------------------------------------------- */
+    var HABILLAGE = (function () {
+      try {
+        if (window.parent !== window && window.parent.HABILLAGE_WIDGET) return window.parent.HABILLAGE_WIDGET;
+      } catch (e) { /* page d'une autre origine : pas d'habillage */ }
+      return null;
+    })();
+    function libelle(cle, parDefaut) {
+      return HABILLAGE && HABILLAGE[cle] ? String(HABILLAGE[cle]) : parDefaut;
+    }
+
+    /* -------------------------------------------------------------------
        1) SIMULATEUR MAKE + AIRTABLE (local)
        -------------------------------------------------------------------
        Reproduit fidèlement les 2 scénarios Make (docs/C-make-scenarios.md) :
@@ -523,7 +541,11 @@
         "SAU-FIL-1000": { reference: "SAU-FIL-1000", nom: "Filet de saumon sauvage fumé d'Alaska", detail: "Tranché, sous vide, ≈ 1 kg", prix: 79.00, prixPublic: 98.90, poids: 1000, ordre: 1 },
         "TRU-FIL-600":  { reference: "TRU-FIL-600",  nom: "Filet de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, ≈ 600 g", prix: 47.40, prixPublic: 59.30, poids: 600, ordre: 2 },
         "SAU-PLQ-130":  { reference: "SAU-PLQ-130",  nom: "Plaquette de saumon sauvage fumé d'Alaska", detail: "3 à 4 tranches, 130 g", prix: 16.90, prixPublic: 0, poids: 130, ordre: 3 },
-        "TRU-PLQ-120":  { reference: "TRU-PLQ-120",  nom: "Plaquette de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, 120 g", prix: 15.90, prixPublic: 0, poids: 120, ordre: 4 }
+        "TRU-PLQ-120":  { reference: "TRU-PLQ-120",  nom: "Plaquette de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, 120 g", prix: 15.90, prixPublic: 0, poids: 120, ordre: 4 },
+        /* Copies des filets à un prix propre à un partenaire (04/10/2026), comme SAU-FIL-1000-CCIFA
+           dans Airtable : seul le partenaire qui les a dans ses produits proposés les voit. */
+        "SAU-FIL-1000-RESEAU": { reference: "SAU-FIL-1000-RESEAU", nom: "Filet de saumon sauvage fumé d'Alaska", detail: "Tranché, sous vide, ≈ 1 kg", prix: 84.00, prixPublic: 98.90, poids: 1000, ordre: 1 },
+        "TRU-FIL-600-RESEAU":  { reference: "TRU-FIL-600-RESEAU",  nom: "Filet de truite fumée des Pyrénées (AB)", detail: "Agriculture biologique, ≈ 600 g", prix: 50.40, prixPublic: 59.30, poids: 600, ordre: 2 }
       };
 
       /* Partenaires de DÉMONSTRATION, jamais les vrais codes : ce fichier est
@@ -559,6 +581,15 @@
           nom: "Partenaire, campagne clôturée", statut: "Actif", remisePct: 0.20,
           dateOuverture: "2026-04-01", dateCloture: "2026-05-31",
           consignes: "", produits: ["SAU-FIL-1000"], livraisons: []
+        },
+        /* Réseau en livraison à domicile seule (page partenaire, 02/10/2026) :
+           démonstration locale de la page /ccifa avec ?code=RESEAU26 */
+        "RESEAU26": {
+          nom: "Réseau de démonstration", statut: "Actif", remisePct: 0, commandeMinimum: 70, francoPort: 200, prefixeCommande: "RESEAU",
+          dateOuverture: "2026-09-01", dateCloture: "2026-12-31",
+          consignes: "Livraison à domicile en France métropolitaine. Date limite et conditions définitives à préciser.",
+          produits: ["SAU-FIL-1000-RESEAU", "TRU-FIL-600-RESEAU", "SAU-PLQ-130", "TRU-PLQ-120"],
+          livraisons: ["res-domicile"]
         }
       };
 
@@ -566,7 +597,8 @@
         "alz-retrait":  { id: "alz-retrait",  libelle: "Retrait au siège", type: "Retrait", frais: 0, lieu: "Siège Allianz (à préciser)", date: "2026-10-02" },
         "alz-domicile": { id: "alz-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "France métropolitaine (supplément à préciser)", date: "2026-10-03" },
         "tls-retrait":  { id: "tls-retrait",  libelle: "Retrait, marché de Noël du COSAT", type: "Retrait", frais: 0, lieu: "Marché de Noël du COSAT (à préciser)", date: "2026-12-12" },
-        "tls-domicile": { id: "tls-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "Selon conditions (à préciser)", date: "2026-12-13" }
+        "tls-domicile": { id: "tls-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "Selon conditions (à préciser)", date: "2026-12-13" },
+        "res-domicile": { id: "res-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "France métropolitaine (à préciser)", date: "2026-12-18" }
       };
 
       /* Table Commandes simulée : reçoit les enregistrements créés. */
@@ -655,8 +687,9 @@
 
           /* N° de commande : CSE-AAAAMMJJ-#### (séquence du jour). */
           var ymd = jour.replace(/-/g, "");
-          var duJour = TABLE_COMMANDES.filter(function (c) { return c.numero.indexOf("CSE-" + ymd) === 0; });
-          var numero = "CSE-" + ymd + "-" + ("000" + (duJour.length + 1)).slice(-4);
+          /* Préfixe propre au partenaire (champ « Préfixe commande », vide = CSE), séquence du jour commune à tous. */
+          var duJour = TABLE_COMMANDES.filter(function (c) { return c.numero.indexOf("-" + ymd + "-") > 0; });
+          var numero = (p.prefixeCommande || "CSE") + "-" + ymd + "-" + ("000" + (duJour.length + 1)).slice(-4);
 
           var commande = {
             numero: numero,
@@ -747,7 +780,7 @@
       var pub = Number(prod.prixPublic) || 0;
       if (pub > prod.prix + 0.004) {
         return '<s><span class="sw-visuellement-cache">Prix public : </span>' + eur(pub) + '</s>' + eur(prod.prix) +
-          '<small>Tarif CSE, au lieu de ' + eur(pub) + ' au tarif public</small>';
+          '<small>' + echapper(libelle("libelleTarif", "Tarif CSE")) + ', au lieu de ' + eur(pub) + ' au tarif public</small>';
       }
       return eur(prod.prix);
     }
@@ -777,8 +810,8 @@
         }
       });
       if (mini !== null && mini > 0) return "Réduction de " + Math.floor(mini * 100 + 1e-9) + " % minimum";
-      if (p.remisePct > 0) return "−" + Math.round(p.remisePct * 100) + " % CSE";
-      return "Tarif CSE";
+      if (p.remisePct > 0) return "−" + Math.round(p.remisePct * 100) + " %" + (HABILLAGE ? "" : " CSE");
+      return libelle("libelleTarif", "Tarif CSE");
     }
     function dateLongue(iso) { // ex. 2 octobre 2026
       var d = new Date(iso + "T00:00:00");
@@ -791,6 +824,17 @@
     }
     function genererRequestId() {
       return "req-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+    }
+    /* Page partenaire : le widget est au milieu de la page parente. Quand une étape
+       change et que le haut du widget est sorti de l'écran, on y remonte le visiteur. */
+    function remonterVersLeWidget() {
+      if (!HABILLAGE) return;
+      try {
+        var cadre = window.frameElement;
+        if (!cadre) return;
+        var haut = cadre.getBoundingClientRect().top;
+        if (haut < 0) window.parent.scrollTo({ top: Math.max(0, haut + window.parent.pageYOffset - 90), behavior: "auto" });
+      } catch (e) { /* sans objet */ }
     }
 
     /* Raccourcis DOM */
@@ -925,7 +969,7 @@
       html += '</div>';
 
       /* --- Section 2 : Mode de récupération --- */
-      html += '<div class="sw-carte sw-section"><h3><span class="sw-num" aria-hidden="true">2</span> Mode de récupération</h3>';
+      html += '<div class="sw-carte sw-section"><h3><span class="sw-num" aria-hidden="true">2</span> ' + echapper(libelle("titreModes", "Mode de récupération")) + '</h3>';
       if (p.livraisons.length === 0) {
         html += '<p class="sw-recap-vide">Aucun mode de livraison configuré.</p>';
       }
@@ -946,7 +990,7 @@
           '</span>' +
         '</label>';
       });
-      html += '<span class="sw-champ-erreur" id="sw-err-livraison">Veuillez choisir un mode de récupération.</span>';
+      html += '<span class="sw-champ-erreur" id="sw-err-livraison">' + echapper(libelle("erreurModes", "Veuillez choisir un mode de récupération.")) + '</span>';
       /* Adresse de livraison : rendue une fois, affichée par majBlocAdresse()
          seulement si le mode choisi est une livraison à domicile. */
       html += '<div class="sw-adresse sw-cache" id="sw-bloc-adresse">' +
@@ -968,7 +1012,7 @@
         champTexte("email", "Email", "email", true) +
         '<div class="sw-champ">' +
           '<label for="sw-f-commentaire">Commentaire (facultatif)</label>' +
-          '<textarea id="sw-f-commentaire" data-champ="commentaire" placeholder="Précision, service, allergie…"></textarea>' +
+          '<textarea id="sw-f-commentaire" data-champ="commentaire" placeholder="' + echapper(libelle("placeholderCommentaire", "Précision, service, allergie…")) + '"></textarea>' +
         '</div>' +
         /* Honeypot : champ invisible, un humain ne le remplit jamais. */
         '<div class="sw-hp" aria-hidden="true">' +
@@ -993,7 +1037,7 @@
         '<div class="sw-recap-totaux" id="sw-recap-totaux"></div>' +
         '<button type="button" class="sw-btn sw-btn-primaire sw-btn-bloc" id="sw-btn-commander">Valider ma précommande</button>' +
         '<div id="sw-zone-erreur-envoi"></div>' +
-        '<p class="sw-recap-note">Sans paiement en ligne : vous réglez au retrait. Un e-mail de confirmation vous sera envoyé.</p>' +
+        '<p class="sw-recap-note">' + echapper(libelle("noteRecap", "Sans paiement en ligne : vous réglez au retrait. Un e-mail de confirmation vous sera envoyé.")) + '</p>' +
       '</div></aside>';
 
       html += '</div>'; // fin grille
@@ -1009,6 +1053,7 @@
       recalculer();
       majBlocAdresse();
       window.scrollTo({ top: 0, behavior: "auto" });
+      remonterVersLeWidget();
     }
 
     var AUTOCOMPLETE = { nom: "name", email: "email", telephone: "tel", adresse: "street-address", codePostal: "postal-code", ville: "address-level2" };
@@ -1174,10 +1219,10 @@
       var html = '';
       html += '<div class="sw-toto"><span>Sous-total</span><span class="sw-val">' + eur(c.sousTotal) + '</span></div>';
       if (c.remise > 0) {
-        html += '<div class="sw-toto sw-remise"><span>Remise CSE (−' + Math.round(etat.partenaire.remisePct * 100) + '%)</span>' +
+        html += '<div class="sw-toto sw-remise"><span>' + echapper(libelle("libelleRemise", "Remise CSE")) + ' (−' + Math.round(etat.partenaire.remisePct * 100) + '%)</span>' +
                 '<span class="sw-val">− ' + eur(c.remise) + '</span></div>';
       }
-      html += '<div class="sw-toto"><span>Frais de récupération</span><span class="sw-val">' +
+      html += '<div class="sw-toto"><span>' + echapper(libelle("libelleFrais", "Frais de récupération")) + '</span><span class="sw-val">' +
               (c.francoAtteint ? "Offerts" : (c.frais === 0 ? "Gratuit" : eur(c.frais))) + '</span></div>';
       var p = etat.partenaire;
       if (c.livraison && estLivraisonDomicile(c.livraison) && p.francoPort > 0 && c.livraison.frais > 0) {
@@ -1191,7 +1236,7 @@
         html += '<p class="sw-condition">Commande minimum ' + eur(c.minimum) + '.</p>';
       }
       html += '<div class="sw-total-final"><span class="sw-tf-label">Total</span><span class="sw-tf-val">' + eur(c.total) + '</span></div>';
-      html += '<p class="sw-estimatif">Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.</p>';
+      html += '<p class="sw-estimatif">' + echapper(libelle("noteEstimatif", "Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.")) + '</p>';
       html += '<div class="sw-poids">Poids total estimé&nbsp;: ' + poidsLisible(c.poids) + '</div>';
       elTotaux.innerHTML = html;
 
@@ -1378,11 +1423,11 @@
         '<div class="sw-recap-final">' +
           ligneRF("Partenaire", etat.partenaire.nom) +
           ligneRF("Produits", lignes.map(function (l) { return l.q + "× " + l.nom; }).join(" · ")) +
-          ligneRF("Récupération", liv ? (liv.libelle + " · " + quandLisible(liv)) : "-") +
+          ligneRF(libelle("libelleRecuperation", "Récupération"), liv ? (liv.libelle + " · " + quandLisible(liv)) : "-") +
           ligneRF("Lieu", liv ? liv.lieu : "-") +
           (estLivraisonDomicile(liv) ? ligneRF("Adresse de livraison", adresseLisible()) : "") +
           ligneRF("Poids total estimé", poidsLisible(poids)) +
-          ligneRF("Total à régler sur place", eur(total)) +
+          ligneRF(libelle("libelleTotal", "Total à régler sur place"), eur(total)) +
         '</div>' +
         '<p class="sw-confirm-aide">Pour modifier ou annuler, contactez-nous en indiquant votre n° de commande&nbsp;: ' +
           '<a href="mailto:bonjour@lessaumonsdelionel.fr" style="color:var(--cuivre);font-weight:600">bonjour@lessaumonsdelionel.fr</a></p>' +
@@ -1393,8 +1438,13 @@
       elEtapeConfirmation.innerHTML = html;
       elEtapeCommande.classList.add("sw-cache");
       elEtapeConfirmation.classList.remove("sw-cache");
-      $("#sw-nouvelle").addEventListener("click", retourSaisieCode);
+      $("#sw-nouvelle").addEventListener("click", function () {
+        retourSaisieCode();
+        /* Page partenaire : la nouvelle commande repart directement sur l'offre du réseau */
+        if (HABILLAGE && HABILLAGE.code) { elInputCode.value = String(HABILLAGE.code).toUpperCase(); soumettreCode(); }
+      });
       window.scrollTo({ top: 0, behavior: "auto" });
+      remonterVersLeWidget();
     }
 
     function ligneRF(cle, val) {
@@ -1413,6 +1463,10 @@
       }).join("");
 
       var prenom = (cmd.salarie.nom || "").trim().split(/\s+/)[0] || "";
+      /* Même texte que le scénario B depuis le 02/10/2026 : une livraison à domicile
+         ne parle ni de retrait, ni de sac isotherme, ni de « régler sur place ». */
+      var livre = !!(cmd.livraison && String(cmd.livraison.type || "").toLowerCase() === "livraison");
+      var adresse = [String(cmd.salarie.adresse || "").trim(), (String(cmd.salarie.codePostal || "") + " " + String(cmd.salarie.ville || "")).trim()].filter(Boolean).join(", ");
 
       return '<div class="sw-email">' +
         '<span class="sw-email-tag">Aperçu de l\'e-mail envoyé (simulation)</span>' +
@@ -1428,18 +1482,23 @@
           '<table>' +
             '<tr><th>Produit</th><th style="text-align:right">Qté</th><th style="text-align:right">Montant</th></tr>' +
             lignesHtml +
-            (cmd.remise > 0 ? '<tr><td>Remise CSE (−' + Math.round(cmd.remisePct * 100) + '%)</td><td></td>' +
+            (cmd.remise > 0 ? '<tr><td>Remise (−' + Math.round(cmd.remisePct * 100) + '%)</td><td></td>' +
               '<td class="sw-num-cell">− ' + eur(cmd.remise) + '</td></tr>' : '') +
-            '<tr><td>Frais de récupération</td><td></td>' +
-              '<td class="sw-num-cell">' + (cmd.frais === 0 ? "Gratuit" : eur(cmd.frais)) + '</td></tr>' +
-            '<tr class="sw-email-total"><td>Total à régler sur place</td><td></td>' +
+            '<tr><td>' + (livre ? 'Frais de livraison' : 'Frais de récupération') + '</td><td></td>' +
+              '<td class="sw-num-cell">' + (cmd.frais === 0 ? (cmd.livraison && cmd.livraison.frais > 0 ? "Offerts" : "Gratuit") : eur(cmd.frais)) + '</td></tr>' +
+            '<tr class="sw-email-total"><td>' + (livre ? 'Total de la commande' : 'Total à régler sur place') + '</td><td></td>' +
               '<td class="sw-num-cell">' + eur(cmd.total) + '</td></tr>' +
           '</table>' +
-          '<p><strong>Récupération&nbsp;:</strong> ' +
-            (cmd.livraison ? echapper(cmd.livraison.libelle) + ' · ' + echapper(cmd.livraison.lieu) +
-              ', le ' + dateLongue(cmd.livraison.date) : "-") + '.<br>' +
-            'Nos produits sont remis surgelés, à -18&nbsp;°C&nbsp;: pensez à votre sac isotherme. Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.</p>' +
-          '<p>Merci pour votre précommande. Votre commande sera préparée selon les modalités communiquées pour votre opération partenaire. Les filets étant vendus au poids réel, le montant final pourra être ajusté lors de la remise.</p>' +
+          '<p><strong>' + (livre ? 'Livraison' : 'Récupération') + '&nbsp;:</strong> ' +
+            (cmd.livraison ? echapper(cmd.livraison.libelle) + ', ' + echapper(cmd.livraison.lieu) +
+              (livre ? ', au plus tard le ' : ', le ') + dateLongue(cmd.livraison.date) : "-") + '.<br>' +
+            (livre && adresse ? 'Adresse de livraison&nbsp;: ' + echapper(adresse) + '.<br>' : '') +
+            (livre
+              ? 'Nos produits vous sont livrés surgelés, à -18&nbsp;°C. Montant estimatif sur le poids de référence, ajusté au poids réel.</p>'
+              : 'Nos produits sont remis surgelés, à -18&nbsp;°C&nbsp;: pensez à votre sac isotherme. Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.</p>') +
+          (livre
+            ? '<p>Merci pour votre précommande. Elle sera préparée puis livrée à l\'adresse indiquée. Les filets étant vendus au poids réel, le montant final pourra être ajusté.</p>'
+            : '<p>Merci pour votre précommande. Votre commande sera préparée selon les modalités communiquées pour votre opération partenaire. Les filets étant vendus au poids réel, le montant final pourra être ajusté lors de la remise.</p>') +
           '<p>Pour modifier ou annuler, répondez à cet e-mail en indiquant votre n° de commande. Pour toute question : bonjour@lessaumonsdelionel.fr</p>' +
           '<p class="sw-email-sign">Rita - Les Saumons de Lionel</p>' +
         '</div>' +
@@ -1460,6 +1519,7 @@
       elInputCode.value = "";
       elInputCode.focus();
       window.scrollTo({ top: 0, behavior: "auto" });
+      remonterVersLeWidget();
     }
 
     /* -------------------------------------------------------------------
@@ -1503,6 +1563,7 @@
           { code: "INACTIF26", note: "inactif" },
           { code: "BIENTOT26", note: "pas encore ouvert" },
           { code: "TERMINE26", note: "terminé" },
+          { code: "RESEAU26", note: "livraison à domicile seule" },
           { code: "ZZZ999", note: "inexistant" }
         ];
         $("#sw-puces-test").innerHTML = codesDemo.map(function (c) {
@@ -1515,6 +1576,17 @@
           });
         });
         $("#sw-aide-codes").classList.remove("sw-cache");
+      }
+
+      /* Page partenaire : textes du panneau, puis code pré-saisi validé tout de suite */
+      if (HABILLAGE) {
+        if (HABILLAGE.kicker) $("#sw-code-kicker-texte").textContent = HABILLAGE.kicker;
+        if (HABILLAGE.titre) $("#sw-code-titre").textContent = HABILLAGE.titre;
+        if (HABILLAGE.sous) $("#sw-code-sous").textContent = HABILLAGE.sous;
+        if (HABILLAGE.code) {
+          elInputCode.value = String(HABILLAGE.code).toUpperCase();
+          soumettreCode();
+        }
       }
     }
 

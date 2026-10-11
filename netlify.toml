@@ -22,6 +22,13 @@
   to = "/offres-cse.html"
   status = 301
 
+# Page partenaire CCIFA (02/10/2026) : adresse courte lessaumonsdelionel.fr/ccifa,
+# servie depuis ccifa.html. Page hors menu et en noindex, absente du plan du site.
+[[redirects]]
+  from = "/ccifa"
+  to = "/ccifa.html"
+  status = 200
+
 # Le back-office est servi sur /admin (copié tel quel par Eleventy).
 # Le formulaire de contact utilise Netlify Forms : activer la détection des
 # formulaires dans Netlify (Site configuration, Forms) et une notification e-mail.

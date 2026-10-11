@@ -1,0 +1,32 @@
+{#- En-tête des pages partenaires (page CCIFA du 02/10/2026).
+    Aucun lien vers les offres CSE : le visiteur reste sur l'offre de son réseau.
+    p = données de la page (ex. ccifa.json). -#}
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#haut">
+      <img src="/assets/img/logo.png" alt="{{ site.nom | safe }}">
+      <span class="name">Les Saumons de <em>Lionel</em></span>
+    </a>
+    <nav class="nav-links" aria-label="Navigation de la page">
+      <a href="#maison">Notre histoire</a>
+      <a href="#commander" data-ouvrir-commande>Commander</a>
+      <a href="#entreprise">Entreprises</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-cta">
+      <span class="cobrand" title="{{ p.partenaire.mention | safe }} la {{ p.partenaire.nom | safe }}">
+        {#- Logo trop petit à cette taille pour qu'on lise le sigle : on garde le sigle écrit à côté -#}
+        {% if p.partenaire.logo %}<img src="/{{ p.partenaire.logo | safe }}" alt="" aria-hidden="true">{% else %}<span class="tricolore" aria-hidden="true"></span>{% endif %}
+        <b>{{ p.partenaire.sigle | safe }}</b>
+      </span>
+      <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<nav class="mobile-menu" aria-label="Menu mobile">
+  <a href="#commander" data-ouvrir-commande>Je commande</a>
+  <a href="#entreprise">Pour mon entreprise</a>
+  <a href="#maison">Notre histoire</a>
+  <a href="#contact">Contact</a>
+  <span class="lat"><span class="bar"><i></i></span> {{ p.partenaire.mention | safe }} la {{ p.partenaire.sigle | safe }}</span>
+</nav>
