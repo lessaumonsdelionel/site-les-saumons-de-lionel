@@ -590,6 +590,16 @@
           consignes: "Livraison à domicile en France métropolitaine. Date limite et conditions définitives à préciser.",
           produits: ["SAU-FIL-1000-RESEAU", "TRU-FIL-600-RESEAU", "SAU-PLQ-130", "TRU-PLQ-120"],
           livraisons: ["res-domicile"]
+        },
+        /* Commande groupée (mail de Rita et Aurélien du 16/10/2026) : tarif de groupe,
+           livraison offerte à une adresse unique, poids minimum de 10 kg tous produits
+           confondus. Démonstration locale du blocage avec ?code=GROUPE26 */
+        "GROUPE26": {
+          nom: "Commande groupée de démonstration", statut: "Actif", remisePct: 0, poidsMinimumG: 10000, prefixeCommande: "GROUPE",
+          dateOuverture: "2026-09-01", dateCloture: "2026-11-30",
+          consignes: "Commande groupée entre collègues, voisins ou amis. Livraison surgelée offerte à une adresse unique en France métropolitaine, hors Corse.",
+          produits: ["SAU-FIL-1000", "TRU-FIL-600", "SAU-PLQ-130", "TRU-PLQ-120"],
+          livraisons: ["grp-domicile"]
         }
       };
 
@@ -598,7 +608,8 @@
         "alz-domicile": { id: "alz-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "France métropolitaine (supplément à préciser)", date: "2026-10-03" },
         "tls-retrait":  { id: "tls-retrait",  libelle: "Retrait, marché de Noël du COSAT", type: "Retrait", frais: 0, lieu: "Marché de Noël du COSAT (à préciser)", date: "2026-12-12" },
         "tls-domicile": { id: "tls-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "Selon conditions (à préciser)", date: "2026-12-13" },
-        "res-domicile": { id: "res-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "France métropolitaine (à préciser)", date: "2026-12-18" }
+        "res-domicile": { id: "res-domicile", libelle: "Livraison à domicile", type: "Livraison", frais: 10.00, lieu: "France métropolitaine (à préciser)", date: "2026-12-18" },
+        "grp-domicile": { id: "grp-domicile", libelle: "Livraison à une adresse unique", type: "Livraison", frais: 0, lieu: "France métropolitaine, hors Corse", date: "2026-12-18" }
       };
 
       /* Table Commandes simulée : reçoit les enregistrements créés. */
@@ -635,6 +646,8 @@
               nom: p.nom,
               remisePct: p.remisePct,
               commandeMinimum: p.commandeMinimum || 0, francoPort: p.francoPort || 0,
+              /* Poids minimum en grammes, tous produits confondus (commandes groupées, 16/10/2026) */
+              poidsMinimumG: p.poidsMinimumG || 0,
               dateCloture: p.dateCloture,
               consignes: p.consignes,
               produits: p.produits.map(function (ref) { return TABLE_PRODUITS[ref]; }).filter(Boolean),
@@ -681,6 +694,9 @@
           var remise = arrondi(sousTotal * (p.remisePct || 0));
           var mode = payload.livraison ? TABLE_MODES_LIVRAISON[payload.livraison.id] : null;
           if (p.commandeMinimum > 0 && sousTotal < p.commandeMinimum) return { ok: false, raison: "minimum" };
+          /* Poids minimum du partenaire : refus net, rien n'est écrit. Le navigateur bloque
+             déjà le bouton, cette vérification est celle qui compte. */
+          if (p.poidsMinimumG > 0 && poids < p.poidsMinimumG) return { ok: false, raison: "poids", poidsMinimumG: p.poidsMinimumG };
           var frais = mode ? mode.frais : 0;
           if (mode && mode.type === "Livraison" && p.francoPort > 0 && sousTotal >= p.francoPort) frais = 0;
           var total = arrondi(sousTotal - remise + frais);
@@ -1160,10 +1176,15 @@
       if (francoAtteint) frais = 0;
       var minimum = p.commandeMinimum > 0 ? p.commandeMinimum : 0;
       var sousMinimum = lignes.length > 0 && minimum > 0 && sousTotal < minimum - 1e-9;
+      /* Poids minimum, tous produits confondus (commandes groupées) : tant qu'il n'est pas
+         atteint, la commande ne peut pas être validée. */
+      var poidsMinimumG = p.poidsMinimumG > 0 ? p.poidsMinimumG : 0;
+      var sousPoidsMinimum = poidsMinimumG > 0 && poids < poidsMinimumG - 1e-9;
       var total = sousTotal - remise + frais;
 
       return { lignes: lignes, sousTotal: sousTotal, remise: remise, frais: frais, total: total, poids: poids, livraison: liv,
-               francoAtteint: francoAtteint, minimum: minimum, sousMinimum: sousMinimum };
+               francoAtteint: francoAtteint, minimum: minimum, sousMinimum: sousMinimum,
+               poidsMinimumG: poidsMinimumG, sousPoidsMinimum: sousPoidsMinimum };
     }
     function trouverLivraison(id) {
       if (!id || !etat.partenaire) return null;
@@ -1238,9 +1259,16 @@
       html += '<div class="sw-total-final"><span class="sw-tf-label">Total</span><span class="sw-tf-val">' + eur(c.total) + '</span></div>';
       html += '<p class="sw-estimatif">' + echapper(libelle("noteEstimatif", "Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.")) + '</p>';
       html += '<div class="sw-poids">Poids total estimé&nbsp;: ' + poidsLisible(c.poids) + '</div>';
+      /* Poids minimum : message sous le poids total, avec le poids qui manque. */
+      if (c.poidsMinimumG > 0) {
+        html += c.sousPoidsMinimum
+          ? '<p class="sw-condition sw-condition-ko" role="alert">Commande groupée&nbsp;: ' + poidsLisible(c.poidsMinimumG) +
+            ' minimum, tous produits confondus. Il manque ' + poidsLisible(c.poidsMinimumG - c.poids) + '.</p>'
+          : '<p class="sw-condition sw-condition-ok">Poids minimum de ' + poidsLisible(c.poidsMinimumG) + ' atteint.</p>';
+      }
       elTotaux.innerHTML = html;
 
-      btn.disabled = c.lignes.length === 0 || c.sousMinimum;
+      btn.disabled = c.lignes.length === 0 || c.sousMinimum || c.sousPoidsMinimum;
     }
 
     /* -------------------------------------------------------------------
@@ -1250,8 +1278,8 @@
       var c = calculer();
       var ok = true;
 
-      // a) Au moins un produit, et le minimum de commande du partenaire atteint
-      if (c.lignes.length === 0 || c.sousMinimum) return;
+      // a) Au moins un produit, minimum de commande et poids minimum du partenaire atteints
+      if (c.lignes.length === 0 || c.sousMinimum || c.sousPoidsMinimum) return;
 
       // b) Un mode de récupération choisi
       if (!etat.livraisonId && etat.partenaire.livraisons.length > 0) {
@@ -1326,6 +1354,11 @@
         .then(function (reponse) {
           if (reponse && reponse.raison === "minimum") {
             afficherErreurEnvoi(c, "Le montant est sous le minimum de commande de ce partenaire.");
+            return;
+          }
+          if (reponse && reponse.raison === "poids") {
+            var mini = Number(reponse.poidsMinimumG) || c.poidsMinimumG;
+            afficherErreurEnvoi(c, "Le poids total est sous le minimum de " + poidsLisible(mini) + " de cette offre groupée.");
             return;
           }
           if (!reponse || !reponse.numeroCommande) {
@@ -1564,6 +1597,7 @@
           { code: "BIENTOT26", note: "pas encore ouvert" },
           { code: "TERMINE26", note: "terminé" },
           { code: "RESEAU26", note: "livraison à domicile seule" },
+          { code: "GROUPE26", note: "commande groupée, 10 kg minimum" },
           { code: "ZZZ999", note: "inexistant" }
         ];
         $("#sw-puces-test").innerHTML = codesDemo.map(function (c) {

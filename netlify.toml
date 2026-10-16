@@ -29,6 +29,33 @@
   to = "/ccifa.html"
   status = 200
 
+# Flyer « Offre CSE Noël 2026 » (16/10/2026), diffusé en campagne Brevo.
+# Adresse publique et définitive : lessaumonsdelionel.fr/cse-noel-2026.pdf
+# Le fichier réel vit dans assets/flyer/ : pour publier une nouvelle version du
+# document, remplacer src/assets/flyer/cse-noel-2026.pdf, rien d'autre. Le nom ne
+# porte ni date ni empreinte, l'adresse envoyée aux prospects ne change jamais.
+[[redirects]]
+  from = "/cse-noel-2026.pdf"
+  to = "/assets/flyer/cse-noel-2026.pdf"
+  status = 200
+
+# Lecture libre, sans identification et sans téléchargement forcé : le PDF
+# s'ouvre dans le navigateur ou le lecteur du téléphone. Cache court, pour qu'un
+# document remplacé soit vu par tous en moins d'une heure.
+[[headers]]
+  for = "/cse-noel-2026.pdf"
+  [headers.values]
+    Content-Type = "application/pdf"
+    Content-Disposition = "inline"
+    Cache-Control = "public, max-age=600, must-revalidate"
+
+[[headers]]
+  for = "/assets/flyer/*"
+  [headers.values]
+    Content-Type = "application/pdf"
+    Content-Disposition = "inline"
+    Cache-Control = "public, max-age=600, must-revalidate"
+
 # Le back-office est servi sur /admin (copié tel quel par Eleventy).
 # Le formulaire de contact utilise Netlify Forms : activer la détection des
 # formulaires dans Netlify (Site configuration, Forms) et une notification e-mail.
