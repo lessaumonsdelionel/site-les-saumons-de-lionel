@@ -1,0 +1,11 @@
+# Fichiers binaires : Git ne doit jamais y toucher aux fins de ligne.
+# Sans cette règle, un PDF sans octet nul est pris pour du texte et ressort
+# corrompu sur une machine Windows, où les LF deviennent des CRLF.
+*.pdf binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
