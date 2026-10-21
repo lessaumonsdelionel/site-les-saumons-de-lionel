@@ -1,16 +1,16 @@
 {
   "seo": {
     "titre": "Contact : Les Saumons de Lionel",
-    "description": "Une question, une demande hors CSE, un projet pour votre comité : écrivez-nous ou appelez-nous. Nous répondons sous 24 heures."
+    "description": "Une question, une commande personnelle, un projet pour votre comité : écrivez-nous ou appelez-nous. Nous répondons sous 24 heures."
   },
   "hero": {
     "eyebrow": "Contact",
     "titre": "Écrivez-nous, <em>ou appelez-nous.</em>",
-    "accroche": "Une question sur nos produits, une demande hors CSE, un projet pour votre comité d'entreprise : nous répondons sous 24 heures."
+    "accroche": "Une question sur nos produits, une commande personnelle, un projet pour votre comité d'entreprise : nous répondons sous 24 heures."
   },
   "horsCse": {
     "eyebrow": "Particuliers",
-    "titre": "Une demande hors CSE ?",
+    "titre": "Une commande personnelle ?",
     "texte": "Le parcours de commande en ligne est réservé aux salariés disposant d'un code CSE. Pour une demande hors opération CSE, écrivez-nous avec les produits et les quantités souhaités : nous vous confirmons les disponibilités, les tarifs et les modalités de livraison."
   },
   "formulaire": {

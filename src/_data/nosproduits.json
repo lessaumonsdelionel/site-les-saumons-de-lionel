@@ -23,7 +23,7 @@
   "prix": {
     "eyebrow": "Tarifs et disponibilités",
     "titre": "Avec votre code CSE, <em>ou sur demande.</em>",
-    "texte": "Les tarifs CSE s'affichent avec votre code partenaire sur la page de commande. Pour les particuliers, les prix sont communiqués sur demande, selon les disponibilités : le parcours de commande en ligne est réservé aux CSE, écrivez-nous ou appelez-nous pour une demande hors CSE.",
+    "texte": "Les tarifs CSE s'affichent avec votre code partenaire sur la page de commande. Pour les particuliers, les prix sont communiqués sur demande, selon les disponibilités : le parcours de commande en ligne est réservé aux CSE, écrivez-nous ou appelez-nous pour une commande personnelle.",
     "tarifsTitre": "Tarifs particuliers indicatifs",
     "surDemande": "Prix sur demande",
     "surDemandeNote": "Tarif particulier communiqué selon les disponibilités du moment.",
@@ -34,6 +34,6 @@
     "tarifsNote": "Prix TTC. Pour les filets vendus au poids, le montant final dépend du poids réel de la pièce.",
     "disponibilites": "Les ventes fonctionnent principalement par campagnes de précommande, notamment à l'automne, à l'approche des fêtes. Les disponibilités dépendent des arrivages, des opérations CSE et des quantités restantes.",
     "boutonCode": "J'ai un code CSE",
-    "boutonContact": "Une demande hors CSE ? Contactez-nous"
+    "boutonContact": "Une commande personnelle ? Contactez-nous"
   }
 }
