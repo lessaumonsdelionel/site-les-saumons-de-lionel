@@ -1,7 +1,7 @@
 {
   "seo": {
     "titre": "Les Saumons de Lionel, partenaires de la CCIFA",
-    "description": "Une offre réservée aux amis de la Chambre de Commerce et d'Industrie Franco-Arménienne pour les fêtes 2026 : saumon sauvage d'Alaska à 84 €/kg au lieu de 98,90 €, livré à domicile.",
+    "description": "Une offre réservée aux amis de la Chambre de Commerce et d'Industrie Franco-Arménienne pour les fêtes 2026 : saumon sauvage d'Alaska à 84 € le filet au lieu de 98,90 €, livré à domicile.",
     "ogTitre": "Les Saumons de Lionel, partenaires de la CCIFA",
     "ogDescription": "Une offre réservée aux amis de la Chambre de Commerce et d'Industrie Franco-Arménienne pour les fêtes 2026."
   },
@@ -67,14 +67,14 @@
         "image": "assets/img/saumon-filet-entier.webp",
         "nom": "Saumon sauvage d'Alaska",
         "detail": "Filets d'environ 1 kg",
-        "prix": "84 €/kg",
+        "prix": "84 €/filet",
         "prixBarre": "98,90 €"
       },
       {
         "image": "assets/img/truite-filet-entier.webp",
         "nom": "Truite fumée des Pyrénées, issue de l'agriculture biologique",
-        "detail": "Soit environ 50,40 € le filet d'environ 600 g",
-        "prix": "84 €/kg",
+        "detail": "Filets d'environ 600 g",
+        "prix": "50,40 €/filet",
         "prixBarre": ""
       },
       {
