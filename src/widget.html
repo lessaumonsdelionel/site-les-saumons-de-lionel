@@ -726,7 +726,9 @@
           sousTotal = arrondi(sousTotal);
           var remise = arrondi(sousTotal * (p.remisePct || 0));
           var mode = payload.livraison ? TABLE_MODES_LIVRAISON[payload.livraison.id] : null;
-          if (p.commandeMinimum > 0 && sousTotal < p.commandeMinimum) return { ok: false, raison: "minimum" };
+          /* Pas de minimum de commande pour un retrait (29/10/2026), comme dans Make. */
+          var minimumMode = mode && mode.type === "Retrait" ? 0 : (p.commandeMinimum || 0);
+          if (minimumMode > 0 && sousTotal < minimumMode) return { ok: false, raison: "minimum" };
           /* Poids minimum du partenaire : refus net, rien n'est écrit. Le navigateur bloque
              déjà le bouton, cette vérification est celle qui compte. */
           if (p.poidsMinimumG > 0 && poids < p.poidsMinimumG) return { ok: false, raison: "poids", poidsMinimumG: p.poidsMinimumG };
@@ -1246,7 +1248,14 @@
       /* Franco de port (Airtable, par partenaire) : livraison à domicile offerte dès ce montant, hors frais */
       var francoAtteint = !!(liv && estLivraisonDomicile(liv) && p.francoPort > 0 && sousTotal >= p.francoPort - 1e-9);
       if (francoAtteint) frais = 0;
-      var minimum = p.commandeMinimum > 0 ? p.commandeMinimum : 0;
+      /* 29/10/2026, demande de Rita : aucun minimum de commande pour un retrait, le minimum
+         du partenaire ne vaut que pour les livraisons. Tant qu'aucun mode n'est choisi et
+         que le partenaire propose un retrait, rien ne bloque : le minimum s'applique dès
+         qu'une livraison est cochée. Make refait la même vérification. */
+      var proposeRetrait = (p.livraisons || []).some(estRetrait);
+      var minimumApplicable = liv ? !estRetrait(liv) : !proposeRetrait;
+      var minimum = minimumApplicable && p.commandeMinimum > 0 ? p.commandeMinimum : 0;
+      var minimumSelonMode = !liv && proposeRetrait && p.commandeMinimum > 0;
       var sousMinimum = lignes.length > 0 && minimum > 0 && sousTotal < minimum - 1e-9;
       /* Poids minimum, tous produits confondus (commandes groupées) : tant qu'il n'est pas
          atteint, la commande ne peut pas être validée. */
@@ -1255,7 +1264,7 @@
       var total = sousTotal - remise + frais;
 
       return { lignes: lignes, sousTotal: sousTotal, remise: remise, frais: frais, total: total, poids: poids, livraison: liv,
-               francoAtteint: francoAtteint, minimum: minimum, sousMinimum: sousMinimum,
+               francoAtteint: francoAtteint, minimum: minimum, sousMinimum: sousMinimum, minimumSelonMode: minimumSelonMode,
                poidsMinimumG: poidsMinimumG, sousPoidsMinimum: sousPoidsMinimum,
                palierPoidsG: palierPoidsG, palierAtteint: palierAtteint };
     }
@@ -1269,6 +1278,11 @@
     function estLivraisonDomicile(liv) {
       if (!liv) return false;
       return String(liv.type || "").toLowerCase() === "livraison" || /domicile/i.test(liv.libelle || "");
+    }
+    /* Un retrait, au sens du minimum de commande : le type Airtable « Retrait », rien d'autre.
+       L'identifiant ne compte pas : api-retrait est une livraison à 15 € depuis le 17/10. */
+    function estRetrait(liv) {
+      return !!liv && String(liv.type || "").toLowerCase() === "retrait";
     }
     function adresseLisible() {
       var rue = etat.salarie.adresse.trim();
@@ -1328,6 +1342,8 @@
         html += '<p class="sw-condition sw-condition-ko" role="alert">Commande minimum ' + eur(c.minimum) + ', il manque ' + eur(c.minimum - c.sousTotal) + '.</p>';
       } else if (c.minimum > 0 && c.lignes.length === 0) {
         html += '<p class="sw-condition">Commande minimum ' + eur(c.minimum) + '.</p>';
+      } else if (c.minimumSelonMode) {
+        html += '<p class="sw-condition">Commande minimum ' + eur(p.commandeMinimum) + ' en livraison, aucun minimum en retrait.</p>';
       }
       html += '<div class="sw-total-final"><span class="sw-tf-label">Total</span><span class="sw-tf-val">' + eur(c.total) + '</span></div>';
       html += '<p class="sw-estimatif">' + echapper(libelle("noteEstimatif", "Montant estimatif sur le poids de référence, ajusté au poids réel lors de la remise.")) + '</p>';
