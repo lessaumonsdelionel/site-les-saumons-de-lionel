@@ -1413,7 +1413,40 @@
 
       if (!ok) return;
 
-      envoyerCommande(c);
+      /* e) Le domaine de l'e-mail doit exister (06/11/2026). Une faute de frappe
+         comme « balltgroup.com » enregistrait la commande, mais le récapitulatif
+         ne partait jamais. Seul le domaine est vérifié, jamais l'adresse entière. */
+      var btn = $("#sw-btn-commander");
+      btn.disabled = true;
+      domaineEmailExiste(etat.salarie.email.trim()).then(function (existe) {
+        btn.disabled = false;
+        if (!existe) {
+          var domaine = etat.salarie.email.trim().split("@").pop();
+          verifierChamp("email", function () { return false; },
+            "Le domaine « " + domaine + " » n'existe pas : vérifiez votre adresse e-mail.");
+          $("#sw-f-email").scrollIntoView({ behavior: "auto", block: "center" });
+          $("#sw-f-email").focus();
+          return;
+        }
+        envoyerCommande(c);
+      });
+    }
+
+    /* Interroge le DNS public de Cloudflare sur le domaine de l'e-mail.
+       Répond false uniquement si le domaine n'existe pas (NXDOMAIN, Status 3).
+       Réseau coupé, délai dépassé ou réponse illisible : true, la commande n'est
+       jamais bloquée par une panne de cette vérification. */
+    var DOMAINES_COURANTS = ["gmail.com", "hotmail.com", "hotmail.fr", "outlook.com", "outlook.fr", "live.fr", "yahoo.com", "yahoo.fr", "orange.fr", "wanadoo.fr", "free.fr", "sfr.fr", "laposte.net", "icloud.com", "bbox.fr", "neuf.fr"];
+    function domaineEmailExiste(email) {
+      var domaine = (email.split("@").pop() || "").toLowerCase().replace(/\.+$/, "");
+      if (!domaine || DOMAINES_COURANTS.indexOf(domaine) >= 0 || typeof fetch !== "function") return Promise.resolve(true);
+      var delai = new Promise(function (resoudre) { setTimeout(function () { resoudre(true); }, 3000); });
+      var requete = fetch("https://cloudflare-dns.com/dns-query?name=" + encodeURIComponent(domaine) + "&type=MX", {
+        headers: { accept: "application/dns-json" }
+      }).then(function (r) { return r.json(); })
+        .then(function (j) { return !(j && j.Status === 3); })
+        .catch(function () { return true; });
+      return Promise.race([requete, delai]);
     }
 
     /* Valide un champ : affiche/efface son message d'erreur, renvoie true/false. */
